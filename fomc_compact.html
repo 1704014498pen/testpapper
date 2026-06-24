@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>워시 신임 의장 첫 FOMC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  :root {
+    --paper: #f6f3ee;
+    --ink: #15110d;
+    --ink-mid: #4a4239;
+    --rule: #d8d2c5;
+    --accent: #0a4a7a;
+    --accent-deep: #062f50;
+    --quote-bg: #ebe5d6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard Variable', 'Noto Serif KR', serif;
+    background: var(--paper); color: var(--ink);
+    line-height: 1.7; font-size: 17px;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .masthead {
+    border-bottom: 3px double var(--ink); padding: 20px 40px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    position: relative; z-index: 2;
+  }
+  .masthead .brand {
+    font-family: 'Instrument Sans', serif;
+    font-size: 18px; font-weight: 900; letter-spacing: -0.02em; text-transform: none;
+  }
+  .masthead .meta { color: var(--ink-mid); }
+  .container { max-width: 1180px; margin: 0 auto; padding: 60px 40px 100px; position: relative; z-index: 2; }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 24px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--accent); display: inline-block;
+  }
+  .headline {
+    font-family: 'Noto Serif KR', 'Instrument Sans', serif;
+    font-weight: 900; font-size: clamp(38px, 6vw, 72px);
+    line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 32px; max-width: 25ch;
+  }
+  .headline em {
+    font-style: italic; font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    color: var(--accent-deep); font-weight: 500;
+  }
+  .deck {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(18px, 2vw, 22px); font-weight: 400; line-height: 1.5;
+    color: var(--ink-mid); max-width: 80ch; margin-bottom: 48px;
+    padding-left: 24px; border-left: 3px solid var(--accent);
+  }
+  .byline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-mid); padding-top: 24px; border-top: 1px solid var(--rule);
+    margin-bottom: 60px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .lead {
+    font-family: 'Noto Serif KR', serif; font-size: 21px; line-height: 1.65;
+    margin-bottom: 56px; max-width: 80ch; font-weight: 400;
+  }
+  .lead::first-letter {
+    font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    font-size: 90px; font-weight: 900; float: left; line-height: 0.85;
+    margin: 8px 14px 0 0; color: var(--accent);
+  }
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px; background: var(--rule); margin: 40px 0 60px;
+    border: 1px solid var(--rule);
+  }
+  .stat { background: var(--paper); padding: 24px; }
+  .stat .figure {
+    font-family: 'Instrument Sans', serif;
+    font-size: 42px; font-weight: 900; color: var(--accent-deep);
+    letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px;
+  }
+  .stat .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-mid); line-height: 1.4;
+  }
+  .section + .section { margin-top: 80px; }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+  }
+  .section-title {
+    font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    font-weight: 700; font-size: clamp(26px, 2.6vw, 34px);
+    line-height: 1.2; letter-spacing: -0.01em;
+    margin-top: 8px; margin-bottom: 0; position: sticky; top: 40px;
+  }
+  .body-grid {
+    display: grid; grid-template-columns: 1fr 2.5fr; gap: 60px; align-items: start;
+  }
+  @media (max-width: 900px) { .body-grid { grid-template-columns: 1fr; gap: 24px; } }
+  .body-grid > div { padding-top: 36px; }
+  .section.feature { display: block; }
+  .section.feature header { margin-bottom: 40px; }
+  .section.feature .section-num { display: block; margin-bottom: 18px; }
+  .section.feature .section-title {
+    position: static; font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.05; max-width: 100%; margin-top: 0;
+  }
+  .section.feature > div { max-width: 87ch; }
+  .section.feature p { max-width: 87ch; }
+  .section p { margin-bottom: 14px; max-width: 62ch; font-size: 17px; }
+  .section p strong {
+    font-weight: 700; color: var(--ink);
+    background: linear-gradient(transparent 60%, rgba(10, 74, 122, 0.18) 60%);
+    padding: 0 2px;
+  }
+  sup.ref {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--accent);
+    padding: 0 2px; font-weight: 700;
+  }
+  sup.ref a { color: inherit; text-decoration: none; }
+  sup.ref a:hover { text-decoration: underline; }
+
+  .num-item { margin-bottom: 22px; max-width: 62ch; }
+  .num-item .num-title {
+    font-weight: 700; color: var(--ink); margin-bottom: 4px;
+    background: linear-gradient(transparent 60%, rgba(10, 74, 122, 0.18) 60%);
+    display: inline-block; padding: 0 4px;
+  }
+  .num-item .num-desc {
+    padding-left: 22px; color: var(--ink); margin-top: 2px;
+  }
+  .byline-credit {
+    text-align: center; margin: 24px 0 70px;
+    font-family: 'Pretendard Variable', 'Noto Serif KR', serif;
+  }
+  .byline-credit span {
+    font-weight: 700; color: var(--ink); font-size: 17px;
+    background: linear-gradient(transparent 60%, rgba(10, 74, 122, 0.18) 60%);
+    padding: 0 4px;
+  }
+
+  table.spec-table {
+    width: 100%; border-collapse: collapse;
+    margin: 16px 0; font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  table.spec-table th, table.spec-table td {
+    text-align: left; padding: 10px 14px;
+    border-bottom: 1px solid var(--rule); vertical-align: top;
+  }
+  table.spec-table th {
+    background: rgba(10, 74, 122, 0.06);
+    color: var(--accent-deep); font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase; font-size: 11px;
+  }
+  table.spec-table td strong { color: var(--ink); font-weight: 600; }
+  table.spec-table tr.past td { color: var(--ink-mid); }
+  table.spec-table tr.upcoming td:first-child { color: var(--accent-deep); font-weight: 700; }
+  .pill {
+    display: inline-block;
+    font-size: 10px; letter-spacing: 0.1em;
+    padding: 2px 8px; border: 1px solid var(--rule);
+    color: var(--ink-mid); border-radius: 2px;
+  }
+  .pill.sep { color: var(--accent); border-color: var(--accent); }
+  .pill.hot { color: #b8410d; border-color: #b8410d; }
+
+  .composition {
+    margin: 16px 0 24px; padding: 20px 24px;
+    background: rgba(10, 74, 122, 0.05);
+    border-left: 2px solid var(--accent);
+  }
+  .composition h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px; font-weight: 500;
+  }
+  .composition ul { list-style: none; padding: 0; margin: 0; }
+  .composition li {
+    padding: 6px 0; border-bottom: 1px dashed var(--rule);
+    font-size: 15px; display: flex; justify-content: space-between; gap: 16px;
+  }
+  .composition li:last-child { border-bottom: none; }
+  .composition li .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--ink-mid); letter-spacing: 0.04em;
+  }
+
+  .dotplot {
+    margin: 18px 0 28px; padding: 20px 24px;
+    background: rgba(46, 38, 31, 0.04);
+    border-left: 2px solid var(--ink-mid);
+  }
+  .dotplot h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-mid); margin-bottom: 14px; font-weight: 500;
+  }
+  .dot-row {
+    display: grid; grid-template-columns: 140px 1fr;
+    gap: 14px; align-items: center; padding: 4px 0;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  }
+  .dot-row .lab { color: var(--ink-mid); letter-spacing: 0.04em; }
+  .dot-row .bar { display: flex; gap: 4px; align-items: center; }
+  .dot-row .bar .d {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent); opacity: 0.5;
+  }
+  .dot-row .bar .d.h { opacity: 1; }
+  .dot-row .bar .v { margin-left: 8px; font-weight: 700; color: var(--ink); }
+
+  .pullquote {
+    margin: 40px 0; padding: 32px;
+    background: var(--quote-bg);
+    border-left: 4px solid var(--accent);
+    font-family: 'Noto Serif KR', serif;
+    font-style: italic; font-size: 22px;
+    line-height: 1.4; color: var(--ink);
+    position: relative;
+  }
+  .pullquote::before {
+    content: '\201C'; position: absolute; top: -10px; left: 20px;
+    font-family: 'Instrument Sans', serif;
+    font-size: 80px; color: var(--accent); line-height: 1; opacity: 0.4;
+  }
+  .pullquote cite {
+    display: block; margin-top: 14px; font-style: normal;
+    font-size: 12px; font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-mid);
+  }
+
+  .divider {
+    margin: 70px 0 50px; text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.3em; color: var(--ink-mid);
+  }
+
+  .sources {
+    margin-top: 80px; padding-top: 36px;
+    border-top: 3px double var(--ink);
+  }
+  .sources h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.25em; text-transform: uppercase;
+    margin-bottom: 28px; color: var(--ink);
+  }
+  .sources ol {
+    list-style: none; counter-reset: src;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 12px;
+  }
+  .sources li {
+    counter-increment: src;
+    font-size: 13px; line-height: 1.55;
+    padding: 12px 16px 12px 46px;
+    background: var(--paper); border: 1px solid var(--rule);
+    position: relative; color: var(--ink-mid);
+  }
+  .sources li::before {
+    content: counter(src, decimal-leading-zero);
+    position: absolute; left: 16px; top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700; color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .sources li strong { color: var(--ink); font-weight: 600; }
+  .sources li a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
+  .editorial-note {
+    margin-top: 32px; padding: 20px;
+    background: var(--quote-bg);
+    border-left: 3px solid var(--ink-mid);
+    font-size: 13px; line-height: 1.6;
+    color: var(--ink-mid); font-style: italic;
+  }
+  @media (max-width: 600px) {
+    .masthead { padding: 16px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .container { padding: 40px 20px 80px; }
+    .lead::first-letter { font-size: 70px; }
+    .pullquote { font-size: 18px; padding: 24px; }
+  }
+</style>
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('DOMContentLoaded', function() {
+    var nav = performance.getEntriesByType('navigation');
+    if (nav.length > 0 && nav[0].type === 'reload' && location.hash) {
+      history.replaceState(null, '', location.pathname);
+      window.scrollTo(0, 0);
+    }
+  });
+</script>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="masthead">
+  <div class="brand">The Paper</div>
+  <div class="meta">경제 · FED/연준 · 2026.05</div>
+</header>
+
+<main class="container">
+
+  <div class="kicker">FED · FOMC PREVIEW</div>
+
+  <h1 class="headline">케빈 워시 신임 의장<br><em>첫 FOMC</em>, 6월 16~17일</h1>
+
+  <div class="deck">
+    <p>시장은 이미 동결을 가정하고 있다.<br>
+관건은 결정이 아니라<br>
+SEP·dot plot·성명문의 신호.</p>
+  </div>
+
+  <div class="byline">
+    <span>경제 · FOMC</span>
+    <span>2026 ─ 05 ─ 27</span>
+  </div>
+
+  <div class="lead">
+    <p>Kevin Warsh 신임 Fed 의장이<br>
+5월 22일 취임 뒤 처음 주재하는 FOMC가<br>
+6월 16~17일 열린다.<br>
+<br>
+시장은 동결 확률을 <strong>97%</strong>로 가격에 반영했고,<sup class="ref"><a href="#src01">[1]</a></sup><br>
+관심은 함께 공개되는 SEP·dot plot의 분포와<br>
+성명문 톤에 쏠려 있다.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="figure">3.50<span style="font-size:22px;">~3.75%</span></div>
+      <div class="label">현재 정책금리<br>목표 범위</div>
+    </div>
+    <div class="stat">
+      <div class="figure">8:4</div>
+      <div class="label">4월 표결 비율<br>1992년 이후 최다 반대</div>
+    </div>
+    <div class="stat">
+      <div class="figure">3.4<span style="font-size:22px;">%</span></div>
+      <div class="label">3월 SEP 중앙값<br>2026년 말 정책금리</div>
+    </div>
+    <div class="stat">
+      <div class="figure">97<span style="font-size:22px;">%</span></div>
+      <div class="label">6월 동결 확률<br>CME FedWatch 기준</div>
+    </div>
+  </div>
+
+  <!-- / 01 feature -->
+  <article class="section feature">
+    <header>
+      <span class="section-num">/ 01</span>
+      <h2 class="section-title">4월 회의, 8 대 4로 갈렸다</h2>
+    </header>
+    <div>
+      <p>직전 4월 28~29일 회의에서 FOMC는<br>
+정책금리를 연 <strong>3.50~3.75%</strong>로<br>
+3회 연속 동결했다.<br>
+표결은 8 대 4로 갈렸고,<br>
+반대표 4표는 1992년 10월 이후 처음이다.<sup class="ref"><a href="#src02">[2]</a></sup><sup class="ref"><a href="#src03">[3]</a></sup></p>
+
+      <p>인하 쪽에서는 Stephen Miran 이사가<br>
+0.25%포인트 인하를 주장했다.<br>
+매파 쪽에서는<br>
+Beth Hammack(Cleveland)·Neel Kashkari(Minneapolis)·Lorie Logan(Dallas)<br>
+세 지역 연준 총재가 동결에는 찬성했지만<br>
+성명문의 '완화 편향(easing bias)' 문구에 반대표를 던졌다.</p>
+    </div>
+  </article>
+
+  <!-- / 02 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 02</span>
+      <h2 class="section-title">2026년 FOMC는<br>8회, 잔여 5회</h2>
+    </header>
+    <div>
+      <p>올해 FOMC 정례회의는 총 8회.<br>
+5월 27일 기준 3회가 종료됐고<br>
+6·7·9·10·12월 5회가 남았다.<br>
+잔여 회의 중 SEP가 공개되는 회의는<br>
+6·9·12월 3회.<sup class="ref"><a href="#src04">[4]</a></sup></p>
+
+      <table class="spec-table">
+        <thead><tr><th>회의</th><th>발표 KST</th><th>미국 현지</th><th>SEP</th><th>의사록</th></tr></thead>
+        <tbody>
+          <tr class="past"><td>1차</td><td>1.29 (목) 04:00</td><td>1.28 오후 2:00 EST</td><td></td><td>공개 (2.18)</td></tr>
+          <tr class="past"><td>2차</td><td>3.19 (목) 03:00</td><td>3.18 오후 2:00 EDT</td><td><span class="pill sep">SEP</span></td><td>공개 (4.8)</td></tr>
+          <tr class="past"><td>3차</td><td>4.30 (목) 03:00</td><td>4.29 오후 2:00 EDT</td><td></td><td>공개 (5.20)</td></tr>
+          <tr class="upcoming"><td><strong>4차</strong></td><td><strong>6.18 (목) 03:00</strong></td><td>6.17 오후 2:00 EDT</td><td><span class="pill sep">SEP</span></td><td><span class="pill hot">예정</span></td></tr>
+          <tr class="upcoming"><td>5차</td><td>7.30 (목) 03:00</td><td>7.29 오후 2:00 EDT</td><td></td><td>예정</td></tr>
+          <tr class="upcoming"><td>6차</td><td>9.17 (목) 03:00</td><td>9.16 오후 2:00 EDT</td><td><span class="pill sep">SEP</span></td><td>예정</td></tr>
+          <tr class="upcoming"><td>7차</td><td>10.29 (목) 03:00</td><td>10.28 오후 2:00 EDT</td><td></td><td>예정</td></tr>
+          <tr class="upcoming"><td>8차</td><td>12.10 (목) 04:00</td><td>12.9 오후 2:00 EST</td><td><span class="pill sep">SEP</span></td><td>예정</td></tr>
+        </tbody>
+      </table>
+
+      <p>각 회의는 화요일 시작,<br>
+수요일 발표 후 의장이 30분 기자회견을 진행한다.<br>
+의사록은 약 3주 뒤 공개.</p>
+    </div>
+  </article>
+
+  <!-- / 03 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 03</span>
+      <h2 class="section-title">FOMC가<br>정하는 세 가지</h2>
+    </header>
+    <div>
+      <p>FOMC는 연 8회 회의에서 세 가지를 결정한다.<sup class="ref"><a href="#src05">[5]</a></sup></p>
+
+      <div class="num-item">
+        <div class="num-title">1. 정책금리 목표 범위</div>
+        <div class="num-desc">연방기금금리 목표 범위를 25bp 단위로 설정.<br>
+미국 단기금리의 출발점.</div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-title">2. 대차대조표</div>
+        <div class="num-desc">보유 국채·MBS의 재투자·축소(QT)·매입(QE)을 결정.</div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-title">3. 커뮤니케이션</div>
+        <div class="num-desc">성명문·기자회견·SEP가 시장에 의도를 전달하는<br>
+forward guidance.</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- / 04 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 04</span>
+      <h2 class="section-title">투표권자 12명,<br>1년 단위 로테이션</h2>
+    </header>
+    <div>
+      <p>FOMC 투표권자 12명.<br>
+<strong>이사회 7명</strong> 전원 상시 투표권,<br>
+<strong>NY 연준 총재</strong> 1명 상시 투표권,<br>
+나머지 11개 지역 총재는 4개 그룹으로<br>
+1년씩 로테이션해 4석을 채운다.<sup class="ref"><a href="#src05">[5]</a></sup></p>
+
+      <div class="composition">
+        <h4>2026 투표권자</h4>
+        <ul>
+          <li><span>Kevin Warsh, Chair</span><span class="role">Board / Chair</span></li>
+          <li><span>John Williams, Vice Chair</span><span class="role">NY Fed · 상시</span></li>
+          <li><span>Michael Barr</span><span class="role">Board</span></li>
+          <li><span>Michelle Bowman</span><span class="role">Board</span></li>
+          <li><span>Lisa Cook</span><span class="role">Board</span></li>
+          <li><span>Philip Jefferson</span><span class="role">Board</span></li>
+          <li><span>(공석 1석)</span><span class="role">Board</span></li>
+          <li><span>Beth Hammack</span><span class="role">Cleveland · 그룹2</span></li>
+          <li><span>Neel Kashkari</span><span class="role">Minneapolis · 그룹4</span></li>
+          <li><span>Lorie Logan</span><span class="role">Dallas · 그룹3</span></li>
+          <li><span>Anna Paulson</span><span class="role">Philadelphia · 그룹1</span></li>
+        </ul>
+      </div>
+
+      <p>로테이션 그룹은 네 개.<br>
+그룹1(보스턴·필라델피아·리치먼드),<br>
+그룹2(클리블랜드·시카고),<br>
+그룹3(애틀랜타·세인트루이스·댈러스),<br>
+그룹4(미니애폴리스·캔자스시티·샌프란시스코).</p>
+    </div>
+  </article>
+
+  <!-- / 05 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 05</span>
+      <h2 class="section-title">이중책무와<br>dot plot</h2>
+    </header>
+    <div>
+      <p>FOMC는 1977년 연방준비법 개정으로 부여된<br>
+<strong>이중책무(dual mandate)</strong>에 따라 움직인다.<br>
+최대고용(maximum employment)과<br>
+물가안정(price stability).</p>
+
+      <p>매년 1월 회의에서<br>
+<em>Statement on Longer-Run Goals and Monetary Policy Strategy</em>를<br>
+재확인하며,<br>
+2026년 1월도 무수정 만장일치.<sup class="ref"><a href="#src06">[6]</a></sup></p>
+
+      <p>물가 목표는<br>
+<strong>PCE 전년동기비 2%</strong>,<br>
+최대고용은 단일 수치 없이<br>
+노동시장 광범위 지표로 판단한다.<sup class="ref"><a href="#src07">[7]</a></sup></p>
+
+      <div class="pullquote">
+        두 목표는 통상 같이 움직이지만,
+지금처럼 인플레이션이 목표 위에 있고 고용도 식어가는 국면에서는 충돌한다.
+        <cite>St. Louis Fed, 2026-03</cite>
+      </div>
+
+      <p>4월 성명문은<br>
+"경제활동 견조 확장, 고용 둔화,<br>
+인플레이션 여전히 높음"으로 적시했고,<br>
+<strong>"중동 정세 전개가 경제 전망의 높은 불확실성에 기여"</strong>한다고<br>
+명시했다.<sup class="ref"><a href="#src03">[3]</a></sup></p>
+
+      <p>이번 6월은 SEP 회의.<br>
+직전 3월 SEP는 위원 19명의<br>
+<strong>2026년 말 정책금리 중앙값을 3.4%</strong>로 제시했다.<br>
+4월 상단 3.75%에서<br>
+연말까지 1회(25bp) 인하 정도가 중앙값.<sup class="ref"><a href="#src08">[8]</a></sup></p>
+
+      <div class="dotplot">
+        <h4>3월 SEP — 2026년 말 금리 분포</h4>
+        <div class="dot-row"><span class="lab">추가 인하 없음</span><span class="bar"><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="v">7명</span></span></div>
+        <div class="dot-row"><span class="lab">1회 인하 (25bp)</span><span class="bar"><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="v">7명</span></span></div>
+        <div class="dot-row"><span class="lab">2회 인하 (50bp)</span><span class="bar"><span class="d"></span><span class="d"></span><span class="v">2명</span></span></div>
+        <div class="dot-row"><span class="lab">3회 인하 (75bp)</span><span class="bar"><span class="d"></span><span class="d"></span><span class="v">2명</span></span></div>
+        <div class="dot-row"><span class="lab">4회 인하 (100bp)</span><span class="bar"><span class="d"></span><span class="v">1명</span></span></div>
+      </div>
+
+      <p>2026년 경제전망 중앙값은<br>
+실질 GDP <strong>2.4%</strong>,<br>
+실업률 <strong>4.4%</strong>,<br>
+PCE·근원 PCE 모두 <strong>2.7%</strong>.<sup class="ref"><a href="#src09">[9]</a></sup></p>
+    </div>
+  </article>
+
+  <!-- / 06 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 06</span>
+      <h2 class="section-title">단기금리 한 점에서<br>모든 곡선이 출발</h2>
+    </header>
+    <div>
+      <p>정책금리는<br>
+미 국채 단기·중기 금리, 회사채 스프레드,<br>
+모기지 금리, 달러 환율,<br>
+신흥국 자본흐름까지 연쇄적으로 재가격된다.</p>
+
+      <p><strong>결정문 단어 변화와 의장 기자회견 톤이</strong><br>
+<strong>실제 금리 인상·인하 못지않게</strong><br>
+<strong>시장 변동성을 만든다.</strong></p>
+
+      <p>Warsh 의장은 인준 이전 CNBC 인터뷰에서<br>
+통화정책의 "체제 전환(regime change)"을 주장했고,<br>
+Donald Trump 대통령은<br>
+금리 인하 기대를 공개적으로 드러내 왔다.<sup class="ref"><a href="#src10">[10]</a></sup></p>
+
+      <p>그러나 4월 이후<br>
+에너지 가격 상승과 인플레이션 재가속으로<br>
+시장은 6월 인하를 사실상 배제했고,<br>
+일부 분석가는 연내 인상 가능성까지 거론한다.<sup class="ref"><a href="#src11">[11]</a></sup><sup class="ref"><a href="#src12">[12]</a></sup></p>
+    </div>
+  </article>
+
+  <!-- / 07 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 07</span>
+      <h2 class="section-title">6월 회의<br>관전 포인트</h2>
+    </header>
+    <div>
+      <div class="num-item">
+        <div class="num-title">1. '완화 편향' 문구의 거취</div>
+        <div class="num-desc">4월에 지역 총재 3인의 반대표를 만든 쟁점.<br>
+유지·강화·축소 어느 쪽이든 톤 변화 자체가 메시지.</div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-title">2. dot plot의 분포 이동</div>
+        <div class="num-desc">3월 SEP의 7-7 균형이<br>
+어느 쪽으로 깨지는지가 연말 경로를 가른다.</div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-title">3. 반대표의 방향</div>
+        <div class="num-desc">Miran 이사처럼 인하 쪽인지,<br>
+4월의 지역 총재 3인처럼 매파 쪽인지.</div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-title">4. 에너지·중동 리스크 언급</div>
+        <div class="num-desc">4월 성명문에 새로 들어간 문구의 톤 변화.<br>
+공급 충격을 일시적으로 보는지, 추세로 보는지.</div>
+      </div>
+    </div>
+  </article>
+
+  <div class="divider">▴ ▴ ▴</div>
+
+  <div class="byline-credit"><span>CRW 뉴스_조국영 기자</span></div>
+
+  <section class="sources">
+    <h2>Sources / 참고 문헌</h2>
+    <ol>
+      <li id="src01"><strong>Fortune</strong> — "Wall Street has pretty much written off the idea of a Fed rate cut at Kevin Warsh's first meeting" (2026-05-22)</li>
+      <li id="src02"><strong>CNBC</strong> — "Fed interest rate decision April 2026: Fed holds rates steady amid dissent" (2026-04-29)</li>
+      <li id="src03"><strong>Federal Reserve</strong> — FOMC Statement, 2026-04-29. <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260429a.htm">federalreserve.gov</a></li>
+      <li id="src04"><strong>Federal Reserve</strong> — "FOMC Calendars", 2026-05-27 조회. <a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm">federalreserve.gov</a></li>
+      <li id="src05"><strong>Federal Reserve</strong> — "Federal Open Market Committee", 2026-05-27 조회. <a href="https://www.federalreserve.gov/monetarypolicy/fomc.htm">federalreserve.gov</a></li>
+      <li id="src06"><strong>St. Louis Fed</strong> — "The Dual Mandate in Conflict" (2026-03)</li>
+      <li id="src07"><strong>Federal Reserve</strong> — "Statement on Longer-Run Goals and Monetary Policy Strategy" (2026-01-27 재확인)</li>
+      <li id="src08"><strong>BondSavvy</strong> — "March 2026 Fed Dot Plot Sees Low-3% Fed Funds by 2027" (2026-03)</li>
+      <li id="src09"><strong>Federal Reserve</strong> — FOMC Projections materials, March 18, 2026. <a href="https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260318.htm">federalreserve.gov</a></li>
+      <li id="src10"><strong>CNN Business</strong> — "Kevin Warsh confirmed as Fed chair" (2026-05-13)</li>
+      <li id="src11"><strong>CNBC</strong> — "Fed will have to raise rates in July to appease 'bond vigilantes,' Yardeni says" (2026-05-18)</li>
+      <li id="src12"><strong>TradingKey</strong> — "June Fed Rate Decision Preview: Next Step Toward a Hawkish Hike?" (2026-05)</li>
+    </ol>
+
+    <div class="editorial-note">
+      연준 공식 사이트(federalreserve.gov)의 성명문·의사록·SEP·FOMC 구성 페이지를 1차 출처로,
+      CNBC·Fortune·CNN·BondSavvy·TradingKey 등 검증된 매체 보도를 교차 확인. 집단 편집 백과사전 배제.
+      시장 확률 수치는 2026-05-27 기준.
+    </div>
+
+    <p class="byline" style="margin-top:24px; justify-content: flex-end;">
+      <span>2026 ─ 05 ─ 27</span>
+    </p>
+  </section>
+
+</main>
+
+</body>
+</html>
