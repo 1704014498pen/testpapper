@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fed 6월 동결, 그러나 매파로… 호르무즈 재폐쇄가 만든 분기점</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  :root {
+    --paper: #f6f3ee;
+    --ink: #15110d;
+    --ink-mid: #4a4239;
+    --rule: #d8d2c5;
+    --accent: #0a4a7a;
+    --accent-deep: #062f50;
+    --hot: #b8410d;
+    --quote-bg: #ebe5d6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard Variable', 'Noto Serif KR', serif;
+    background: var(--paper); color: var(--ink);
+    line-height: 1.7; font-size: 17px;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .masthead {
+    border-bottom: 3px double var(--ink); padding: 20px 40px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    position: relative; z-index: 2;
+  }
+  .masthead .brand {
+    font-family: 'Instrument Sans', serif;
+    font-size: 18px; font-weight: 900; letter-spacing: -0.02em; text-transform: none;
+  }
+  .masthead .meta { color: var(--ink-mid); }
+  .container { max-width: 1180px; margin: 0 auto; padding: 60px 40px 100px; position: relative; z-index: 2; }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 24px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--accent); display: inline-block;
+  }
+  .headline {
+    font-family: 'Noto Serif KR', 'Instrument Sans', serif;
+    font-weight: 900; font-size: clamp(36px, 5.5vw, 64px);
+    line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 32px; max-width: 28ch;
+  }
+  .headline em {
+    font-style: italic; font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    color: var(--accent-deep); font-weight: 500;
+  }
+  .deck {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(18px, 2vw, 22px); font-weight: 400; line-height: 1.5;
+    color: var(--ink-mid); max-width: 80ch; margin-bottom: 48px;
+    padding-left: 24px; border-left: 3px solid var(--accent);
+  }
+  .byline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-mid); padding-top: 24px; border-top: 1px solid var(--rule);
+    margin-bottom: 60px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .lead {
+    font-family: 'Noto Serif KR', serif; font-size: 21px; line-height: 1.65;
+    margin-bottom: 56px; max-width: 80ch; font-weight: 400;
+  }
+  .lead::first-letter {
+    font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    font-size: 90px; font-weight: 900; float: left; line-height: 0.85;
+    margin: 8px 14px 0 0; color: var(--accent);
+  }
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px; background: var(--rule); margin: 40px 0 60px;
+    border: 1px solid var(--rule);
+  }
+  .stat { background: var(--paper); padding: 24px; }
+  .stat .figure {
+    font-family: 'Instrument Sans', serif;
+    font-size: 42px; font-weight: 900; color: var(--accent-deep);
+    letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px;
+  }
+  .stat .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-mid); line-height: 1.4;
+  }
+  .section + .section { margin-top: 80px; }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+  }
+  .section-title {
+    font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    font-weight: 700; font-size: clamp(26px, 2.6vw, 34px);
+    line-height: 1.2; letter-spacing: -0.01em;
+    margin-top: 8px; margin-bottom: 0; position: sticky; top: 40px;
+  }
+  .body-grid {
+    display: grid; grid-template-columns: 1fr 2.5fr; gap: 60px; align-items: start;
+  }
+  @media (max-width: 900px) { .body-grid { grid-template-columns: 1fr; gap: 24px; } }
+  .body-grid > div { padding-top: 36px; }
+  .section.feature { display: block; }
+  .section.feature header { margin-bottom: 40px; }
+  .section.feature .section-num { display: block; margin-bottom: 18px; }
+  .section.feature .section-title {
+    position: static; font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.05; max-width: 100%; margin-top: 0;
+  }
+  .section.feature > div { max-width: 87ch; }
+  .section.feature p { max-width: 87ch; }
+  .section p { margin-bottom: 14px; max-width: 62ch; font-size: 17px; }
+  .section p strong {
+    font-weight: 700; color: var(--ink);
+    background: linear-gradient(transparent 60%, rgba(10, 74, 122, 0.18) 60%);
+    padding: 0 2px;
+  }
+  .section p strong.hot {
+    background: linear-gradient(transparent 60%, rgba(184, 65, 13, 0.20) 60%);
+  }
+  sup.ref {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--accent);
+    padding: 0 2px; font-weight: 700;
+  }
+  sup.ref a { color: inherit; text-decoration: none; }
+  sup.ref a:hover { text-decoration: underline; }
+
+  .num-item { margin-bottom: 22px; max-width: 62ch; }
+  .num-item .num-title {
+    font-weight: 700; color: var(--ink); margin-bottom: 4px;
+    background: linear-gradient(transparent 60%, rgba(10, 74, 122, 0.18) 60%);
+    display: inline-block; padding: 0 4px;
+  }
+  .num-item .num-desc {
+    padding-left: 22px; color: var(--ink); margin-top: 2px;
+  }
+  .byline-credit {
+    text-align: center; margin: 24px 0 70px;
+    font-family: 'Pretendard Variable', 'Noto Serif KR', serif;
+  }
+  .byline-credit span {
+    font-weight: 700; color: var(--ink); font-size: 17px;
+    background: linear-gradient(transparent 60%, rgba(10, 74, 122, 0.18) 60%);
+    padding: 0 4px;
+  }
+
+  /* before/after comparison box */
+  .compare {
+    margin: 18px 0 28px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    max-width: 760px;
+  }
+  @media (max-width: 700px) { .compare { grid-template-columns: 1fr; } }
+  .compare .col {
+    padding: 18px 20px; background: rgba(46, 38, 31, 0.04);
+    border-left: 2px solid var(--ink-mid);
+  }
+  .compare .col.after {
+    background: rgba(184, 65, 13, 0.06);
+    border-left-color: var(--hot);
+  }
+  .compare .col h5 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-mid); margin-bottom: 10px; font-weight: 500;
+  }
+  .compare .col.after h5 { color: var(--hot); }
+  .compare .col .big {
+    font-family: 'Instrument Sans', serif;
+    font-size: 36px; font-weight: 900;
+    color: var(--accent-deep); line-height: 1; margin-bottom: 6px;
+  }
+  .compare .col.after .big { color: var(--hot); }
+  .compare .col .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--ink-mid); line-height: 1.5;
+  }
+
+  /* dot plot comparison */
+  .dotplot {
+    margin: 18px 0 28px; padding: 20px 24px;
+    background: rgba(46, 38, 31, 0.04);
+    border-left: 2px solid var(--ink-mid);
+  }
+  .dotplot h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-mid); margin-bottom: 14px; font-weight: 500;
+  }
+  .dot-row {
+    display: grid; grid-template-columns: 130px 1fr;
+    gap: 14px; align-items: center; padding: 4px 0;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  }
+  .dot-row .lab { color: var(--ink-mid); letter-spacing: 0.04em; }
+  .dot-row .bar { display: flex; gap: 4px; align-items: center; }
+  .dot-row .bar .d {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent); opacity: 0.5;
+  }
+  .dot-row .bar .d.h { opacity: 1; }
+  .dot-row .bar .d.hawk { background: var(--hot); opacity: 1; }
+  .dot-row .bar .v { margin-left: 8px; font-weight: 700; color: var(--ink); }
+
+  /* timeline */
+  .timeline {
+    margin: 18px 0 28px;
+    border-left: 2px solid var(--rule);
+    padding-left: 24px;
+    max-width: 62ch;
+  }
+  .timeline .ev {
+    position: relative; margin-bottom: 18px;
+  }
+  .timeline .ev::before {
+    content: ''; position: absolute;
+    left: -32px; top: 5px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+  }
+  .timeline .ev.hot::before { background: var(--hot); }
+  .timeline .date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 3px; font-weight: 700;
+  }
+  .timeline .ev.hot .date { color: var(--hot); }
+  .timeline .body {
+    font-size: 15px; line-height: 1.55; color: var(--ink);
+  }
+
+  .pullquote {
+    margin: 40px 0; padding: 32px;
+    background: var(--quote-bg);
+    border-left: 4px solid var(--accent);
+    font-family: 'Noto Serif KR', serif;
+    font-style: italic; font-size: 22px;
+    line-height: 1.4; color: var(--ink);
+    position: relative;
+  }
+  .pullquote::before {
+    content: '\201C'; position: absolute; top: -10px; left: 20px;
+    font-family: 'Instrument Sans', serif;
+    font-size: 80px; color: var(--accent); line-height: 1; opacity: 0.4;
+  }
+  .pullquote cite {
+    display: block; margin-top: 14px; font-style: normal;
+    font-size: 12px; font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-mid);
+  }
+
+  .divider {
+    margin: 70px 0 30px; text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.3em; color: var(--ink-mid);
+  }
+
+  .sources {
+    margin-top: 50px; padding-top: 36px;
+    border-top: 3px double var(--ink);
+  }
+  .sources h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.25em; text-transform: uppercase;
+    margin-bottom: 28px; color: var(--ink);
+  }
+  .sources ol {
+    list-style: none; counter-reset: src;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 12px;
+  }
+  .sources li {
+    counter-increment: src;
+    font-size: 13px; line-height: 1.55;
+    padding: 12px 16px 12px 46px;
+    background: var(--paper); border: 1px solid var(--rule);
+    position: relative; color: var(--ink-mid);
+  }
+  .sources li::before {
+    content: counter(src, decimal-leading-zero);
+    position: absolute; left: 16px; top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700; color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .sources li strong { color: var(--ink); font-weight: 600; }
+  .sources li a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
+  .editorial-note {
+    margin-top: 32px; padding: 20px;
+    background: var(--quote-bg);
+    border-left: 3px solid var(--ink-mid);
+    font-size: 13px; line-height: 1.6;
+    color: var(--ink-mid); font-style: italic;
+  }
+  @media (max-width: 600px) {
+    .masthead { padding: 16px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .container { padding: 40px 20px 80px; }
+    .lead::first-letter { font-size: 70px; }
+    .pullquote { font-size: 18px; padding: 24px; }
+  }
+</style>
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('DOMContentLoaded', function() {
+    var nav = performance.getEntriesByType('navigation');
+    if (nav.length > 0 && nav[0].type === 'reload' && location.hash) {
+      history.replaceState(null, '', location.pathname);
+      window.scrollTo(0, 0);
+    }
+  });
+</script>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="masthead">
+  <div class="brand">The Paper</div>
+  <div class="meta">경제 · FED/연준 · 2026.06</div>
+</header>
+
+<main class="container">
+
+  <div class="kicker">FED · FOMC DECISION</div>
+
+  <h1 class="headline">Fed 6월 동결, 그러나 <em>매파로</em><br>호르무즈 재폐쇄가<br>만든 <em>분기점</em></h1>
+
+  <div class="deck">
+    <p>Warsh 의장 첫 회의에서<br>
+정책금리는 만장일치로 동결됐지만,<br>
+dot plot 중앙값은 인하 1회에서 인상 1회로 이동했다.<br>
+배경에는 6월 20일 이란의 호르무즈 재폐쇄 선언과<br>
+인플레이션 재가속이 있다.</p>
+  </div>
+
+  <div class="byline">
+    <span>경제 · FOMC · 호르무즈</span>
+    <span>2026 ─ 06 ─ 22</span>
+  </div>
+
+  <div class="lead">
+    <p>연방준비제도(Fed)가 6월 17일 정책금리를<br>
+연 <strong>3.50~3.75%</strong>로 4회 연속 동결했다.<br>
+표결은 만장일치 12-0.<sup class="ref"><a href="#src01">[1]</a></sup><br>
+<br>
+같은 날 공개된 점도표(dot plot)는<br>
+2026년 말 정책금리 중앙값을<br>
+3월 <strong>3.4%</strong>에서 <strong class="hot">3.8%</strong>로 끌어올렸다.<br>
+연내 1회 인하에서 1회 인상으로<br>
+방향이 뒤집힌 셈이다.<sup class="ref"><a href="#src02">[2]</a></sup><br>
+<br>
+사흘 뒤인 6월 20일,<br>
+이란은 호르무즈 해협 폐쇄를 다시 선언했다.<sup class="ref"><a href="#src03">[3]</a></sup></p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="figure">12<span style="font-size:22px;">:0</span></div>
+      <div class="label">6월 17일 표결<br>만장일치 동결</div>
+    </div>
+    <div class="stat">
+      <div class="figure">3.4<span style="font-size:22px;"> → 3.8%</span></div>
+      <div class="label">SEP 중앙값<br>2026년 말 정책금리</div>
+    </div>
+    <div class="stat">
+      <div class="figure">130<span style="font-size:22px;">단어</span></div>
+      <div class="label">새 성명문 길이<br>이전 341단어 대비</div>
+    </div>
+    <div class="stat">
+      <div class="figure">6.20</div>
+      <div class="label">이란 호르무즈<br>재폐쇄 선언</div>
+    </div>
+  </div>
+
+  <!-- / 01 feature -->
+  <article class="section feature">
+    <header>
+      <span class="section-num">/ 01</span>
+      <h2 class="section-title">만장일치 동결,<br>하지만 점도표가 뒤집혔다</h2>
+    </header>
+    <div>
+      <p>Kevin Warsh 신임 의장이 처음 주재한 회의에서<br>
+FOMC는 정책금리를 3회 연속 동결과 같은 범위로 유지했다.<br>
+4월 회의의 8 대 4 표결과 달리 이번엔 반대표가 없었다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+      <p>겉으로는 차분한 동결이었지만,<br>
+함께 공개된 SEP의 점도표는<br>
+연말 정책금리 전망을 크게 끌어올렸다.</p>
+
+      <p>참가자 19명 중<br>
+점도표를 제출한 18명의 분포:<br>
+9명은 연내 1회 이상 인상,<br>
+8명은 추가 변동 없음,<br>
+1명은 인하.<br>
+(Warsh 의장은 forward guidance 자체에 반대하며 dot 제출을 보류)<br>
+3월 SEP의 7-7 균형이<br>
+<strong>매파 쪽으로 깨졌다.</strong><sup class="ref"><a href="#src02">[2]</a></sup></p>
+
+      <div class="compare">
+        <div class="col">
+          <h5>3월 SEP</h5>
+          <div class="big">3.4%</div>
+          <div class="sub">2026년 말 정책금리 중앙값<br>연내 1회 인하 정도</div>
+        </div>
+        <div class="col after">
+          <h5>6월 SEP</h5>
+          <div class="big">3.8%</div>
+          <div class="sub">2026년 말 정책금리 중앙값<br>연내 1회 인상 정도</div>
+        </div>
+      </div>
+
+      <p>인플레이션 전망도 같이 올라갔다.<br>
+2026년 헤드라인 PCE 전망은 <strong>3.6%</strong>,<br>
+근원 PCE는 <strong>3.3%</strong>.<br>
+3월 전망(둘 다 2.7%)에서 1%포인트 가까이 상향됐다.<sup class="ref"><a href="#src02">[2]</a></sup></p>
+    </div>
+  </article>
+
+  <!-- / 02 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 02</span>
+      <h2 class="section-title">성명문도<br>바뀌었다</h2>
+    </header>
+    <div>
+      <p>Warsh 의장은 성명문 자체를<br>
+대폭 축소했다.<sup class="ref"><a href="#src04">[4]</a></sup></p>
+
+      <div class="compare">
+        <div class="col">
+          <h5>이전 (4월까지)</h5>
+          <div class="big">341<span style="font-size:18px;">단어</span></div>
+          <div class="sub">완화 편향(easing bias) 문구,<br>장기 표준 표현 포함</div>
+        </div>
+        <div class="col after">
+          <h5>6월 신규</h5>
+          <div class="big">130<span style="font-size:18px;">단어</span></div>
+          <div class="sub">완화 편향 제거,<br>"사실만" 간결 톤</div>
+        </div>
+      </div>
+
+      <p>기자회견에서 Warsh 의장은<br>
+"조금 더 짧고, 조금 더 단순하고,<br>
+오래된 표현을 덜어냈다"고 말했다.<br>
+"그 성명문은 우리가 판단할 수 있는 범위에서<br>
+사실만 전달한다"고 덧붙였다.<sup class="ref"><a href="#src05">[5]</a></sup></p>
+
+      <p>4월 회의 때<br>
+Beth Hammack(Cleveland)·Neel Kashkari(Minneapolis)·Lorie Logan(Dallas)<br>
+세 지역 총재의 반대표를 불렀던<br>
+'완화 편향' 문구는 이번 성명문에서 빠졌다.</p>
+
+      <p>Warsh 의장은 별도로<br>
+연준 내부 운영 개편을 위한<br>
+복수의 task force도 발표했다.<sup class="ref"><a href="#src06">[6]</a></sup></p>
+    </div>
+  </article>
+
+  <!-- / 03 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 03</span>
+      <h2 class="section-title">점도표<br>분포 비교</h2>
+    </header>
+    <div>
+      <p>3월에서 6월 사이,<br>
+점도표 분포가 어떻게 움직였는지.<br>
+(3월은 19명 전원, 6월은 Warsh 보류로 18명)</p>
+
+      <div class="dotplot">
+        <h4>3월 SEP — 2026년 말 금리 분포 (중앙값 3.4%)</h4>
+        <div class="dot-row"><span class="lab">추가 인하 없음</span><span class="bar"><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="v">7명</span></span></div>
+        <div class="dot-row"><span class="lab">1회 인하</span><span class="bar"><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="v">7명</span></span></div>
+        <div class="dot-row"><span class="lab">2회 인하</span><span class="bar"><span class="d"></span><span class="d"></span><span class="v">2명</span></span></div>
+        <div class="dot-row"><span class="lab">3회 인하</span><span class="bar"><span class="d"></span><span class="d"></span><span class="v">2명</span></span></div>
+        <div class="dot-row"><span class="lab">4회 인하</span><span class="bar"><span class="d"></span><span class="v">1명</span></span></div>
+      </div>
+
+      <div class="dotplot" style="background: rgba(184, 65, 13, 0.04); border-left-color: var(--hot);">
+        <h4 style="color: var(--hot);">6월 SEP — 2026년 말 금리 분포 (중앙값 3.8%)</h4>
+        <div class="dot-row"><span class="lab">1회 이상 인상</span><span class="bar"><span class="d hawk"></span><span class="d hawk"></span><span class="d hawk"></span><span class="d hawk"></span><span class="d hawk"></span><span class="d hawk"></span><span class="d hawk"></span><span class="d hawk"></span><span class="d hawk"></span><span class="v">9명</span></span></div>
+        <div class="dot-row"><span class="lab">변동 없음</span><span class="bar"><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="d h"></span><span class="v">8명</span></span></div>
+        <div class="dot-row"><span class="lab">1회 인하</span><span class="bar"><span class="d"></span><span class="v">1명</span></span></div>
+      </div>
+
+      <p>3월에는 19명 중 12명이<br>
+어떤 형태로든 인하를 점쳤다.<br>
+6월에는 인하 진영이 1명으로 줄었고<br>
+인상 진영이 9명으로 늘었다.<sup class="ref"><a href="#src02">[2]</a></sup></p>
+    </div>
+  </article>
+
+  <!-- / 04 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 04</span>
+      <h2 class="section-title">호르무즈,<br>다시 폐쇄됐다</h2>
+    </header>
+    <div>
+      <p>FOMC 회의 사흘 뒤인 6월 20일,<br>
+이란은 호르무즈 해협 폐쇄를 선언했다.<sup class="ref"><a href="#src03">[3]</a></sup><br>
+명분은<br>
+"미국과의 합의를 위반한 이스라엘의 행동",<br>
+그리고 레바논 남부 휴전 위반이다.</p>
+
+      <div class="timeline">
+        <div class="ev hot">
+          <div class="date">2026.02.28</div>
+          <div class="body">미국·이스라엘, 이란 공습 개시.<br>이란 최고지도자 Ali Khamenei 사망.<br>호르무즈 해상 운송 사실상 마비.<sup class="ref"><a href="#src07">[7]</a></sup></div>
+        </div>
+        <div class="ev">
+          <div class="date">2026.06.17</div>
+          <div class="body">워싱턴·테헤란 전쟁 종식 양해각서(MOU) 서명(6/17, 베르사유).<br>2/28 개전 이후 약 3.5개월 만에 호르무즈 운항 재개 합의.<sup class="ref"><a href="#src07">[7]</a></sup></div>
+        </div>
+        <div class="ev">
+          <div class="date">2026.06.18~19</div>
+          <div class="body">Saudi VLCC 3척 통항.<br>약 600만 배럴 사우디 원유 반출.<sup class="ref"><a href="#src08">[8]</a></sup></div>
+        </div>
+        <div class="ev hot">
+          <div class="date">2026.06.20</div>
+          <div class="body">이란, 호르무즈 폐쇄 재선언.<br>"이스라엘의 합의 위반"을 명분으로.<sup class="ref"><a href="#src03">[3]</a></sup></div>
+        </div>
+        <div class="ev">
+          <div class="date">2026.06.21~22</div>
+          <div class="body">전반 운항 둔화 속에서도<br>LNG 4척·인바운드 슈퍼탱커 2척 통항 지속.<br>CENTCOM은 "해협 여전히 개방"이라고 부인.<sup class="ref"><a href="#src08">[8]</a></sup></div>
+        </div>
+      </div>
+
+      <p>이번 폐쇄가 어느 정도로 실효성이 있는지는<br>
+여전히 다툼 중이다.<br>
+이란은 "폐쇄"라고 선언했지만<br>
+6월 21~22일 사우디·UAE산 원유를 실은<br>
+다수의 슈퍼탱커가 그대로 통과했다.</p>
+
+      <p class="pullquote">
+        우리는 어제 호르무즈에서<br>
+1,600만 배럴의 원유를 빼냈다.<br>
+충돌 이전 수준까지 거슬러 올라가는 기록이다.
+        <cite>JD Vance 부통령, 2026-06-21</cite>
+      </p>
+
+      <p>현장에서는 폐쇄가<br>
+'선택적·부분적'으로 작동한다는 분석이다.<sup class="ref"><a href="#src08">[8]</a></sup><br>
+이란은 정치적 선언으로<br>
+미국이 실효적 운항으로<br>
+서로 다른 현실을 발신하고 있다.</p>
+    </div>
+  </article>
+
+  <!-- / 05 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 05</span>
+      <h2 class="section-title">두 사건이<br>연결되는 지점</h2>
+    </header>
+    <div>
+      <p>Fed의 매파 전환은<br>
+호르무즈 단일 변수의 결과가 아니다.</p>
+
+      <p>다만 6월 SEP의 인플레이션 전망 상향은<br>
+4월 성명문이 이미 명시한 메시지의 연장이다.<br>
+4월 성명문은<br>
+<strong class="hot">"중동 정세 전개가 경제 전망의 높은 불확실성에 기여"</strong>한다고<br>
+적었다.<sup class="ref"><a href="#src09">[9]</a></sup></p>
+
+      <p>6월 17일 결정 시점에서<br>
+호르무즈는 이미 '2~3월 봉쇄 → 6월 초 임시 합의'라는<br>
+파동을 한 차례 거친 뒤였다.<br>
+유가는 그 사이 변동성이 컸고,<br>
+미국 휘발유·항공유 가격에<br>
+직접 반영되고 있었다.<sup class="ref"><a href="#src10">[10]</a></sup></p>
+
+      <p>FOMC 회의 직후 사흘 만에<br>
+재폐쇄 선언이 나왔다는 사실은<br>
+"공급 충격을 일시적으로 볼지,<br>
+추세로 볼지" 판단을 더 무겁게 만든다.</p>
+    </div>
+  </article>
+
+  <!-- / 06 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 06</span>
+      <h2 class="section-title">시장 반응</h2>
+    </header>
+    <div>
+      <p>6월 17일 결정문과 점도표 발표 이후,<br>
+시장의 6월 인하 확률은<br>
+사실상 0%로 수렴했다.</p>
+
+      <p>국채 시장에서는<br>
+10년 만기 미 국채 수익률이 상승,<br>
+2년 만기는 더 큰 폭으로 올라갔다.<br>
+달러 지수도 강세로 돌아섰다.<sup class="ref"><a href="#src11">[11]</a></sup></p>
+
+      <p>6월 20일 호르무즈 재폐쇄 선언 직후<br>
+국제 유가는 단기 급등했다가<br>
+실제 통항 지속 보도가 나오자<br>
+일부 되돌렸다.</p>
+
+      <p>CME FedWatch 기준<br>
+7월 인상 확률은 약 4~5%로 낮지만,<br>
+선물시장은 <strong>10월 회의를</strong><br>
+연내 가장 빠른 인상 가능 시점으로 가격에 반영하기 시작했다.<sup class="ref"><a href="#src12">[12]</a></sup></p>
+    </div>
+  </article>
+
+  <!-- / 07 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 07</span>
+      <h2 class="section-title">다음 신호</h2>
+    </header>
+    <div>
+      <div class="num-item">
+        <div class="num-title">1. 7월 8일 전후 의사록</div>
+        <div class="num-desc">6월 17일 회의 의사록.<br>
+만장일치였지만 분포에 매파가 9명이라는 뜻은,<br>
+회의 안에서 인상을 누가 어떻게 주장했는지가 드러난다.</div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-title">2. 7월 28~29일 다음 회의</div>
+        <div class="num-desc">점도표대로면 연내 1회 인상.<br>
+시장은 10월을 가장 빠른 인상 시점으로 보고,<br>
+7월·9월은 동결 또는 가이던스 정비 회의로 본다.</div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-title">3. 호르무즈 실효성</div>
+        <div class="num-desc">"선언"과 "실제 통항" 간극이<br>
+며칠을 더 갈지.<br>
+유가·해상 보험료에 본격 반영되면<br>
+인플레이션 경로가 다시 흔들린다.</div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-title">4. 새 task force 결과</div>
+        <div class="num-desc">Warsh 의장이 발표한<br>
+연준 운영 전반 개편 작업.<br>
+권한·소통 구조 변화는<br>
+정책 결정 자체보다 더 장기 영향을 남길 수 있다.</div>
+      </div>
+    </div>
+  </article>
+
+  <div class="divider">▴ ▴ ▴</div>
+
+  <div class="byline-credit"><span>CRW 뉴스_조국영 기자</span></div>
+
+  <section class="sources" id="sources">
+    <h2>Sources / 참고 문헌</h2>
+    <ol>
+      <li id="src01"><strong>Federal Reserve</strong> — FOMC Statement, 2026-06-17. <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260617a.htm">federalreserve.gov</a></li>
+      <li id="src02"><strong>CNBC</strong> — "Fed interest rate decision June 2026: Fed holds rates steady" (2026-06-17)</li>
+      <li id="src03"><strong>CNBC</strong> — "Iran reportedly closes Strait of Hormuz again, casting shadow over nuclear talks" (2026-06-20)</li>
+      <li id="src04"><strong>CNBC</strong> — "Chairman Warsh drastically alters Fed rate statement. Here's what's changed" (2026-06-17)</li>
+      <li id="src05"><strong>Fox Business</strong> — "June FOMC: Fed holds interest rates steady as Warsh era begins" (2026-06-17)</li>
+      <li id="src06"><strong>CNBC</strong> — "Fed meeting recap: Warsh announces task forces to overhaul major Federal Reserve operations" (2026-06-17)</li>
+      <li id="src07"><strong>Al Jazeera</strong> — "Iran shuts Hormuz strait: But wasn't it already closed?" (2026-06-11)</li>
+      <li id="src08"><strong>Discovery Alert</strong> — "Iran's Closure Claim: Why Oil Keeps Flowing Through Hormuz" (2026-06-22)</li>
+      <li id="src09"><strong>Federal Reserve</strong> — FOMC Statement, 2026-04-29. <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260429a.htm">federalreserve.gov</a></li>
+      <li id="src10"><strong>Dallas Fed</strong> — "What the closure of the Strait of Hormuz means for the global economy" (2026-03)</li>
+      <li id="src11"><strong>CNN Business</strong> — "Fed leaves interest rates unchanged but signals higher rates are ahead" (2026-06-17)</li>
+      <li id="src12"><strong>NPR</strong> — "Federal Reserve holds interest rates steady and hints at rate hike later this year" (2026-06-17)</li>
+    </ol>
+
+    <div class="editorial-note">
+      연준 공식 사이트(federalreserve.gov)의 6월 17일 성명문·SEP를 1차 출처로,
+      CNBC·Fox Business·CNN·NPR 등 검증된 매체 보도를 교차 확인.
+      호르무즈 관련 사실관계는 Al Jazeera·Dallas Fed 분석·Discovery Alert 시장 데이터를 종합.
+      집단 편집 백과사전은 출처에서 배제. 시장 가격·통항 수치는 인용 시점(2026-06-22) 기준.
+    </div>
+
+    <p class="byline" style="margin-top:24px; justify-content: flex-end;">
+      <span>2026 ─ 06 ─ 22</span>
+    </p>
+  </section>
+
+</main>
+
+</body>
+</html>

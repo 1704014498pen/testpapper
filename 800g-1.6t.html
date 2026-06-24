@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>800G에서 1.6T로 - AI 데이터센터 이더넷 표준화 본격화</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  :root {
+    --paper: #f6f3ee;
+    --ink: #15110d;
+    --ink-mid: #4a4239;
+    --rule: #d8d2c5;
+    --accent: #b8410d;
+    --accent-deep: #7a2a08;
+    --quote-bg: #ebe5d6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Pretendard Variable', 'Noto Serif KR', serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .masthead {
+    border-bottom: 3px double var(--ink);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
+  }
+
+  .masthead .brand {
+    font-family: 'Instrument Sans', serif;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+  .masthead .meta {
+    color: var(--ink-mid);
+  }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 60px 40px 100px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--accent);
+    display: inline-block;
+  }
+
+  .headline {
+    font-family: 'Noto Serif KR', 'Instrument Sans', serif;
+    font-weight: 900;
+    font-size: clamp(38px, 6vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    max-width: 25ch;
+  }
+
+  .headline em {
+    font-style: italic;
+    font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    color: var(--accent-deep);
+    font-weight: 500;
+  }
+
+  .deck {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(18px, 2vw, 22px);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--ink-mid);
+    max-width: 80ch;
+    margin-bottom: 48px;
+    padding-left: 24px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .byline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    margin-bottom: 60px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .lead {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 21px;
+    line-height: 1.65;
+    margin-bottom: 60px;
+    max-width: 80ch;
+    font-weight: 400;
+  }
+
+  .lead::first-letter {
+    font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    font-size: 90px;
+    font-weight: 900;
+    float: left;
+    line-height: 0.85;
+    margin: 8px 14px 0 0;
+    color: var(--accent);
+  }
+
+  .body-grid {
+    display: grid;
+    grid-template-columns: 1fr 2.5fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .body-grid { grid-template-columns: 1fr; gap: 30px; }
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: clamp(28px, 3vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-top: 8px;
+    margin-bottom: 0;
+    position: sticky;
+    top: 40px;
+  }
+
+  .section + .section { margin-top: 90px; }
+
+  .body-grid > div {
+    padding-top: 30px;
+  }
+
+  .spec-block {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.9;
+    margin: 12px 0;
+    padding: 14px 22px;
+    background: rgba(184, 65, 13, 0.04);
+    border-left: 2px solid var(--accent);
+    white-space: pre;
+    color: var(--ink);
+    letter-spacing: 0;
+    overflow-x: auto;
+  }
+
+  .spec-heading {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 32px 0 10px 0;
+    font-weight: 500;
+  }
+
+  .image-placeholder {
+    margin: 28px 0;
+  }
+
+  .image-placeholder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .image-placeholder-grid .image-placeholder {
+    margin: 0;
+  }
+
+  .image-placeholder .placeholder-box {
+    text-align: center;
+    padding: 72px 20px;
+    background: rgba(184, 65, 13, 0.04);
+    border: 1.5px dashed var(--accent);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+
+  .image-placeholder figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(46, 38, 31, 0.65);
+    margin-top: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .image-placeholder figcaption a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--accent);
+  }
+
+  .image-placeholder figcaption a:hover {
+    border-bottom-style: solid;
+  }
+
+  figure.article-figure {
+    margin: 28px 0;
+  }
+
+  figure.article-figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  figure.article-figure.figure-half {
+    max-width: 50%;
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  figure.article-figure figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(46, 38, 31, 0.65);
+    margin-top: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .speed-comparison {
+    margin: 24px 0;
+    padding: 24px 28px;
+    background: rgba(184, 65, 13, 0.04);
+    border-left: 2px solid var(--accent);
+  }
+
+  .bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: 88px 1fr 64px;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .bar-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    text-align: right;
+    letter-spacing: 0.02em;
+  }
+
+  .bar-track {
+    height: 26px;
+    background: rgba(46, 38, 31, 0.06);
+    position: relative;
+  }
+
+  .bar-fill {
+    height: 100%;
+    transition: width 0.3s;
+  }
+
+  .bar-fill.bar-slow {
+    background: rgba(46, 38, 31, 0.55);
+  }
+
+  .bar-fill.bar-fast {
+    background: var(--accent);
+  }
+
+  .bar-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    text-align: left;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .speed-comparison figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(46, 38, 31, 0.65);
+    margin-top: 14px;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
+  .author-aside {
+    margin: 24px 0;
+    padding: 22px 28px;
+    background: rgba(46, 38, 31, 0.04);
+    border-left: 2px solid rgba(46, 38, 31, 0.35);
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+
+  .author-aside .aside-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(46, 38, 31, 0.55);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .author-aside p {
+    margin: 0;
+  }
+
+  .section.feature {
+    display: block;
+  }
+
+  .section.feature header {
+    margin-bottom: 50px;
+  }
+
+  .section.feature .section-num {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .section.feature .section-title {
+    position: static;
+    font-size: clamp(40px, 5.5vw, 68px);
+    line-height: 1.05;
+    max-width: 100%;
+    margin-top: 0;
+  }
+
+  .section.feature > div {
+    max-width: 87ch;
+  }
+
+  .section.feature p {
+    max-width: 87ch;
+  }
+
+  .section p {
+    margin-bottom: 14px;
+    max-width: 62ch;
+    font-size: 17px;
+  }
+
+  .section p:last-child { margin-bottom: 0; }
+
+  .section p + p {
+    margin-top: 0;
+  }
+
+  .section p strong {
+    font-weight: 700;
+    color: var(--ink);
+    background: linear-gradient(transparent 60%, rgba(184, 65, 13, 0.18) 60%);
+    padding: 0 2px;
+  }
+
+  code, .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    background: var(--quote-bg);
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: -0.01em;
+  }
+
+  .pullquote {
+    margin: 50px 0;
+    padding: 40px;
+    background: var(--quote-bg);
+    border-left: 4px solid var(--accent);
+    font-family: 'Noto Serif KR', serif;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--ink);
+    position: relative;
+  }
+
+  .pullquote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-family: 'Instrument Sans', serif;
+    font-size: 90px;
+    color: var(--accent);
+    line-height: 1;
+    opacity: 0.4;
+  }
+
+  .pullquote cite {
+    display: block;
+    margin-top: 16px;
+    font-style: normal;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-mid);
+  }
+
+  .timeline {
+    margin: 30px 0;
+    padding: 32px;
+    background: rgba(184, 65, 13, 0.04);
+    border: 1px solid var(--rule);
+  }
+
+  .timeline h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--rule);
+    align-items: baseline;
+  }
+
+  .timeline-item:last-child { border-bottom: none; }
+
+  .timeline-item .date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+  }
+
+  .timeline-item .event {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    margin: 40px 0;
+    border: 1px solid var(--rule);
+  }
+
+  .stat {
+    background: var(--paper);
+    padding: 24px;
+  }
+
+  .stat .figure {
+    font-family: 'Instrument Sans', serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--accent-deep);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    line-height: 1.4;
+  }
+
+  .divider {
+    margin: 80px 0 60px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--ink-mid);
+  }
+
+  .sources {
+    margin-top: 100px;
+    padding-top: 40px;
+    border-top: 3px double var(--ink);
+  }
+
+  .sources h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    color: var(--ink);
+  }
+
+  .sources ol {
+    list-style: none;
+    counter-reset: src;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 14px;
+  }
+
+  .sources li {
+    counter-increment: src;
+    font-size: 13px;
+    line-height: 1.55;
+    padding: 14px 18px 14px 50px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    position: relative;
+    color: var(--ink-mid);
+  }
+
+  .sources li::before {
+    content: counter(src, decimal-leading-zero);
+    position: absolute;
+    left: 18px;
+    top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .sources li strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .editorial-note {
+    margin-top: 40px;
+    padding: 24px;
+    background: var(--quote-bg);
+    border-left: 3px solid var(--ink-mid);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-mid);
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .masthead { padding: 16px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .container { padding: 40px 20px 80px; }
+    .lead::first-letter { font-size: 70px; }
+    .pullquote { font-size: 19px; padding: 28px; }
+    .pullquote::before { font-size: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="masthead">
+  <div class="brand">DC Infrastructure Review</div>
+  <div class="meta">Issue · Network &amp; Optics · 2026.05</div>
+</header>
+
+<main class="container">
+
+  <div class="kicker">표준화 · 차세대 이더넷 · 102.4 Tbps</div>
+
+  <h1 class="headline">800Gbps <em>표준화</em>에서<br>1.6Tbps 도입 준비로,<br>이더넷 세대 교체가 임박했다</h1>
+
+  <div class="deck">
+    <p>800Gbps 이더넷이 IEEE 802.3df로 표준화를 마치고 본격 대중화 단계에 진입한 가운데,<br>1.6Tbps는 IEEE 802.3dj 표준 완료(2026년 9월)와<br>OCP의 OSFP-XD 폼팩터 사실상 단일화로 도입 준비를 마쳐가고 있다.</p>
+    <p>브로드컴 Tomahawk 6와 엔비디아 ConnectX-9이 양산 단계에 진입하며<br>실리콘·폼팩터·NIC·표준이 2025년 중반부터 2026년 하반기 사이 순차적으로 완성되며,<br>1.6Tbps 본격 도입을 위한 마지막 퍼즐이 맞춰지고 있다.</p>
+  </div>
+
+  <div class="byline">
+    <span>심층 분석 · 데이터센터 네트워킹</span>
+    <span>2026 ─ 05 ─ 20</span>
+  </div>
+
+  <div class="lead">
+    <p>글로벌 데이터센터 이더넷 시장이 800Gbps 본격 대중화 단계에 진입한 가운데,<br>차세대 1.6Tbps 인프라가 2026년 표준 확정과 동시에 양산 궤도에 올랐다.<br><br></p>
+    <p>IEEE 802.3dj 태스크 포스가<br>200Gbps·400Gbps·800Gbps·1.6Tbps 통합 PHY 규격을 9월 완료 목표로 추진하고 있고,<br>OCP(Open Compute Project)는 OSFP-XD 폼팩터를 1.6Tbps의 사실상 표준 캐리어로 굳혔다.<br></p>
+    <p>브로드컴은 단일 칩 102.4Tbps급 Tomahawk 6를 출하 중이며, 엔비디아는 2026년 1월 CES에서<br>ConnectX-9 SuperNIC과 Spectrum-6 이더넷 스위치를 포함한 Rubin 플랫폼을 공개했다.</p>
+    <p>실리콘·폼팩터·NIC·표준이 2025년 중반부터 2026년 하반기 사이 순차적으로 완성되며,<br>1.6Tbps 본격 도입을 위한 마지막 퍼즐이 맞춰지고 있다.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="figure">102.4<span style="font-size:24px;">Tbps</span></div>
+      <div class="label">Tomahawk 6 단일 칩 스위칭 용량</div>
+    </div>
+    <div class="stat">
+      <div class="figure">224<span style="font-size:24px;">Gbps</span></div>
+      <div class="label">PAM4 SerDes 레인당 신호 속도</div>
+    </div>
+    <div class="stat">
+      <div class="figure">92<span style="font-size:24px;">%</span></div>
+      <div class="label">2025년 하이퍼스케일 계약 OSFP-XD 채택률</div>
+    </div>
+    <div class="stat">
+      <div class="figure">2026.9</div>
+      <div class="label">IEEE 802.3dj 완료 목표 시점</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <article class="section feature">
+    <header>
+      <span class="section-num">/ 01</span>
+      <h2 class="section-title">데이터센터 스케일 네트워크의 체감</h2>
+    </header>
+    <div>
+      <p>일상생활에서 접할 수 있는 일반 가정 인터넷으로 <strong>1.6Tbps</strong>라는 숫자의 크기를 가늠해보자.</p>
+      <p>한국의 일반 가정은 500Mbps~1Gbps 상품을 주로 사용한다.<br>FTTH 보급률이 약 89%로 세계 최상위권이며,<br>KT·SK Broadband·LG U+가 제공하는 기본 가정용 상품 대부분이 1Gbps 수준에 형성돼 있다.</p>
+      <p>그런데 한 가지 의문이 든다.</p>
+      <p>KT는 이미 2018년 11월 1일자로 10Gbps 인터넷을 서울 및 6대 광역시를 포함한 전국 주요 도시에서 상용화했고,<br>FTTH 보급률 역시 세계 최상위권인데, <strong>왜 다수의 가정은 여전히 1Gbps 미만 상품에 머무를까?</strong></p>
+      <p>핵심 원인은 가격에도 있겠지만 인식이다.</p>
+      <p>일부 인터넷 가입 비교 사이트와 통신 블로그들은 "1기가 인터넷은 돈낭비", "스트리밍 시청에 1기가는 과하다",<br>"1기가 인터넷에 가입해도 속도가 빨라지는 일은 절대 없다"는 논조의 콘텐츠를 다수 발행한다.<br>"월 16,500원 차이가 3년 약정 시 60만 원에 가까운 차이로 벌어진다"는 비용 비교를 강조하고,<br>"스트리밍 방식이기 때문에 다운로드 속도의 영향을 거의 받지 않는다" 또는<br>"게임은 한 번만 다운로드하면 된다"는 논리로 1Gbps 가입을 만류한다.</p>
+      <p>이런 광고성 콘텐츠가 검색 결과 상위를 차지하면서 소비자 인식이 굳어진다. "굳이 비싼 요금제를 써야 하나"라는 의문이 자리잡고,<br>결과적으로 저렴한 요금제에 머무는 경향이 강화되는 구조다.</p>
+      <p>주변 사례에서 흔히 확인되는 패턴 하나는,<br>단 한 번이라도 1Gbps 이상의 고속 회선을 경험한 사용자가 대체로 하위 상품으로 회귀하지 않는다는 점이다.<br>다만 이는 통신사 차원의 정식 통계로 공개된 수치가 아니라 일화적 관찰에 가까우므로 단정적 해석은 피해야 한다.</p>
+      <p>이 지점에서 펙트체크가 필요하다.</p>
+      <p>먼저 "100Mbps에서 500Mbps로 넘어가도 큰 차이는 없다"는 주장은 실효 다운로드 시간으로 검증하면 성립하지 않는다.<br>25GB 파일을 받을 때 100Mbps 회선은 실효 약 12MB/s로 약 34분이 소요되지만,<br>500Mbps 회선은 약 60MB/s로 약 7분에 마친다.<br><strong>4-5배의 시간 단축을 "큰 차이 없다"로 정리하기는 어렵다.</strong></p>
+
+      <figure class="speed-comparison">
+        <div class="bar-chart">
+          <div class="bar-row">
+            <span class="bar-label">100Mbps</span>
+            <div class="bar-track">
+              <div class="bar-fill bar-slow" style="width: 100%;"></div>
+            </div>
+            <span class="bar-value">34분</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">500Mbps</span>
+            <div class="bar-track">
+              <div class="bar-fill bar-fast" style="width: 20.6%;"></div>
+            </div>
+            <span class="bar-value">7분</span>
+          </div>
+        </div>
+        <figcaption>25GB 파일 다운로드 소요 시간 · 실효 속도 기준 (34분 = 100%)</figcaption>
+      </figure>
+      <p>다음으로 "기가 인터넷에 가입해도 게임은 한 번만 다운로드한다"는 주장 역시 현실과 거리가 멀다.<br>2025-2026년 기준 AAA 게임 단일 타이틀의 용량은 100GB를 흔히 넘는다.<br>Call of Duty: Black Ops 6는 PC 기준 102GB(CoD HQ 런처 73GB는 별도),<br>Baldur's Gate 3는 Steam 기준 144.55GB, Hogwarts Legacy는 약 85GB,<br>Cyberpunk 2077은 본편 약 80GB에 Phantom Liberty DLC 포함 시 100GB 이상이다.</p>
+      <p>2026년 출시 예정인 <strong>GTA 6</strong>의 경우 공식 용량은 아직 공개되지 않았지만,<br>전작 GTA 5(약 100GB)와 동일 개발사의 Red Dead Redemption 2(약 150GB) 사례를 감안할 때<br>업계와 매체들은 <strong>150~200GB 수준</strong>을 가장 합리적인 추정치로 본다.</p>
+      <p>플레이 패턴에 따라 더 흥미로운 사례도 있다.<br><strong>Microsoft Flight Simulator 2020</strong>은</p>
+
+      <figure class="article-figure figure-half">
+        <img src="https://1704014498pen.github.io/testpapper/img/800g/img1.webp" alt="Microsoft Flight Simulator 2020 커버 아트" />
+        <figcaption>Microsoft Flight Simulator 2020 · Microsoft Game Studios</figcaption>
+      </figure>
+
+      <p>기본 설치 약 150GB, World Update 모두 적용 시 약 195GB, 오프라인 캐시 활용 시 300GB를 초과하며,<br>무엇보다 비행 중 Bing 위성·고도 데이터를 실시간 스트리밍하는 구조여서 회선 속도가 시뮬레이션 품질에 직결된다.<br>여기에 더해 유저 제작 모드(공항 시너리, 항공기 도장 등)를 추가 적용하면 설치 용량은 더 커진다.</p>
+
+      <figure class="article-figure">
+        <img src="https://1704014498pen.github.io/testpapper/img/800g/img2.webp" alt="MSFS RKSS 김포국제공항 시너리" />
+        <figcaption>MSFS RKSS 김포국제공항 시너리 (야간) · 출처: <a href="https://flightsim.to/addon/7356/rkss-gimpo-international-airport-beta" target="_blank" rel="noopener">flightsim.to</a></figcaption>
+      </figure>
+      
+      <figure class="article-figure">
+        <img src="https://1704014498pen.github.io/testpapper/img/800g/img3.webp" alt="MSFS B747 Asiana Cargo 도장 모드" />
+        <figcaption>MSFS에서 B747 항공기 도장을 Asiana Cargo로 변경한 모드 · 출처: <a href="https://flightsim.to/addon/31403/salty747-b747-8f-asiana-airlines-cargo-8k-ultra-no-mirror" target="_blank" rel="noopener">flightsim.to</a></figcaption>
+      </figure>
+<p><strong>Rainbow Six Siege</strong>는 52.7GB에 신규 오퍼레이터·맵 업데이트가 분기마다 누적된다.<br><strong>PUBG 배틀그라운드</strong>(49.2GB)<br><strong>Escape From Tarkov</strong>(77.6GB) 같은 게임도 메이저 패치(분기별 와이프 포함)마다 5~10GB 단위의 다운로드가 발생하며,<br>해당 게임의 경우 1.0 정식 출시(2025년 11월) 이후 약 6개월 만에 설치 용량이<br>56GB대에서 77GB대로 증가한 것이 이를 뒷받침한다.</p>
+      <p>더구나 활발히 서비스되는 온라인 게임은 매주~매월 5~20GB 단위의 패치가 배포되며,<br>시즌 콘텐츠·배틀패스·DLC가 추가될 때마다 수십 GB가 누적 다운로드된다.<br>Steam Library에 평균 수십 종의 게임을 보유한 PC 게이머에게 다운로드 빈도와 누적 용량은 결코 적지 않다.</p>
+      <p>이외에도 클라우드 백업(개인 사진·영상 라이브러리 수백 GB 단위), 4K/8K 영상 스트리밍 다중 시청, 다중 화상회의 세션,<br>가정용 NAS 외부 접속 등 1Gbps급 회선의 효용이 실질적으로 발휘되는 시나리오는 다수 존재한다. 가구원이 늘어날수록,<br>동시 사용 디바이스가 늘어날수록 1Gbps의 여유분이 체감 안정성으로 직결된다.</p>
+      <p>또 한 가지 짚고 넘어갈 부분이 있다. KT가 2018년부터 전국 주요 도시에 10Gbps 인터넷을 상용화했다고는 하나,<br>실제로 신청을 시도해 보면 거주지나 건물 단자함 사양에 따라 지원하지 않는 경우가 많다.<br>또한 1Gbps를 초과하는 초고속 상품을 지원하지 않는 회선에서도 10Gbps<br>등 상위 등급 상품 가입(이른바 <strong>'상향등록'</strong>) 자체는 처리되는데,<br>신청하더라도 실측 속도는 회선의 물리적 한계 내에서만 형성되며,<br>QoS(일일 트래픽) 사용량 한도가 늘어나는 것 외에는 실질적인 이득이 없다.</p>
+      <p>일부 지역에서는 2.5Gbps·5Gbps·10Gbps 상품도 제공된다.<br>다만 KT 기준 무약정 가격이 2.5Gbps 60,500원, 5Gbps 82,500원, 10Gbps 110,000원 수준으로<br>1Gbps 상품 대비 2-3배에 형성되어 있고, 일반 보급률은 여전히 미미한 상태다.</p>
+      <p>주목할 점은 ISP의 FTTH 인프라가 광케이블이라도 <strong>가정 종단에서는 결국 RJ45 구리 이더넷으로 변환</strong>된다는 것이다.</p>
+
+      <figure class="article-figure figure-half">
+        <img src="https://1704014498pen.github.io/testpapper/img/800g/img4.jpg" alt="ONU/ONT 하단부 — 광케이블 입력과 RJ45 출력" />
+        <figcaption>가정용 ONU/ONT 하단부 · <span style="color: #c0392b; font-weight: 600;">빨강</span> = 광케이블 입력, <span style="color: #2c5aa0; font-weight: 600;">파랑</span> = RJ45 이더넷 출력</figcaption>
+      </figure>
+      <p>댁내 광 단자함의 ONU/ONT(Optical Network Unit/Terminal)가 광 신호를 RJ45로 변환해 가정용 라우터에 전달하며,<br>가정용 라우터·PC·스마트TV·콘솔 게임기 등 일반 가전의 인터넷 포트는 거의 전부 RJ45 형태다.</p>
+      <p>표준 가전용 NIC은 1000BASE-T(1Gbps)가 사실상 한계이며, 2.5G/5G/10GBASE-T를 지원하는 제품은<br>고급 메인보드·NAS·일부 워크스테이션 정도에 한정된다.</p>
+      <p>일부 프리미엄 라우터는 2.5Gbps 또는 10Gbps WAN 포트를 갖췄지만,<br><strong>LAN 측 포트는 여전히 1Gbps</strong>에 그치는 경우가 흔하다.<br>WAN 측 대역폭이 LAN에서 병목에 걸리는 구조여서, 2.5Gbps 약정을 맺어도 실제 유선 디바이스 한 대 입장에서는<br>1Gbps 이상을 사용할 수 없는 사례가 빈번하다.</p>
+      <p>드물게 홈랩(Home Lab) enthusiast 진영에서는 외부망이 1Gbps에 그치더라도 내부망(LAN)을<br>10Gbps SFP+, 25Gbps SFP28, 40Gbps QSFP+, 심지어 100Gbps QSFP28까지 구축하는 사례가 있다.<br>이들은 데이터센터 폐기 중고 장비(Mellanox ConnectX-3/4/5 NIC, Brocade·Mellanox 광스위치 등)와 호환 광모듈을<br>저렴하게 조달해 본격 데이터센터급 광케이블 인프라를 가정에서 운용한다.</p>
+
+      <figure class="article-figure">
+        <img src="https://1704014498pen.github.io/testpapper/img/800g/img5.jpg" alt="필자의 홈랩 — 10Gbps 5포트 스위치와 Dell PowerEdge R730XD" />
+        <figcaption>필자 홈랩 · 상단: 10Gbps 5포트 RJ45 스위치 · 중단: Dell PowerEdge R730XD (24-bay LFF) · Intel Xeon</figcaption>
+      </figure>
+
+      <aside class="author-aside">
+        <span class="aside-label">필자 노트</span>
+        <p>위 사진과 같이 본인은 10Gbps 5Port RJ45 스위치를 사서 Dell R730XD에 물려서 운영중인데, 아까 서술한 내용과 같이<br>1Gbps 외부망에 라우터도 1Gbps 밖에 지원을 안 하고 서버쪽 NIC도 1Gbps이라서 NIC 사서 확장할 생각이었으나,<br>돈도 아깝고 그냥 SFP+로 넘어가는 게 더 싸서 10Gbps 안 쓰는 10Gbps 스위치가 되었다....</p>
+      </aside>
+
+      <p>한편 단위 표기에 따른 혼동도 짚어둘 필요가 있다.</p>
+      <p>데이터 전송 속도에서 <strong>Gb(Gigabit, 소문자 b)와 GB(Gigabyte, 대문자 B)는 8배 차이</strong>가 나며,<br>1 Byte = 8 bit의 관계로 환산된다.</p>
+
+      <figure class="speed-comparison">
+        <div class="bar-chart">
+          <div class="bar-row">
+            <span class="bar-label">1 Gbps</span>
+            <div class="bar-track">
+              <div class="bar-fill bar-slow" style="width: 12.5%;"></div>
+            </div>
+            <span class="bar-value">125 MB/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">1 GB/s</span>
+            <div class="bar-track">
+              <div class="bar-fill bar-fast" style="width: 100%;"></div>
+            </div>
+            <span class="bar-value">1,000 MB/s</span>
+          </div>
+        </div>
+        <figcaption>1 Byte = 8 bit · 동일한 "1"이라도 단위에 따라 실제 전송량은 8배 차이</figcaption>
+      </figure>
+
+      <p>흔히 "GB/s"의 슬래시를 "per"로 읽으면서 "Gbps"와 동일하게 인식하는 경우가 있는데,<br>정확히는 <code>Gbps = Gb/s</code>(Gigabits per second)이고 <code>GB/s</code>(Gigabytes per second)는 그것의 8배다.</p>
+      <p>즉 가정 인터넷 1Gbps = 125MB/s이며, 본 기사가 다루는 데이터센터 1.6Tbps = 200GB/s에 해당한다.<br>이는 가정 1Gbps 대비 정확히 <strong>1,600배</strong>이며, 1Gbps로 풀 사용 중인 약 1,600가구의 가정 회선 트래픽 합계를 단일 포트 하나가 수용할 수 있는 규모다. 다른 비유로는, 200GB짜리 AAA 게임 한 편을 단일 포트로 약 1초에 전송할 수 있는 수준이다.</p>
+    </div>
+  </article>
+
+  <!-- SECTION 2 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 02</span>
+      <h2 class="section-title">IEEE 802.3dj<br>표준 통합</h2>
+    </header>
+    <div>
+      <p>1.6Tbps 이더넷의 가장 큰 분기점은 실리콘이 아닌 <strong>표준화 일정</strong>이다.</p>
+      <p>IEEE 802.3dj 태스크 포스는 200Gbps·400Gbps·800Gbps·1.6Tbps 이더넷 PHY 규격을<br>단일 표준으로 통합 정의하는 작업을 진행 중이며, 위원회 공식 문서에 따르면<br>2026년 9월 작업 완료를 목표로 한다.</p>
+      <p>이는 800Gbps 표준인 802.3df(2024년 2월 승인)에 이은 후속 표준으로,<br>데이터센터·캠퍼스·장거리 구간을 모두 포괄한다.</p>
+      <p>핵심 기술은 <strong>224Gbps PAM4 SerDes</strong>다.<br>8개 레인을 묶어 단일 포트 1.6Tbps를 구현한다.</p>
+      <h3 class="spec-heading">802.3dj와 OIF의 1.6Tbps~800Gbps 표준</h3>
+      <pre class="spec-block">1.6Tbps
+    802.3dj
+        DAC
+            1m   |  CR8
+
+        단일모드 광섬유
+            500m   |  DR8
+            2km    |  DR8-2
+
+
+    OIF
+        단일모드 광섬유
+            80-120km   |  1600ZR
+            1,000km+   |  1600ZR+</pre>
+      <p>2km를 넘는 도시간 연결은 코히어런트 표준 영역으로,<br>현재 개발 중에 있으며 상용화는 2027-2028년이 목표다.</p>
+      <pre class="spec-block">800Gbps
+    802.3df (100Gbps/lane, 2024.02 승인)
+        DAC
+            1~2m   |  CR8
+
+    802.3dj (200Gbps/lane, 2026.09 목표)
+        DAC
+            1m     |  CR4
+
+        단일모드 광섬유
+            10km   |  LR1
+            20km   |  ER1-20
+            40km   |  ER1
+
+
+    OIF
+        단일모드 광섬유
+            80-120km   |  800ZR
+            1,000km+   |  800ZR+</pre>
+      <p>작업그룹은 2025년 6월 Working Group Ballot 단계로 진입했고,<br>2025년 9월 D2.2 드래프트를 회람한 데 이어 SA Ballot 단계로 이행 중이다.</p>
+      <p>802.3dj는 단순히 1.6Tbps 단일 규격이 아니라는 점이 중요하다.<br>동일 표준 문서가 <code>200G-DR1</code>, <code>400G-DR2</code>, <code>800G-DR4</code>, <code>1.6T-DR8</code> 등 레인 수가 다른<br>동일 라인 레이트 패밀리를 함께 정의해, 벤더 간 breakout 호환성을 표준 수준에서 보장한다.</p>
+      <p>이는 800Gbps와 1.6Tbps가 단절적 전환이 아닌 연속적 확장으로 설계됐음을 의미한다.</p>
+    </div>
+  </article>
+
+  <div class="pullquote">
+    1.6Tbps 이더넷으로의 전환은 차세대 AI 클러스터의 끊임없는 대역폭 수요를 충족하기 위한 핵심 이정표다.
+    <cite>― 하산 시라즈, 브로드컴 코어 스위칭 그룹 부사장</cite>
+  </div>
+
+  <!-- SECTION 3 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 03</span>
+      <h2 class="section-title">OCP 주도<br>OSFP-XD 폼팩터 단일화</h2>
+    </header>
+    <div>
+      <p>물리 폼팩터 표준화는 IEEE 표준에 선행해 사실상 완료된 상태다.<br><strong>OCP(Open Compute Project)</strong>는 1.6Tbps 광 트랜시버 운반체로<br>OSFP-XD(eXtra Density)를 우선 표준으로 채택했다.</p>
+
+      <figure class="article-figure figure-half">
+        <img src="https://1704014498pen.github.io/testpapper/img/800g/img6.webp" alt="OSFP-XD (eXtra Density) 광 트랜시버 모듈" />
+        <figcaption>OSFP-XD 광 트랜시버 모듈 · 출처: <a href="https://www.amphenol-cs.com/product-series/osfp-xd-cable-assemblies.html" target="_blank" rel="noopener">amphenol-cs.com</a></figcaption>
+      </figure>
+
+      <p>Fibermall(2026.04)·Introl(2026.04) 등 업계 리서치 자료에 따르면,<br>2025년 하이퍼스케일 데이터센터 신규 계약의 약 92%가<br>OSFP-XD 폼팩터를 명시하고 있어, 사실상의 시장 단일화가 이뤄졌다.<br>OSFP-XD는 기존 OSFP의 8레인 구조를 16레인으로 확장해 동일한<br>224Gbps PAM4 SerDes로 더 넓은 열·전력 마진을 확보한 폼팩터다.</p>
+      <p>경쟁 후보였던 <code>QSFP-DD1600</code> 폼팩터.</p>
+
+      <figure class="article-figure figure-half">
+        <img src="https://1704014498pen.github.io/testpapper/img/800g/img7.jpg" alt="QSFP-DD 폼팩터 800G 광 트랜시버 모듈" />
+        <figcaption>QSFP-DD 폼팩터 (사진은 800G QDD-2X400G-FR4) · QSFP-DD1600은 동일 물리 폼팩터에 200G/lane PAM4 SerDes 적용 · 출처: <a href="https://www.addonnetworks.com/products/transceivers/cisco/qsfp-dd/800gbase/qdd-2x400g-fr4-ao" target="_blank" rel="noopener">addonnetworks.com</a></figcaption>
+      </figure>
+
+      <p>QSFP-DD1600은 열 설계 한계로<br>1.6Tbps ZR(코히어런트) 영역 진입이 어렵다는 것이 업계 중론이다.<br>QSFP-DD의 실효 전력 마진이 약 <strong>15W 수준</strong>에 그치는 반면<br>OSFP/OSFP-XD는 최대 <strong>25W</strong>까지 수용 가능하며,<br>QSFP-DD MSA 자체가 2023년 9월 발간한 열 관리 백서<br>(<em>Enabling QSFP-DD1600<br>Ecosystem With Performance-Driven Thermal Innovations</em>)에서도<br>별도의 thermal innovation 작업이 필요하다는 점을 인정한 바 있다.</p>
+      <p>결국 단거리 데이터센터 내부 링크와 장거리 인터커넥트 모두<br>OSFP 계열로 수렴하는 양상이다.</p>
+      <p>광 트랜시버 출하 통계도 이를 뒷받침한다.<br>800Gbps 모듈 출하량은 2025년 전년 대비 100% 증가했고,</p>
+      <p>Accelink Technologies는<br>8x200Gbps 구성의 1.6Tbps OSFP224 DR8 모듈을 양산 출시했다.</p>
+      <p>Coherent는 엔비디아 DSP를 통합한 <code>1.6T-DR8</code> OSFP 패키지를 공급한다.</p>
+      <p>다만 2025년 1.6Tbps 트랜시버 출하량은 100만 개 미만으로,<br>본격 볼륨은 표준 확정과 맞물리는 2026년 하반기 이후로 예상된다.</p>
+    </div>
+  </article>
+
+  <!-- SECTION 4 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 04</span>
+      <h2 class="section-title">Tomahawk 6<br>양산 단계 진입</h2>
+    </header>
+    <div>
+      <p>실리콘 측면에서는 브로드컴이 명백한 선두주자다.<br>2025년 6월 3일 출시된 <strong>Tomahawk 6 (BCM78910)</strong>는</p>
+
+      <figure class="article-figure">
+        <img src="https://1704014498pen.github.io/testpapper/img/800g/img8.png" alt="Broadcom Tomahawk 6 (BCM78910) 스위치 ASIC" />
+        <figcaption>Broadcom Tomahawk 6 (BCM78910) · 102.4Tbps 단일 다이 이더넷 스위치 ASIC · 3nm 공정</figcaption>
+      </figure>
+
+      <p>단일 다이 기준 최초로 100Tbps를 넘어선 이더넷 스위치 칩으로,<br>102.4Tbps 스위칭 용량 기반으로 64포트 1.6Tbps, 128포트 800Gbps,<br>256포트 400Gbps 또는 512포트 200Gbps 구성이 가능하다.<br>3나노 공정 채택과 512개 로지컬 포트 지원으로<br>전력 효율과 클러스터 확장성을 동시에 끌어올렸다.</p>
+      <p>화이트박스 ODM 진영의 채택이 빠르다.<br><strong>Edgecore Networks</strong>는 2026년 2월 24일 Tomahawk 6 기반의<br>AIS1600-64O(64포트 1.6Tbps) 및<br>AIS800-128O(128포트 800Gbps) 라인업을 공개했다.</p>
+      <p>Celestica는 동일 ASIC 기반의 DS6000 시리즈를 출하 중이며,<br>2025년 2분기 매출의 72%가 800Gbps 솔루션에서 발생했다고 보고하고<br>1.6Tbps 매출은 2026년 하반기부터 본격 인식될 것으로 전망한 바 있다.</p>
+      <p>UfiSpace S9331-64HO도 동일 ASIC 기반의 또 다른 옵션이다.</p>
+      <p>브로드컴은 10월에 후속작 <strong>Tomahawk 6-Davisson (BCM78919)</strong>도 발표했다.<br>동일한 102.4Tbps 용량에 3세대 CPO(Co-Packaged Optics)를 통합한 모델로,<br>광 모듈을 ASIC 바로 옆에 패키징해 전기 신호 거리를 최소화하고 전력 효율을 개선했다.</p>
+      <p>광 트랜시버를 직접 통합하는 구조여서 향후<br>800Gbps·1.6Tbps·그 이상으로의 업그레이드 경로를 단일 플랫폼에서 흡수한다.</p>
+    </div>
+  </article>
+
+  <!-- SECTION 5 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 05</span>
+      <h2 class="section-title">NVIDIA Rubin<br>1.6Tbps 진입</h2>
+    </header>
+    <div>
+      <p>엔비디아는 2026년 1월 5일 라스베이거스 CES에서 차세대 AI 플랫폼 <strong>Rubin</strong>을 공개했다.</p>
+      <p>플랫폼은<br>Vera CPU, Rubin GPU, NVLink 6 Switch, ConnectX-9 SuperNIC,<br>BlueField-4 DPU, Spectrum-6 이더넷 스위치 등 총 6개 칩으로 구성된다.<br>Rubin 기반 제품은 2026년 하반기부터 파트너사를 통해 공급되며,<br>AWS·Google Cloud·Microsoft Azure·Oracle Cloud Infrastructure가<br>초기 도입 고객으로 발표됐다.</p>
+      <p>핵심은 <strong>ConnectX-9 SuperNIC</strong>이다.</p>
+
+      <figure class="article-figure">
+        <img src="https://1704014498pen.github.io/testpapper/img/800g/img9.jpg" alt="NVIDIA ConnectX-9 SuperNIC 보드" />
+        <figcaption>NVIDIA ConnectX-9 SuperNIC · 1×800G OSFP224 또는 2×400G QSFP112, PCIe Gen6 최대 48레인</figcaption>
+      </figure>
+
+      <p>기존 ConnectX-8이<br>듀얼 포트 2×400G 구성으로 NIC 전체 800Gbps를 합산하던 반면,<br>ConnectX-9은<br>단일 포트(OSFP224)에서 1×800G(InfiniBand 또는 Spectrum-X Ethernet)를 네이티브로 제공한다(2×QSFP112 듀얼 400G 구성도 선택 가능).<br>이로써 LAG/ECMP 같은 부하 분산 메커니즘 없이도 단일 플로우에서 800Gbps 전 대역폭을 그대로 활용할 수 있게 됐다.</p>
+      <p>호스트 인터페이스는 <strong>PCIe Gen6 최대 48레인</strong>까지 확장되며(Socket Direct·Multi-Host 구성을 통해 다중 슬롯·최대 4개 호스트에 분산 가능),<br>Vera CPU 또는 동급 PCIe Gen6 호스트와의 결합이 권장된다.<br>PCIe 자체는 하위 호환되는 인터페이스라 낮은 버전에서도 동작하나,<br>대역폭 병목으로 성능 저하가 발생할 수 있다.</p>
+      <p>Spectrum-6 이더넷 스위치 역시 1.6Tbps 포트 속도를 네이티브 지원하며,</p>
+      <p>2025년 3월 GTC에서 발표된<br>Spectrum-X Photonics 라인업(SN6810/SN6800)의 후속이다.</p>
+      <p>마이크로소프트는 차세대 Fairwater AI superfactory 사이트에<br>Vera Rubin NVL72 랙 스케일 시스템을 도입한다고 밝혔으며,<br>CoreWeave·Lambda·Nebius·Nscale 등 신생 GPU 클라우드 사업자도<br>2026년 하반기부터 Rubin 인스턴스를 배포할 예정이다.</p>
+    </div>
+  </article>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+    <h4>표준화 · 실리콘 · 폼팩터 타임라인</h4>
+    <div class="timeline-item">
+      <span class="date">2024.02</span>
+      <span class="event">IEEE 802.3df(800Gbps 이더넷) 표준 승인</span>
+    </div>
+    <div class="timeline-item">
+      <span class="date">2025.06</span>
+      <span class="event">브로드컴 Tomahawk 6 (BCM78910) 출시 · 102.4Tbps 단일 칩</span>
+    </div>
+    <div class="timeline-item">
+      <span class="date">2025.06</span>
+      <span class="event">IEEE 802.3dj Working Group Ballot 단계 진입</span>
+    </div>
+    <div class="timeline-item">
+      <span class="date">2025.10</span>
+      <span class="event">브로드컴 Tomahawk 6-Davisson CPO 버전 발표</span>
+    </div>
+    <div class="timeline-item">
+      <span class="date">2025.10</span>
+      <span class="event">브로드컴 Thor Ultra 800Gbps AI Ethernet NIC 샘플링</span>
+    </div>
+    <div class="timeline-item">
+      <span class="date">2026.01</span>
+      <span class="event">엔비디아 Rubin 플랫폼 공개 · ConnectX-9 / Spectrum-6 포함</span>
+    </div>
+    <div class="timeline-item">
+      <span class="date">2026.02</span>
+      <span class="event">Edgecore AIS1600-64O 양산 출하</span>
+    </div>
+    <div class="timeline-item">
+      <span class="date">2026.09</span>
+      <span class="event">IEEE 802.3dj 표준 완료 목표 (200Gbps/400Gbps/800Gbps/1.6Tbps)</span>
+    </div>
+    <div class="timeline-item">
+      <span class="date">2026.2H</span>
+      <span class="event">엔비디아 Rubin 기반 제품 파트너 공급 개시 · Spectrum-X Photonics 상용화</span>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 06</span>
+      <h2 class="section-title">시장 전망: 800Gbps 폭증, 1.6Tbps 램프업</h2>
+    </header>
+    <div>
+      <p>시장조사기관 <strong>Dell'Oro Group</strong>은<br>2026년 전 세계 데이터센터 IT 자본 지출이 1조 달러를 초과할 것으로 전망했다.</p>
+      <p>데이터센터 인프라 전체 capex는 2029년까지 연평균 21% 성장이 예상되며,<br>가속 서버(AI 학습·추론용)가 그 절반 가량을 차지한다.</p>
+      <p>이더넷 스위치 시장에서는<br>IDC 통계 기준 800GbE 스위치 매출이 직전 분기 대비 91.6% 급증한 데 이어,<br>200/400GbE 스위치 매출도 전년 동기 대비 97.8% 늘었다.</p>
+      <p>Crehan Research는 2025년 2분기 800Gbps 포트 출하량이<br>전년 동기의 3배에 달했다고 분석했고,<br>650 Group은 AI 데이터센터 네트워킹 시장이 2026년 200억 달러에 근접할 것으로 추정했다.</p>
+      <p>CPO 채택도 변수다.<br>Dell'Oro Group은 2026년이 인피니밴드와 이더넷 양쪽에서<br>CPO 스위치 초기 볼륨 램프업 원년이 될 것으로 분석했다.</p>
+      <p>엔비디아가 Spectrum-X Photonics와 Quantum-X Photonics를 통해 선도하고 있으며,<br>브로드컴은 Tomahawk 6-Davisson으로 추격하는 구도다.</p>
+      <p><strong>SONiC 진영의 부상도 주목할 변수</strong>다.<br>650 Group은 SONiC 기반 데이터센터 스위치 매출이<br>2026년 50억 달러를 돌파할 것으로 전망했다.</p>
+      <p>마이크로소프트 Azure와 구글 클라우드가 견인하는 가운데,<br>화이트박스 ODM(Edgecore·Celestica·UfiSpace)이 동일<br>Tomahawk 6 ASIC 기반으로 가격 경쟁력을 무기로 진입하는 형태다.</p>
+      <p>표준·실리콘·폼팩터·NOS까지 오픈 진영이 정렬되면서,<br>데이터센터 네트워킹의 벤더 다양화가 본격화될 전망이다.</p>
+      <p>SONiC은 800Gbps와 1.6Tbps 포트를 모두 지원하며,<br>802.3dj 확정 시점에 맞춰 1.6Tbps 멀티 벤더 상호 운용성을 검증하는<br>핵심 NOS로 자리잡을 가능성이 크다.</p>
+    </div>
+  </article>
+
+  <div class="divider">▴ ▴ ▴</div>
+
+  <section class="sources" id="sources">
+    <h2>Sources / 참고 문헌</h2>
+    <ol>
+      <li><strong>Broadcom Inc.</strong> "Broadcom Announces Tomahawk 6 - Davisson, the Industry's First 102.4-Tbps Ethernet Switch with Co-Packaged Optics" — 보도자료, 2025.10.08</li>
+      <li><strong>Broadcom Inc.</strong> "Broadcom Introduces Industry's First 800G AI Ethernet NIC" — 보도자료, 2025.10.14</li>
+      <li><strong>NVIDIA Corporation</strong> "NVIDIA Kicks Off the Next Generation of AI With Rubin" — 보도자료, 2026.01.05</li>
+      <li><strong>NVIDIA Corporation</strong> "NVIDIA Announces Spectrum-X Photonics, Co-Packaged Optics Networking Switches" — 보도자료, 2025.03.18</li>
+      <li><strong>IEEE 802.3 Ethernet Working Group</strong> "P802.3dj Task Force Status Report &amp; D2.0 Comments" — 위원회 문서, 2025</li>
+      <li><strong>SDxCentral</strong> "Edgecore enters 100T+ network switch race for AI hyperscalers" — 2026.02.24</li>
+      <li><strong>EE Times</strong> "Broadcom Expands AI Ethernet Offerings" — 2025.10.20</li>
+      <li><strong>Converge Digest</strong> "IEEE P802.3dj Moves Forward with 200G to 1.6T Ethernet Working Group Work" — 2025.06.01</li>
+      <li><strong>Dell'Oro Group</strong> "Data Center Networking in 2025-2026: Milestones and Opportunities" — 2026.01.07</li>
+      <li><strong>Dell'Oro Group</strong> "Data Center Capex to Grow at 21% CAGR Through 2029" — 2025.08.06</li>
+      <li><strong>Dell'Oro Group</strong> "Data Center Infrastructure in 2026" — 2025.12.17</li>
+      <li><strong>Network World</strong> "8 hot networking trends for 2026" — 2026.02.04</li>
+      <li><strong>Introl</strong> "Fiber optics for data centers: state of the art in 2025" — 2026.04 갱신</li>
+      <li><strong>Synopsys</strong> "1.6T Ethernet Protocol Explained: Specs &amp; IP" — 2024.02</li>
+      <li><strong>Datacenter Dynamics</strong> "Nvidia CEO announces Vera Rubin chips are in full production" — 2026.03.31</li>
+      <li><strong>Fibermall</strong> "In-Depth Analysis Report on 800G Switches" — 2026.01.28</li>
+      <li><strong>Fibermall</strong> "OSFP Future Roadmap: 800G to 1.6T Data Center Planning 2025-2027" — 2026.04.03</li>
+      <li><strong>Fibermall</strong> "QSFP-DD Transceiver Guide 2026" — 2026.04 (QSFP-DD ~15W vs OSFP 25W 열 한계 비교)</li>
+      <li><strong>LINK-PP</strong> "OSFP vs OSFP-XD: The Definitive 1.6T Transceiver Form Factor Comparison" — 2025.11.14</li>
+      <li><strong>QSFP-DD MSA</strong> "Enabling QSFP-DD1600 Ecosystem With Performance-Driven Thermal Innovations" (백서) — 2023.09</li>
+      <li><strong>AscentOptics Blog</strong> "QSFP-DD vs OSFP: 400G/800G Form Factor Comparison" — 2026.03.26</li>
+      <li><strong>5G Technology World</strong> "How IEEE 802.3df brings 800G Ethernet to life" — 2025.01.28</li>
+      <li><strong>한국경제</strong> "KT, 국내최초 10기가 인터넷 상용화… 33GB 영화, 30초만에 다운로드" — 2018.10.31</li>
+      <li><strong>전자신문(etnews)</strong> "KT '10기가 인터넷' 첫 상용화...'5G 시대 촉발'" — 2018.10.31</li>
+      <li><strong>한국경제(연합)</strong> "10기가 인터넷 시대 개막…KT 이어 SKB도 11월 상용화" — 2018.10.31</li>
+      <li><strong>elec4.co.kr</strong> "KT, 기존 랜선 기반 10기가 인터넷 기술 상용화" — 2019.03</li>
+      <li><strong>Prysmian Group</strong> "Asia leads in full fibre penetration" — 2024.06</li>
+      <li><strong>ts2.tech</strong> "Inside South Korea's Blazing Broadband Empire and 6G Ambitions" — 2025.08</li>
+    </ol>
+
+    <div class="editorial-note">
+      본 기사는 1차 출처(벤더 공식 보도자료, IEEE 위원회 공개 문서)와 2차 출처(시장조사 기관 정식 보고서, 업계 전문 매체)를 교차 검증해 작성됐다. 집단 편집 백과 사전은 출처에서 배제했다. 가격 및 출하량 수치는 인용 시점 기준이며, 실제 거래가는 견적·계약 조건에 따라 변동할 수 있다.
+    </div>
+
+    <p class="byline">조국영 기자 (techpaperreport@gmail.com)</p>
+  </section>
+
+</main>
+
+</body>
+</html>
