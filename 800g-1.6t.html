@@ -738,9 +738,9 @@
         <figcaption>가정용 ONU/ONT 하단부 · <span style="color: #c0392b; font-weight: 600;">빨강</span> = 광케이블 입력, <span style="color: #2c5aa0; font-weight: 600;">파랑</span> = RJ45 이더넷 출력</figcaption>
       </figure>
       <p>댁내 광 단자함의 ONU/ONT(Optical Network Unit/Terminal)가 광 신호를 RJ45로 변환해 가정용 라우터에 전달하며,<br>가정용 라우터·PC·스마트TV·콘솔 게임기 등 일반 가전의 인터넷 포트는 거의 전부 RJ45 형태다.</p>
-      <p>표준 가전용 NIC은 1000BASE-T(1Gbps)가 사실상 한계이며, 2.5G/5G/10GBASE-T를 지원하는 제품은<br>고급 메인보드·NAS·일부 워크스테이션 정도에 한정된다.</p>
+      <p>일반적인 가전기기에서는 1000BASE-T(1Gbps)가 사실상 한계이며, 2.5G/5G/10GBASE-T를 지원하는 제품은<br>고급 메인보드·NAS·일부 워크스테이션 정도에 한정된다.</p>
       <p>일부 프리미엄 라우터는 2.5Gbps 또는 10Gbps WAN 포트를 갖췄지만,<br><strong>LAN 측 포트는 여전히 1Gbps</strong>에 그치는 경우가 흔하다.<br>WAN 측 대역폭이 LAN에서 병목에 걸리는 구조여서, 2.5Gbps 약정을 맺어도 실제 유선 디바이스 한 대 입장에서는<br>1Gbps 이상을 사용할 수 없는 사례가 빈번하다.</p>
-      <p>드물게 홈랩(Home Lab) enthusiast 진영에서는 외부망이 1Gbps에 그치더라도 내부망(LAN)을<br>10Gbps SFP+, 25Gbps SFP28, 40Gbps QSFP+, 심지어 100Gbps QSFP28까지 구축하는 사례가 있다.<br>이들은 데이터센터 폐기 중고 장비(Mellanox ConnectX-3/4/5 NIC, Brocade·Mellanox 광스위치 등)와 호환 광모듈을<br>저렴하게 조달해 본격 데이터센터급 광케이블 인프라를 가정에서 운용한다.</p>
+      <p>드물게 홈랩(Home Lab) 진영에서는 외부망이 1Gbps에 그치더라도 내부망(LAN)을<br>10Gbps SFP+, 25Gbps SFP28, 40Gbps QSFP+, 심지어 100Gbps QSFP28까지 구축하는 사례가 있다.<br>이들은 데이터센터 폐기 중고 장비와 호환 광모듈을<br>저렴하게 조달해 본격 데이터센터급 광케이블 인프라를 가정에서 운용한다.</p>
 
       <figure class="article-figure">
         <img src="https://1704014498pen.github.io/testpapper/img/800g/img5.jpg" alt="필자의 홈랩 — 10Gbps 5포트 스위치와 Dell PowerEdge R730XD" />
@@ -849,11 +849,6 @@
       <p>Fibermall(2026.04)·Introl(2026.04) 등 업계 리서치 자료에 따르면,<br>2025년 하이퍼스케일 데이터센터 신규 계약의 약 92%가<br>OSFP-XD 폼팩터를 명시하고 있어, 사실상의 시장 단일화가 이뤄졌다.<br>OSFP-XD는 기존 OSFP의 8레인 구조를 16레인으로 확장해 동일한<br>224Gbps PAM4 SerDes로 더 넓은 열·전력 마진을 확보한 폼팩터다.</p>
       <p>경쟁 후보였던 <code>QSFP-DD1600</code> 폼팩터.</p>
 
-      <figure class="article-figure figure-half">
-        <img src="https://1704014498pen.github.io/testpapper/img/800g/img7.jpg" alt="QSFP-DD 폼팩터 800G 광 트랜시버 모듈" />
-        <figcaption>QSFP-DD 폼팩터 (사진은 800G QDD-2X400G-FR4) · QSFP-DD1600은 동일 물리 폼팩터에 200G/lane PAM4 SerDes 적용 · 출처: <a href="https://www.addonnetworks.com/products/transceivers/cisco/qsfp-dd/800gbase/qdd-2x400g-fr4-ao" target="_blank" rel="noopener">addonnetworks.com</a></figcaption>
-      </figure>
-
       <p>QSFP-DD1600은 열 설계 한계로<br>1.6Tbps ZR(코히어런트) 영역 진입이 어렵다는 업계의 의견이 있다.<br>QSFP-DD의 실효 전력 마진이 약 <strong>15W 수준</strong>에 그치는 반면<br>OSFP/OSFP-XD는 최대 <strong>25W</strong>까지 수용 가능하며,<br>QSFP-DD MSA 자체가 2023년 9월 발간한 열 관리 백서<br>(<em>Enabling QSFP-DD1600<br>Ecosystem With Performance-Driven Thermal Innovations</em>)에서도<br>별도의 thermal innovation 작업이 필요하다는 점을 인정한 바 있다.</p>
       <p>결국 단거리 데이터센터 내부 링크와 장거리 인터커넥트 모두<br>OSFP 계열로 수렴하는 양상이다.</p>
       <p>광 트랜시버 출하 통계도 이를 뒷받침한다.<br>800Gbps 모듈 출하량은 2025년 전년 대비 100% 증가했고,</p>
@@ -903,7 +898,7 @@
       </figure>
 
       <p>기존 ConnectX-8이<br>듀얼 포트 2×400G 구성으로 NIC 전체 800Gbps를 합산하던 반면,<br>ConnectX-9은<br>단일 포트(OSFP224)에서 1×800G(InfiniBand 또는 Spectrum-X Ethernet)를 네이티브로 제공한다(2×QSFP112 듀얼 400G 구성도 선택 가능).<br>이로써 LAG/ECMP 같은 부하 분산 메커니즘 없이도 단일 플로우에서 800Gbps 전 대역폭을 그대로 활용할 수 있게 됐다.</p>
-      <p>호스트 인터페이스는 <strong>PCIe Gen6 최대 48레인</strong>까지 확장되며(Socket Direct·Multi-Host 구성을 통해 다중 슬롯·최대 4개 호스트에 분산 가능),<br>Vera CPU 또는 동급 PCIe Gen6 호스트와의 결합이 권장된다.<br>PCIe 자체는 하위 호환되는 인터페이스라 낮은 버전에서도 동작하나,<br>대역폭 병목으로 성능 저하가 발생할 수 있다.</p>
+      <p>호스트 인터페이스는 <strong>PCIe Gen6 최대 48레인</strong>까지 확장되며<br>Vera CPU 또는 동급 PCIe Gen6 호스트와의 결합이 권장된다.<br>PCIe 자체는 하위 호환되는 인터페이스라 낮은 버전에서도 동작하나,<br>대역폭 병목으로 성능 저하가 발생할 수 있다.</p>
       <p>Spectrum-6 이더넷 스위치 역시 1.6Tbps 포트 속도를 네이티브 지원하며,</p>
       <p>2025년 3월 GTC에서 발표된<br>Spectrum-X Photonics 라인업(SN6810/SN6800)의 후속이다.</p>
       <p>마이크로소프트는 차세대 Fairwater AI superfactory 사이트에<br>Vera Rubin NVL72 랙 스케일 시스템을 도입한다고 밝혔으며,<br>CoreWeave·Lambda·Nebius·Nscale 등 신생 GPU 클라우드 사업자도<br>2026년 하반기부터 Rubin 인스턴스를 배포할 예정이다.</p>
