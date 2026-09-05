@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monza에서 Monza로, 6년 - 가슬리 생애 첫 폴포지션</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     MONZA NIGHT — 다크(완전 검정 아닌, 살짝 들린 톤) 팔레트
+     기존 페이퍼 템플릿과 구조는 공유하고 색 체계만 교체
+     ───────────────────────────────────────────────────────────── */
+  :root {
+    --bg:        #1c202a;
+    --bg-lift:   #252b38;
+    --bg-lift-2: #2c3342;
+    --ink:       #eceef3;
+    --ink-mid:   #a8aebd;
+    --ink-dim:   #767d8e;
+    --rule:      #363e4f;
+    --accent:    #56aaff;   /* 알핀 블루 계열 */
+    --accent-2:  #ff5f9e;   /* 알핀 핑크 계열 */
+    --accent-dim:#8ecbff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard Variable', 'Noto Serif KR', serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+  }
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: .5;
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(86,170,255,.10), transparent 52%),
+      radial-gradient(circle at 84% 74%, rgba(255,95,158,.07), transparent 52%);
+  }
+  .masthead {
+    border-bottom: 2px solid var(--rule);
+    padding: 20px 32px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    flex-wrap: wrap; gap: 10px;
+    background: linear-gradient(180deg, #222834 0%, var(--bg) 100%);
+  }
+  .masthead .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 15px; letter-spacing: .22em; text-transform: uppercase;
+  }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .14em; color: var(--ink-dim); text-transform: uppercase;
+  }
+  .container { max-width: 1080px; margin: 0 auto; padding: 60px 32px 100px; }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--accent-2); margin-bottom: 22px;
+  }
+  .headline {
+    /* 국기가 차지하는 가로 진행량 = 국기 너비(.99em) + 오른쪽 여백(.22em).
+       이만큼 전체를 들여쓰고 국기만 도로 끌어내, 1~3행이 모두 같은 x에서 시작한다. */
+    --flag-adv: 1.21em;
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900; font-size: clamp(36px, 6.2vw, 72px); line-height: 1.14;
+    letter-spacing: -.02em; margin-bottom: 30px;
+    padding-left: var(--flag-adv);
+  }
+  .headline em { font-style: normal; color: var(--accent-dim); }
+  /* 지역표시자 이모지(🇮🇹)는 Windows 크롬에서 국기로 렌더링되지 않고 "IT"로 표시된다.
+     외부 리소스 없이 어디서나 국기로 보이도록 인라인 SVG 사용. */
+  .flag-it {
+    width: .99em; height: .66em;              /* viewBox 3:2 비율 고정 */
+    margin-left: calc(-1 * var(--flag-adv));  /* 들여쓰기 밖(원래 좌측 마진)으로 걸어둔다 */
+    margin-right: .22em;
+    position: relative; top: .015em;
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 2px;
+  }
+  .deck {
+    border-left: 3px solid var(--accent-2);
+    padding-left: 22px; margin-bottom: 34px;
+    font-family: 'Noto Serif KR', serif; font-style: italic;
+    font-size: 18.5px; line-height: 1.8; color: var(--ink-mid);
+  }
+  .deck p + p { margin-top: 14px; }
+  .deck strong { color: var(--ink); font-style: normal; font-weight: 700; }
+  /* 팀 정식 명칭 — 각 브랜드 공식 색.
+     다크 배경에서 중간 명도 색은 얇은 이탤릭으로 읽기 어려워, 정체(normal)+볼드로 세운다. */
+  .team-name { font-style: normal; font-weight: 700; }
+  .c-bwt    { color: #EC0374; }  /* BWT 핑크 — PMS 213 C */
+  .c-alpine { color: #2173B8; }  /* Alpine 블루 — PMS 660 C */
+  .c-f1     { color: #FF1E00; }  /* Formula One 웜 레드 */
+  .c-team   { color: #FFFFFF; }
+  .byline {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    padding: 13px 0; margin-bottom: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim);
+  }
+
+  figure.article-figure { margin: 0 0 44px; }
+  figure.article-figure img {
+    width: 100%; height: auto; display: block;
+    border: 1px solid var(--rule);
+  }
+  figure.article-figure figcaption {
+    margin-top: 11px; font-size: 12.5px; line-height: 1.6; color: var(--ink-dim);
+    font-family: 'Pretendard Variable', sans-serif;
+    border-left: 2px solid var(--accent); padding-left: 12px;
+  }
+  figure.article-figure figcaption b { color: var(--ink-mid); font-weight: 600; }
+
+  /* Instagram 공식 임베드.
+     embed.js 대신 /embed/captioned/ iframe 을 쓴다 — 외부 스크립트가 필요 없어
+     게시판의 <iframe srcdoc> 안이나 file:// 로 열어도 그대로 뜬다.
+     높이: 이미지가 4:5(1.25)이고 헤더+캡션이 약 356px 고정이므로 540px 폭에서 1040px. */
+  .ig-embed iframe {
+    display: block; width: 100%; max-width: 540px; margin: 0 auto;
+    height: 1040px; border: 0; border-radius: 3px;
+    background: #fff;
+  }
+  @media (max-width: 620px) {
+    .ig-embed iframe { height: calc(1.25 * (100vw - 40px) + 380px); }
+  }
+  /* 섹션 사이에 들어가는 풀폭 사진 */
+  .photo-wide { margin: 0 0 62px; }
+
+  .lead { font-family: 'Noto Serif KR', serif; font-size: 19px; line-height: 1.85; margin-bottom: 44px; }
+  .lead::first-letter {
+    float: left; font-size: 78px; line-height: .82; font-weight: 900;
+    padding: 6px 14px 0 0; color: var(--accent);
+  }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule); margin-bottom: 60px;
+  }
+  .stat { background: var(--bg-lift); padding: 24px 20px; }
+  .stat .figure {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 33px; line-height: 1.1; color: var(--accent-dim); letter-spacing: -.02em;
+  }
+  .stat .label {
+    margin-top: 10px; font-size: 12.5px; line-height: 1.55; color: var(--ink-mid);
+    font-family: 'Pretendard Variable', sans-serif;
+  }
+
+  .section { border-top: 1px solid var(--rule); padding-top: 34px; margin-bottom: 62px; }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .2em; color: var(--accent-2); display: block; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Noto Serif KR', serif; font-weight: 700; line-height: 1.25;
+    letter-spacing: -.015em; color: var(--ink);
+  }
+  .section.feature .section-title { font-size: clamp(29px, 4.4vw, 50px); margin-bottom: 28px; }
+  .section.body-grid { display: grid; grid-template-columns: 260px 1fr; gap: 44px; }
+  .section.body-grid > header { position: sticky; top: 26px; align-self: start; }
+  .section.body-grid .section-title { font-size: 25px; }
+  /* min-width:0 이 없으면 white-space:pre 인 .spec-block 이 1fr 컬럼을 밀어내
+     컨테이너 밖으로 넘친다 (grid auto-min 블로우아웃) */
+  .section.body-grid > div { padding-top: 4px; min-width: 0; }
+  .section p { font-family: 'Noto Serif KR', serif; font-size: 16.5px; line-height: 1.9; }
+  .section p + p { margin-top: 17px; }
+  .section strong { color: var(--accent-dim); font-weight: 700; }
+
+  .spec-heading {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ink-dim); margin: 30px 0 10px;
+  }
+  .spec-block {
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.75;
+    background: var(--bg-lift); border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+    padding: 20px 22px; white-space: pre; overflow-x: auto; color: var(--ink-mid);
+  }
+  .spec-block b { color: var(--accent-dim); font-weight: 700; }
+  .spec-block i { color: var(--accent-2); font-style: normal; }
+
+  .pullquote {
+    margin: 34px 0; padding: 26px 28px;
+    background: var(--bg-lift-2);
+    border-top: 2px solid var(--accent-2); border-bottom: 1px solid var(--rule);
+    font-family: 'Noto Serif KR', serif; font-size: 19.5px; line-height: 1.75;
+  }
+  .pullquote cite {
+    display: block; margin-top: 14px; font-style: normal;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    letter-spacing: .12em; color: var(--ink-dim); text-transform: uppercase;
+  }
+
+  sup.ref { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+  sup.ref a { color: var(--accent); text-decoration: none; padding: 0 1px; }
+  sup.ref a:hover { text-decoration: underline; }
+
+  .divider { text-align: center; color: var(--accent-2); letter-spacing: 1em; margin: 66px 0; font-size: 13px; }
+
+  .sources { border-top: 2px solid var(--rule); padding-top: 30px; }
+  .sources h3 {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--ink-dim); margin-bottom: 20px;
+  }
+  .sources ol {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px 34px; padding-left: 18px;
+  }
+  .sources li { font-size: 13px; line-height: 1.65; color: var(--ink-mid); }
+  .sources li a { color: var(--accent); text-decoration: none; word-break: break-all; }
+  .sources li a:hover { text-decoration: underline; }
+  .sources li:target { background: var(--bg-lift-2); outline: 6px solid var(--bg-lift-2); }
+
+  .editorial-note {
+    margin-top: 34px; padding: 20px 22px;
+    background: var(--bg-lift); border: 1px dashed var(--rule);
+    font-size: 13px; line-height: 1.8; color: var(--ink-mid);
+  }
+  .editorial-note + .editorial-note { margin-top: 14px; }
+  .editorial-note strong { color: var(--ink); }
+  .editorial-note.warn { border-color: var(--accent-2); border-style: solid; border-width: 1px 1px 1px 3px; }
+
+  .end-byline {
+    margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim);
+  }
+
+  @media (max-width: 900px) {
+    .section.body-grid { grid-template-columns: 1fr; gap: 18px; }
+    .section.body-grid > header { position: static; }
+    .container { padding: 44px 20px 80px; }
+  }
+</style>
+<script>
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+  window.addEventListener('DOMContentLoaded', function () {
+    var nav = performance.getEntriesByType('navigation');
+    if (nav.length > 0 && nav[0].type === 'reload' && location.hash) {
+      history.replaceState(null, '', location.pathname);
+      window.scrollTo(0, 0);
+    }
+  });
+</script>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="masthead">
+  <div class="brand">NEWSPAPER</div>
+  <div class="meta">Motorsport · Formula 1 · 2026.09</div>
+</header>
+
+<main class="container">
+
+  <div class="kicker">FORMULA 1 · 이탈리아 그랑프리 · 몬차</div>
+
+  <h1 class="headline"><svg class="flag-it" viewBox="0 0 3 2" role="img" aria-label="이탈리아"><rect x="0" width="1" height="2" fill="#008C45"/><rect x="1" width="1" height="2" fill="#F4F5F0"/><rect x="2" width="1" height="2" fill="#CD212A"/></svg>Monza에서 시작해<br>Monza로 돌아오기까지<br><em>6년</em></h1>
+
+  <div class="deck">
+    <p><span class="team-name"><span class="c-bwt">BWT</span> <span class="c-alpine">Alpine</span> <span class="c-f1">Formula One</span> <span class="c-team">Team</span></span> 소속 드라이버 피에르 가슬리가 9월 5일(현지시간)<br>
+<strong>Autodromo Nazionale Monza</strong>에서 열린 2026 이탈리아 그랑프리 예선에서 <br>
+<strong>1분 21초 786</strong>을 기록해 데뷔 후 첫 폴포지션을 차지했다.<br>
+<br>
+2020년 그가 F1 통산 유일한 우승을 거둔 바로 그 서킷이다. <br>
+우승 이후 <strong>6년</strong>을 기다려 얻은 커리어 첫 폴이며, <br>
+2번 그리드 조지 러셀(메르세데스)과의 격차는 <strong>0.060초</strong>였다.<br></p>
+  </div>
+
+  <div class="byline">
+    <span>Motorsport · F1 2026 Round Report</span>
+    <span>2026. 09. 06.</span>
+  </div>
+
+  <figure class="article-figure ig-embed">
+    <iframe src="https://www.instagram.com/p/Dc6PK4kDSYF/embed/captioned/"
+            title="Formula 1 공식 Instagram 게시물 — 피에르 가슬리 몬차 폴포지션"
+            loading="lazy" scrolling="no" frameborder="0"
+            allow="encrypted-media; picture-in-picture; web-share"></iframe>
+    <figcaption>
+      2026 이탈리아 그랑프리 예선에서 생애 첫 폴포지션을 차지한 피에르 가슬리.
+      <a href="https://www.instagram.com/p/Dc6PK4kDSYF/" target="_blank" rel="noopener">Formula 1 공식 Instagram(@f1) 게시물</a> 임베드 (2026.09.05 게시).<br>
+      <b>이미지는 Formula One World Championship Ltd.의 서버에서 직접 렌더링되며, 본 페이지는 이미지 파일을 복제·저장·전송하지 않는다.</b>
+      임베드가 차단된 환경에서는 위 링크로 원 게시물을 볼 수 있다.
+    </figcaption>
+  </figure>
+
+  <div class="lead">
+    몬차의 마지막 어택 랩이 끝나고 팀 무전이 열렸을 때, 가슬리는 짧게 소리쳤다. <br>
+"가자! 이걸 기다렸다(Let's go! Been waiting for that one!)."<sup class="ref"><a href="#src13">[13]</a></sup><br>
+<br>
+2017년 F1에 데뷔한 이래 처음으로 그리드 맨 앞자리를 확정한 순간이었다. <br>
+6년 전 같은 트랙에서 생애 첫 우승을 거뒀던 프랑스 드라이버가, <br>
+이번에는 이탈리아 모터스포츠의 심장인 <br>
+Autodromo Nazionale Monza의 그리드 꼭대기에서 다시 자신의 이름을 새겼다.<br>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="figure">1:21.786</div>
+      <div class="label">가슬리의 폴 랩타임<br>Q3 최종 어택</div>
+    </div>
+    <div class="stat">
+      <div class="figure">+0.060<span style="font-size:20px;">s</span></div>
+      <div class="label">2위 러셀과의 격차</div>
+    </div>
+    <div class="stat">
+      <div class="figure">0.500<span style="font-size:20px;">s</span></div>
+      <div class="label">1위~10위 전체 격차<br>(Q3 진출 10명)</div>
+    </div>
+    <div class="stat">
+      <div class="figure">2009</div>
+      <div class="label">이 팀 계보의 마지막 폴<br>(르노 · 알론소 · 헝가리)</div>
+    </div>
+  </div>
+
+  <article class="section feature">
+    <header>
+      <span class="section-num">/ 01</span>
+      <h2 class="section-title">2020년 9월, 그리고<br>2026년 9월의 몬차</h2>
+    </header>
+    <div>
+      <p>가슬리는 2020년 이탈리아 그랑프리에서 알파타우리 소속으로 우승했다. <br>
+그 기록은 현재까지 그의 F1 통산 유일한 그랑프리 승리로 남아 있다.<sup class="ref"><a href="#src09">[9]</a></sup> <br>
+그 뒤로 팀을 옮기고 시즌을 거듭하는 동안에도 폴 포지션은 손에 잡히지 않았다. <br>
+<br>
+그리고 6년이 지난 2026년 9월 5일, <br>
+같은 서킷에서 그는 커리어 첫 폴포지션을 손에 넣었다.<sup class="ref"><a href="#src01">[1]</a></sup><br>
+첫 우승과 첫 폴 포지션을 같은 트랙에서 6년 만에 달성한 것이다. <br>
+<br>
+가슬리 본인도 그 시간의 길이를 언급했다. <br>
+그는 예선 직후 "정말 대단했다. 믿을 수 없는 예선이었다. <br>
+너무 기쁘다. 폴포지션을 잡을 기회를 쫓아온 지 <strong>9년</strong>이 걸렸다"고 말했다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+      <div class="pullquote">
+        "믿기 힘든 순간이다. <br>
+F1에서의 첫 폴포지션이다. 오늘 일어난 일에 완전히 기뻐하고 있다 — 우리 모두 아직 실감이 잘 나지 않지만."<br>
+<br>
+"차의 느낌이 아주 좋았고, 나도 핸들에서 감각이 좋았다. 매 랩 조금씩 깎아내려 했을 뿐이다."
+        <cite>Pierre Gasly · Alpine · F1 공식 인터뷰 [3]</cite>
+      </div>
+    </div>
+  </article>
+
+  <figure class="article-figure photo-wide">
+    <img src="https://media.formula1.com/image/upload/t_16by9North/c_lfill,w_1320/q_auto/v1740000001/trackside-images/2026/F1_Grand_Prix_of_Italy___Qualifying/2293662417.webp"
+         srcset="https://media.formula1.com/image/upload/t_16by9North/c_lfill,w_880/q_auto/v1740000001/trackside-images/2026/F1_Grand_Prix_of_Italy___Qualifying/2293662417.webp 880w,
+                 https://media.formula1.com/image/upload/t_16by9North/c_lfill,w_1320/q_auto/v1740000001/trackside-images/2026/F1_Grand_Prix_of_Italy___Qualifying/2293662417.webp 1320w,
+                 https://media.formula1.com/image/upload/t_16by9North/c_lfill,w_1980/q_auto/v1740000001/trackside-images/2026/F1_Grand_Prix_of_Italy___Qualifying/2293662417.webp 1980w"
+         sizes="(max-width: 900px) 100vw, 1016px"
+         alt="파르크 페르메에서 알핀 A526 위에 올라서 손을 든 폴시터 피에르 가슬리. 옆에 1번 보드가 세워져 있다."
+         loading="lazy">
+    <figcaption>
+      예선 직후 파르크 페르메. 폴시터 자리를 가리키는 1번 보드 옆에서 가슬리가 자신의 A526 위에 올라섰다.<br>
+      <b>사진: Getty Images</b> — <a href="https://www.formula1.com/en/latest/article/its-been-nine-years-chasing-it-gasly-reacts-to-shock-pole-position-for-italian-grand-prix.1FAPJfIGhtgTCJ9U3FBPQE" target="_blank" rel="noopener">Formula 1 공식 기사</a><sup class="ref"><a href="#src14">[14]</a></sup> 게재 이미지. F1 서버 주소를 직접 참조한다.
+    </figcaption>
+  </figure>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 02</span>
+      <h2 class="section-title">Q1부터<br>시계 맨 위에 있었다</h2>
+    </header>
+    <div>
+      <p>징후는 예선 첫 세션부터 있었다. 가슬리는 Q1에서 1분 22초 612로 세션 선두에 올랐고,<br>
+팀 동료 프랑코 콜라핀토도 상위권에 자리했다.<sup class="ref"><a href="#src01">[1]</a></sup> <br>
+Q1에서는 유키 츠노다, 알렉스 알본, 발테리 보타스, <br>
+세르히오 페레스, 페르난도 알론소, 랜스 스트롤이 탈락했다.<sup class="ref"><a href="#src02">[2]</a></sup><br>
+<br>
+Q2 선두는 안드레아 키미 안토넬리(메르세데스)의 1분 21초 882였다. <br>
+이 세션 마지막 자리는 페라리 소속 루이스 해밀턴이 <br>
+가브리엘 보르톨레토를 <strong>0.001초</strong> 차로 제치고 가져갔다. <br>
+보르톨레토와 올리버 베어먼, 니코 휠켄베르크, 리암 로슨, <br>
+카를로스 사인츠, 에스테반 오콘이 여기서 걸러졌다.<sup class="ref"><a href="#src02">[2]</a></sup> <br>
+<br>
+Q3에서는 러셀이 1분 21초 929로 먼저 기준선을 그었다. <br>
+그러나 마지막 어택에서 가슬리가 1분 21초 786을 찍으며 순위를 뒤집었다.<sup class="ref"><a href="#src01">[1]</a></sup><sup class="ref"><a href="#src02">[2]</a></sup> <br>
+Q3 진출자 10명이 0.5초 안에 몰린 접전이었다.<sup class="ref"><a href="#src02">[2]</a></sup></p>
+
+      <figure class="article-figure">
+        <img src="https://media.formula1.com/image/upload/t_16by9Centre/c_lfill,w_1320/q_auto/v1740000001/trackside-images/2026/F1_Grand_Prix_of_Italy___Qualifying/2293664651.webp"
+             srcset="https://media.formula1.com/image/upload/t_16by9Centre/c_lfill,w_880/q_auto/v1740000001/trackside-images/2026/F1_Grand_Prix_of_Italy___Qualifying/2293664651.webp 880w,
+                     https://media.formula1.com/image/upload/t_16by9Centre/c_lfill,w_1320/q_auto/v1740000001/trackside-images/2026/F1_Grand_Prix_of_Italy___Qualifying/2293664651.webp 1320w,
+                     https://media.formula1.com/image/upload/t_16by9Centre/c_lfill,w_1980/q_auto/v1740000001/trackside-images/2026/F1_Grand_Prix_of_Italy___Qualifying/2293664651.webp 1980w"
+             sizes="(max-width: 900px) 100vw, 712px"
+             alt="이탈리아 국기가 칠해진 커브를 타고 넘는 피에르 가슬리의 알핀 A526"
+             loading="lazy">
+        <figcaption>
+          예선 내내 알핀은 빨랐다. 이탈리아 국기가 칠해진 커브를 넘는 가슬리의 A526.<br>
+          <b>사진: Getty Images</b> — Formula 1 공식 기사<sup class="ref"><a href="#src14">[14]</a></sup> 게재 이미지.
+        </figcaption>
+      </figure>
+
+      <div class="spec-heading">2026 Italian GP — Qualifying Top 10</div>
+      <div class="spec-block"><b>P    DRIVER                TEAM              TIME        GAP</b>
+──────────────────────────────────────────────────────────────
+<b>1    Pierre Gasly          Alpine            1:21.786      —</b>
+2    George Russell        Mercedes          1:21.846    +0.060
+3    Oscar Piastri         McLaren           1:21.966    +0.180
+4    Charles Leclerc       Ferrari           1:22.004    +0.218
+5    Lewis Hamilton        Ferrari           1:22.011    +0.225
+6    Max Verstappen        Red Bull          1:22.070    +0.284
+7    Kimi Antonelli        Mercedes          1:22.093    +0.307
+8    Franco Colapinto      Alpine            1:22.220    +0.434
+9    Lando Norris          McLaren           1:22.256    +0.470
+10   Arvid Lindblad        Racing Bulls      1:22.286    +0.500
+──────────────────────────────────────────────────────────────
+출처: FIA 공식 예선 리포트 [2]</div>
+    </div>
+  </article>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 03</span>
+      <h2 class="section-title">기록의 무게<br>1997년, 그리고 2009년</h2>
+    </header>
+    <div>
+      <p>가슬리의 첫 폴은 개인 기록에서 그치지 않는다. <br>
+AFP 집계에 따르면 이번 폴은 그의 <strong>191번째 그랑프리 출전</strong>에서 나왔으며, <br>
+프랑스 드라이버가 폴포지션을 차지한 것은 1997년 같은 몬차에서 장 알레시(베네통)가 기록한 이후 처음이다.<sup class="ref"><a href="#src09">[9]</a></sup><br>
+<br>
+팀 쪽 기록은 더 길다. <br>
+알핀의 전신인 르노가 마지막으로 폴을 잡은 것은 2009년 헝가리 그랑프리의 페르난도 알론소였다. <br>
+이번 폴은 <strong>알핀이라는 이름으로는 최초</strong>다.<sup class="ref"><a href="#src09">[9]</a></sup><br>
+<br>
+알핀은 이번 시즌 메르세데스 파워유닛을 쓴다.<sup class="ref"><a href="#src02">[2]</a></sup> <br>
+콜라핀토가 8위로 Q3에 함께 오르면서, 두 대 모두 최종 세션에 진출했다.<sup class="ref"><a href="#src02">[2]</a></sup></p>
+    </div>
+  </article>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 04</span>
+      <h2 class="section-title">페널티가 바꾼<br>최종 그리드</h2>
+    </header>
+    <div>
+      <p>예선 결과가 그대로 그리드가 되지는 않았다.<br>
+예선 3위 오스카 피아스트리(맥라렌)는 <br>
+Q2에서 리암 로슨의 주행을 방해한 것이 인정돼 <strong>3그리드 강등</strong> 처분을 받아 6번 그리드에서 출발한다.<sup class="ref"><a href="#src06">[6]</a></sup><br>
+<br>
+예선 7위 안토넬리는 메르세데스가 이번 대회에서 파워유닛을 교체하면서 페널티를 부여받아 <br>
+최후미로 밀려났다. <br>
+같은 사유로 알렉스 알본(윌리엄스)과 리암 로슨(레드불)도 그리드 맨 뒤로 이동했다.<sup class="ref"><a href="#src05">[5]</a></sup><sup class="ref"><a href="#src10">[10]</a></sup></p>
+
+      <div class="spec-heading">Adjusted Starting Grid</div>
+      <div class="spec-block"><b>P     DRIVER               TEAM            NOTE</b>
+──────────────────────────────────────────────────────────
+<b>1     Pierre Gasly         Alpine          POLE</b>
+2     George Russell       Mercedes
+3     Charles Leclerc      Ferrari
+4     Lewis Hamilton       Ferrari
+5     Max Verstappen       Red Bull
+6     Oscar Piastri        McLaren         <i>-3 (진로방해)</i>
+7     Franco Colapinto     Alpine
+8     Lando Norris         McLaren
+9     Arvid Lindblad       Racing Bulls
+10    Gabriel Bortoleto    Audi
+11    Ollie Bearman        Haas
+12    Nico Hulkenberg      Audi
+13    Carlos Sainz         Williams
+14    Esteban Ocon         Haas
+15    Yuki Tsunoda         Racing Bulls
+16    Valtteri Bottas      Cadillac
+17    Sergio Perez         Cadillac
+18    Fernando Alonso      Aston Martin
+19    Lance Stroll         Aston Martin
+20    Kimi Antonelli       Mercedes        <i>PU 교체 · 최후미</i>
+21    Alex Albon           Williams        <i>PU 교체 · 최후미</i>
+22    Liam Lawson          Red Bull        <i>PU 교체 · 최후미</i>
+──────────────────────────────────────────────────────────
+출처: The Race 최종 그리드 [5]</div>
+    </div>
+  </article>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 05</span>
+      <h2 class="section-title">업그레이드,<br>그리고 모나코의 앙금</h2>
+    </header>
+    <div>
+      <p>알핀의 갑작스러운 페이스에는 설명이 있다. <br>
+스티브 닐슨 알핀 매니징 디렉터는 "잔드보르트에서 피에르의 차에 큰 업그레이드를 넣었고, <br>
+여기서는 프랑코의 차에도 같은 것이 들어갔다"고 말했다. <br>
+그는 이어 "잔드보르트에서는 패키지에서 최선을 뽑아내지 못했다고 본다. 조금 별난 서킷이었다. <br>
+그런데 여기 와보니 차가 아주 잘 반응하고 있다"고 설명했다.<sup class="ref"><a href="#src04">[4]</a></sup><br>
+<br>
+닐슨은 가슬리를 "클래스 액트(class act)"라고 부르며 <br>
+"머신만 주면 그는 해낸다. 우리는 작년에 몇 번 그러지 못했고, <br>
+올해도 항상 가장 경쟁력 있는 머신을 주지는 못했다"고 덧붙였다.<sup class="ref"><a href="#src04">[4]</a></sup><br>
+<br>
+이 폴은 알핀에게 껄끄러운 한 주 뒤에 나왔다. <br>
+가슬리는 6월 모나코 그랑프리에서 얻은 포디엄을 최종적으로 잃었다. <br>
+피트레인 과속으로 부과된 5초 페널티 2건은 <br>
+포뮬러원 매니지먼트(FOM)의 피트레인 거리 측정 오류가 드러나면서<br>
+알핀의 재심 청구로 한 차례 철회됐으나, 맥라렌과 레드불이 항소해 <br>
+FIA 국제항소법원이 페널티를 다시 부과했다.<sup class="ref"><a href="#src07">[7]</a></sup><br>
+<br>
+판결 직후 알핀의 사실상 팀 수장인 플라비오 브리아토레는 <br>
+기자회견에서 판정단의 필리포 마르키노 판사를 겨냥해 "맥라렌과 매우 연결돼 있다"고 주장하며 <br>
+이를 "상당히 불공정하다"고 말했다.<sup class="ref"><a href="#src08">[8]</a></sup> 폴포지션은 그 발언 다음 날 나왔다.<br></p>
+    </div>
+  </article>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 06</span>
+      <h2 class="section-title">결승 전망<br>"우승을 노려보자"</h2>
+    </header>
+    <div>
+      <p>닐슨은 결승 목표를 숨기지 않았다. <br>
+"폴포지션은 예상하지 못했다. 그런데 우리가 폴이다. 내일 좋은 스타트, 좋은 전략, 좋은 피트스톱이 나온다면 <br>
+— 누가 알겠나. 우승을 노려보자."<sup class="ref"><a href="#src04">[4]</a></sup> <br>
+그는 알핀의 패키지가 "드래그가 크지 않아" 추월당하기 어려울 수 있다는 점도 언급했다.<sup class="ref"><a href="#src04">[4]</a></sup><br>
+<br>
+경쟁자들의 반응은 엇갈렸다. <br>
+러셀은 "오늘 폴포지션은 손에 닿는 거리였다. 마지막 런이 우리 쪽에서 조금 지저분했다"면서도 <br>
+"P2 출발도 내일을 위해 좋은 위치"라고 했다. <br>
+샤를 르클레르(페라리)는 "오늘 폴을 잡은 피에르에게 정말 기쁘다. <br>
+그는 대단한 일을 해냈고, 기회가 왔을 때 해냈다"고 말했다.<sup class="ref"><a href="#src03">[3]</a></sup><br>
+<br>
+막스 페르스타펜(레드불)은 예선 6위에 그쳤다. <br>
+그는 "FP3는 꽤 긍정적인 세션이었고 모든 것이 괜찮았다"면서도 <br>
+"예선은 좀 더 어려웠고 차가 많이 튀었다"고 말했다.<sup class="ref"><a href="#src03">[3]</a></sup><br>
+<br>
+챔피언십 구도도 변수다. <br>
+네덜란드 그랑프리 종료 시점 기준 드라이버 선두는 242점의 안토넬리이며,<sup class="ref"><a href="#src11">[11]</a></sup> <br>
+그가 이번 대회에서 최후미 출발을 하게 된 것은 추격자들에게 기회가 된다. <br>
+결승은 9월 6일(현지시간) 몬차에서 열린다.<br></p>
+    </div>
+  </article>
+
+  <div class="divider">▴ ▴ ▴</div>
+
+  <section class="sources">
+    <h3>Sources · 참고 출처</h3>
+    <ol>
+      <li id="src01">Formula 1 공식, "2026 Italian Grand Prix Qualifying report and highlights: Pierre Gasly charges to sensational maiden F1 pole at Monza over George Russell and Oscar Piastri" (2026.09.05) — <a href="https://www.formula1.com/en/latest/article/gasly-charges-to-sensational-maiden-f1-pole-at-monza-over-russell-and-piastri.4CKkkbvgmqL04ijMNBfuXF">formula1.com</a></li>
+      <li id="src02">FIA, "F1 – Gasly takes sensational first career pole at Monza ahead of Russell and Piastri" — <a href="https://www.fia.com/news/f1-gasly-takes-sensational-first-career-pole-monza-ahead-russell-and-piastri">fia.com</a></li>
+      <li id="src03">Formula 1 공식, "What the teams said – Qualifying at the 2026 Italian Grand Prix" — <a href="https://www.formula1.com/en/latest/article/what-the-teams-said-qualifying-in-italy-2026.5lH9hjhYdtN3xqlAu25I2D">formula1.com</a></li>
+      <li id="src04">Formula 1 공식, "Alpine targeting Monza win as team react to 'class act' Gasly claiming pole position" — <a href="https://www.formula1.com/en/latest/article/alpine-targeting-monza-win-as-team-react-to-class-act-gasly-claiming-pole-position.56KmlrAXqTURL57SepFqdj">formula1.com</a></li>
+      <li id="src05">The Race, "F1 2026 Italian Grand Prix starting grid with four penalties" — <a href="https://www.the-race.com/formula-1/f1-2026-italian-grand-prix-starting-grid-penalties/">the-race.com</a></li>
+      <li id="src06">RacingNews365, "Oscar Piastri handed damaging grid penalty for Italian Grand Prix" — <a href="https://racingnews365.com/oscar-piastri-handed-damaging-grid-penalty-for-italian-grand-prix">racingnews365.com</a></li>
+      <li id="src07">The Race, "Gasly stripped of Monaco podium after court decision" — <a href="https://www.the-race.com/formula-1/alpine-feels-unjustly-punished-as-gasly-loses-monaco-podium/">the-race.com</a></li>
+      <li id="src08">GPFans, "Controversial F1 team boss launches extraordinary McLaren attack after Monaco ruling" — <a href="https://www.gpfans.com/en/f1-news/1089863/f1-team-boss-monaco-grand-prix-result-alpine-mclaren-judge-flavio-briatore/">gpfans.com</a></li>
+      <li id="src09">AFP / France24, "Gasly a 'class act' says Alpine boss after Monza pole" (2026.09.05) — <a href="https://www.france24.com/en/live-news/20260905-gasly-a-class-act-says-alpine-boss-after-monza-pole">france24.com</a></li>
+      <li id="src10">PlanetF1, "2026 Italian Grand Prix – Qualifying F1 results (Monza)" — <a href="https://www.planetf1.com/news/f1-results-italian-grand-prix-2026-qualifying">planetf1.com</a></li>
+      <li id="src11">RacingNews365, "2026 F1 championship standings after Dutch Grand Prix" — <a href="https://racingnews365.com/2026-f1-championship-standings-after-dutch-grand-prix">racingnews365.com</a></li>
+      <li id="src12">Formula 1 공식 Instagram(@f1), "PIERRE GASLY TAKES POLE AT THE TEMPLE OF SPEED!!!" (2026.09.05 게시) — <a href="https://www.instagram.com/p/Dc6PK4kDSYF/">instagram.com/p/Dc6PK4kDSYF</a></li>
+      <li id="src13">AP 통신, "Pierre Gasly stuns Monza again with his first-ever pole position" (2026.09.05) — 팀 무전 인용 출처. CBC Sports 게재분 <a href="https://www.cbc.ca/sports/formula-1-italian-grand-prix-2026-9.7333867">cbc.ca</a></li>
+      <li id="src14">Formula 1 공식, "'It's been nine years chasing it!' – Gasly reacts to shock pole position for Italian Grand Prix" (2026.09.05) — 본문 트랙사이드 사진 2장의 게재처 — <a href="https://www.formula1.com/en/latest/article/its-been-nine-years-chasing-it-gasly-reacts-to-shock-pole-position-for-italian-grand-prix.1FAPJfIGhtgTCJ9U3FBPQE">formula1.com</a></li>
+    </ol>
+
+    <div class="editorial-note">
+      <strong>편집자 노트 — 출처 원칙.</strong> <br>
+이 기사의 모든 수치·인용·기록은 위 목록의 원문을 직접 확인한 뒤 작성함. <br>
+나무위키·위키백과 등 위키류 문서는 인용·참고 모두 사용하지 않음. <br>
+랩타임과 세션 결과는 F1 공식 및 FIA 리포트를, 최종 그리드는 페널티 확정 이후 보도를, 통산 기록(191번째 출전, 1997년 알레시 이후 프랑스 드라이버 폴, 2009년 이후 팀 첫 폴)은 AFP 집계를 각각 근거로 삼았음.
+    </div>
+
+    <div class="editorial-note">
+      <strong>사진 1 — 공식 게시물 임베드.</strong> 상단 POLE 그래픽은 Formula 1 공식 Instagram 계정(@f1)이 2026년 9월 5일 게시한 원본 게시물을 임베드한 것이다.<sup class="ref"><a href="#src12">[12]</a></sup> 이미지는 Formula One World Championship Ltd.의 서버에서 직접 렌더링되며, 본 페이지는 이미지 파일을 복제·저장·전송하지 않는다. 원 게시물이 삭제되거나 비공개로 전환되면 이 자리도 함께 비워진다.<br><br>
+      <strong>사진 2·3 — 트랙사이드 사진.</strong> 파르크 페르메 사진과 주행 사진은 Formula 1 공식 기사에 게재된 <strong>Getty Images</strong> 촬영본으로,<sup class="ref"><a href="#src14">[14]</a></sup> F1의 이미지 서버(media.formula1.com) 원본 주소를 그대로 참조한다. 이 역시 본 페이지가 파일을 복제·저장하지 않는다. 다만 인스타그램 임베드와 달리 플랫폼이 제공하는 공식 임베드 방식이 아니라 이미지 주소 직접 참조이므로, 원 서버 정책이 바뀌면 표시되지 않을 수 있다. 저작권은 Getty Images 및 촬영자에게 있다.<br><br>
+      <strong>텍스트.</strong> 경기 결과·랩타임·순위 같은 사실 정보 자체는 저작권 보호 대상이 아니며, 인용문은 출처를 밝힌 짧은 인용 범위로 사용했다. 원문 기사의 문장 구조나 표현을 그대로 옮기지는 않았다.
+    </div>
+
+    <div class="end-byline">
+      Newspaper · Motorsport Desk · 2026.09.06
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
