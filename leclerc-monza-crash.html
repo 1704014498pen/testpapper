@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파라볼리카에서 충돌하다 - 르클레르 리타이어, 안토넬리 최후미 우승</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     PARABOLICA RED — 몬차 나이트(다크) 팔레트의 변주.
+     베이스·구조 클래스는 f1/2026_italian_gp_gasly_pole.html 과 동일하고
+     액센트만 알핀 블루/핑크 → 페라리 레드/마샬 옐로 로 교체했다.
+     구조가 같으므로 crw-build.sh 로 그대로 게시판 변환이 된다.
+     ───────────────────────────────────────────────────────────── */
+  :root {
+    --bg:        #1c202a;
+    --bg-lift:   #252b38;
+    --bg-lift-2: #2c3342;
+    --ink:       #eceef3;
+    --ink-mid:   #a8aebd;
+    --ink-dim:   #767d8e;
+    --rule:      #363e4f;
+    --accent:    #ff5a4d;   /* 페라리 레드 계열 — 다크 배경에서 읽히도록 명도를 올림 */
+    --accent-2:  #ffc043;   /* 마샬 옐로 계열 */
+    --accent-dim:#ff9d92;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard Variable', 'Noto Serif KR', serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+  }
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: .5;
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(255,90,77,.10), transparent 52%),
+      radial-gradient(circle at 84% 74%, rgba(255,192,67,.06), transparent 52%);
+  }
+  .masthead {
+    border-bottom: 2px solid var(--rule);
+    padding: 20px 32px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    flex-wrap: wrap; gap: 10px;
+    background: linear-gradient(180deg, #222834 0%, var(--bg) 100%);
+  }
+  .masthead .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 15px; letter-spacing: .22em; text-transform: uppercase;
+  }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .14em; color: var(--ink-dim); text-transform: uppercase;
+  }
+  .container { max-width: 1080px; margin: 0 auto; padding: 60px 32px 100px; }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--accent-2); margin-bottom: 22px;
+  }
+  .headline {
+    --flag-adv: 1.21em;
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900; font-size: clamp(36px, 6.2vw, 72px); line-height: 1.14;
+    letter-spacing: -.02em; margin-bottom: 30px;
+    padding-left: var(--flag-adv);
+  }
+  .headline em { font-style: normal; color: var(--accent-dim); }
+  /* 지역표시자 이모지(🇮🇹)는 Windows 크롬에서 "IT"로 렌더링된다 → 인라인 SVG */
+  .flag-it {
+    width: .99em; height: .66em;
+    margin-left: calc(-1 * var(--flag-adv));
+    margin-right: .22em;
+    position: relative; top: .015em;
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 2px;
+  }
+  .deck {
+    border-left: 3px solid var(--accent);
+    padding-left: 22px; margin-bottom: 34px;
+    font-family: 'Noto Serif KR', serif; font-style: italic;
+    font-size: 18.5px; line-height: 1.8; color: var(--ink-mid);
+  }
+  .deck p + p { margin-top: 14px; }
+  .deck strong { color: var(--ink); font-style: normal; font-weight: 700; }
+
+  /* 팀 명칭 — 다크 배경에서 얇은 이탤릭이 안 읽혀 정체+볼드로 세운다 */
+  .team-name { font-style: normal; font-weight: 700; }
+  .c-ferrari  { color: #FF2D1A; }
+  .c-scuderia { color: #FFD24A; }
+  .c-mclaren  { color: #FF8000; }
+  .c-merc     { color: #4ED2C0; }
+  .c-redbull  { color: #7FA3FF; }
+  .c-alpine   { color: #56AAFF; }
+  .c-team     { color: #FFFFFF; }
+
+  .byline {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    padding: 13px 0; margin-bottom: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim);
+  }
+
+  /* 속보 배지 — 결승 진행 중 작성된 기사임을 본문 최상단에 고정 표기 */
+  .live-banner {
+    border: 1px solid var(--accent); border-left-width: 3px;
+    background: var(--bg-lift);
+    padding: 15px 20px; margin-bottom: 34px;
+    font-family: 'Pretendard Variable', sans-serif;
+    font-size: 13.5px; line-height: 1.75; color: var(--ink-mid);
+  }
+  .live-banner b { color: var(--accent-dim); font-weight: 700; }
+
+  figure.article-figure { margin: 0 0 44px; }
+  figure.article-figure img {
+    width: 100%; height: auto; display: block;
+    border: 1px solid var(--rule);
+  }
+  figure.article-figure figcaption {
+    margin-top: 11px; font-size: 12.5px; line-height: 1.6; color: var(--ink-dim);
+    font-family: 'Pretendard Variable', sans-serif;
+    border-left: 2px solid var(--accent); padding-left: 12px;
+  }
+  figure.article-figure figcaption b { color: var(--ink-mid); font-weight: 600; }
+
+  .lead { font-family: 'Noto Serif KR', serif; font-size: 19px; line-height: 1.85; margin-bottom: 44px; }
+  .lead::first-letter {
+    float: left; font-size: 78px; line-height: .82; font-weight: 900;
+    padding: 6px 14px 0 0; color: var(--accent);
+  }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule); margin-bottom: 60px;
+  }
+  .stat { background: var(--bg-lift); padding: 24px 20px; }
+  /* 통계 타일이 5개이고 "P19 → P1" 처럼 화살표가 든 값이 있어, 33px 로는 두 줄로 접힌다.
+     한 줄에 들어가도록 28px 로 낮추고 자간을 더 좁힌다. */
+  .stat .figure {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 28px; line-height: 1.15; color: var(--accent-dim); letter-spacing: -.03em;
+    white-space: nowrap;
+  }
+  /* "P3 → RETIRED" 는 12자라 28px 로는 타일 폭(약 162px)을 넘는다.
+     이 타일만 낮춰 한 줄을 유지한다. */
+  .stat .figure.long { font-size: 21px; letter-spacing: -.04em; }
+  .stat .label {
+    margin-top: 10px; font-size: 12.5px; line-height: 1.55; color: var(--ink-mid);
+    font-family: 'Pretendard Variable', sans-serif;
+  }
+
+  .section { border-top: 1px solid var(--rule); padding-top: 34px; margin-bottom: 62px; }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .2em; color: var(--accent-2); display: block; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Noto Serif KR', serif; font-weight: 700; line-height: 1.25;
+    letter-spacing: -.015em; color: var(--ink);
+  }
+  .section.feature .section-title { font-size: clamp(29px, 4.4vw, 50px); margin-bottom: 28px; }
+  .section.body-grid { display: grid; grid-template-columns: 260px 1fr; gap: 44px; }
+  .section.body-grid > header { position: sticky; top: 26px; align-self: start; }
+  .section.body-grid .section-title { font-size: 25px; }
+  /* min-width:0 이 없으면 white-space:pre 인 .spec-block 이 1fr 컬럼을 밀어낸다 */
+  .section.body-grid > div { padding-top: 4px; min-width: 0; }
+  .section p { font-family: 'Noto Serif KR', serif; font-size: 16.5px; line-height: 1.9; }
+  .section p + p { margin-top: 17px; }
+  .section strong { color: var(--accent-dim); font-weight: 700; }
+
+  .spec-heading {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ink-dim); margin: 30px 0 10px;
+  }
+  .spec-block {
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.75;
+    background: var(--bg-lift); border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+    padding: 20px 22px; white-space: pre; overflow-x: auto; color: var(--ink-mid);
+  }
+  .spec-block b { color: var(--accent-dim); font-weight: 700; }
+  .spec-block i { color: var(--accent-2); font-style: normal; }
+
+  /* 순위표는 아스키(white-space:pre)로 그리면 안 된다. 한글이 JetBrains Mono 에 없어
+     폴백 폰트로 렌더되면서 열이 어긋나고, 게시판은 2칸 이상 연속 공백을 삭제한다.
+     <table> 은 게시판 필터를 통과하므로 진짜 표로 만든다 (README 게시판 필터 계약 참조). */
+  table.standings {
+    width: 100%; border-collapse: collapse;
+    background: var(--bg-lift);
+    border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+    font-family: 'Pretendard Variable', sans-serif; font-size: 13.5px;
+  }
+  table.standings th {
+    text-align: left; padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    letter-spacing: .16em; text-transform: uppercase; font-weight: 500;
+    color: var(--ink-dim); border-bottom: 1px solid var(--rule);
+  }
+  table.standings td {
+    padding: 8px 14px; color: var(--ink-mid);
+    border-bottom: 1px solid var(--bg-lift-2);
+  }
+  table.standings tr:last-child td { border-bottom: 0; }
+  table.standings td.pos {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    color: var(--accent-dim); width: 1%; white-space: nowrap; text-align: right;
+  }
+  table.standings td.drv { color: var(--ink); }
+  table.standings td.tm { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  table.standings tr.ret td { color: var(--accent); }
+  table.standings tr.ret td.pos, table.standings tr.ret td.drv { color: var(--accent); font-weight: 700; }
+  .table-note {
+    font-family: 'Pretendard Variable', sans-serif; font-size: 12.5px;
+    color: var(--ink-dim); line-height: 1.6; margin-top: 11px;
+  }
+
+  /* FIA 스튜어드 결정문 — 원문 그대로 보여주는 문서 블록.
+     white-space:pre 를 쓰지 않는다. 게시판이 2칸 이상 연속 공백을 삭제하기 때문에
+     정렬을 공백에 의존하면 붕괴한다 (README 게시판 필터 계약 참조). */
+  .fia-notice {
+    margin: 22px 0; padding: 18px 20px;
+    background: var(--bg-lift);
+    border: 1px solid var(--rule); border-left: 3px solid var(--accent-2);
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7;
+    color: var(--ink-mid);
+  }
+  .fia-notice .fia-head {
+    font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--ink-dim); margin-bottom: 9px;
+  }
+  .fia-notice b { color: var(--accent-2); font-weight: 700; }
+
+  /* 팀 무전 로그. FIA 결정문 블록과 같은 골격이되 액센트를 레드로 바꿔 구분한다. */
+  .radio-log {
+    margin: 22px 0; padding: 18px 20px;
+    background: var(--bg-lift);
+    border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+  }
+  .radio-log .who {
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--accent-2); margin-bottom: 6px;
+  }
+  .radio-log .msg {
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7;
+    color: var(--ink);
+  }
+  .radio-log .msg + .who { margin-top: 18px; }
+
+  .pullquote {
+    margin: 34px 0; padding: 26px 28px;
+    background: var(--bg-lift-2);
+    border-top: 2px solid var(--accent); border-bottom: 1px solid var(--rule);
+    font-family: 'Noto Serif KR', serif; font-size: 19.5px; line-height: 1.75;
+  }
+  .pullquote cite {
+    display: block; margin-top: 14px; font-style: normal;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    letter-spacing: .12em; color: var(--ink-dim); text-transform: uppercase;
+  }
+
+  sup.ref { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+  /* 지정이 없으면 브라우저 기본 파란색(#0000EE)이 나와 다크 배경에서 안 읽힌다 */
+  main.container a { color: var(--accent); text-decoration: none; }
+  main.container a:hover { text-decoration: underline; }
+  sup.ref a { color: var(--accent); text-decoration: none; padding: 0 1px; }
+  sup.ref a:hover { text-decoration: underline; }
+
+  .reporter {
+    text-align: center; margin: 66px 0 0;
+    font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 700;
+    letter-spacing: .06em; color: var(--ink-mid);
+  }
+  .divider { text-align: center; color: var(--accent-2); letter-spacing: 1em; margin: 18px 0 66px; font-size: 13px; }
+
+  .sources { border-top: 2px solid var(--rule); padding-top: 30px; }
+  .sources h3 {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--ink-dim); margin-bottom: 20px;
+  }
+  .sources ol {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px 34px; padding-left: 18px;
+  }
+  .sources li { font-size: 13px; line-height: 1.65; color: var(--ink-mid); }
+  .sources li a { color: var(--accent); text-decoration: none; word-break: break-all; }
+  .sources li a:hover { text-decoration: underline; }
+  .sources li:target { background: var(--bg-lift-2); outline: 6px solid var(--bg-lift-2); }
+
+  .editorial-note {
+    margin-top: 34px; padding: 20px 22px;
+    background: var(--bg-lift); border: 1px dashed var(--rule);
+    font-size: 13px; line-height: 1.8; color: var(--ink-mid);
+  }
+  .editorial-note + .editorial-note { margin-top: 14px; }
+  .editorial-note strong { color: var(--ink); }
+  .editorial-note.warn { border-color: var(--accent); border-style: solid; border-width: 1px 1px 1px 3px; }
+
+  .end-byline {
+    margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim);
+  }
+
+  @media (max-width: 900px) {
+    .section.body-grid { grid-template-columns: 1fr; gap: 18px; }
+    .section.body-grid > header { position: static; }
+    .container { padding: 44px 20px 80px; }
+  }
+</style>
+<script>
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+  window.addEventListener('DOMContentLoaded', function () {
+    var nav = performance.getEntriesByType('navigation');
+    if (nav.length > 0 && nav[0].type === 'reload' && location.hash) {
+      history.replaceState(null, '', location.pathname);
+      window.scrollTo(0, 0);
+    }
+  });
+</script>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="masthead">
+  <div class="brand">NEWSPAPER</div>
+  <div class="meta">Motorsport · Formula 1 · 2026.09</div>
+</header>
+
+<main class="container">
+
+  <div class="kicker">FORMULA 1 · 이탈리아 그랑프리 결승 · 몬차</div>
+
+  <h1 class="headline"><svg class="flag-it" viewBox="0 0 3 2" role="img" aria-label="이탈리아"><rect x="0" width="1" height="2" fill="#008C45"/><rect x="1" width="1" height="2" fill="#F4F5F0"/><rect x="2" width="1" height="2" fill="#CD212A"/></svg>파라볼리카에서 충돌하다<br><em>잃어버린 홈 레이스</em></h1>
+
+  <div class="deck">
+    <p><span class="team-name"><span class="c-scuderia">Scuderia</span> <span class="c-ferrari">Ferrari</span></span>의 샤를 르클레르가 9월 6일(현지시간)
+<strong>Autodromo Nazionale Monza</strong>에서 열린 2026 이탈리아 그랑프리 결승
+<strong>2랩</strong> 파라볼리카에서 리어를 잃고 <strong>타이어 방호벽</strong>에 충돌했다.<br>
+<br>
+방호벽이 무너져 <strong>레드플래그</strong>가 선언됐다.<br>
+르클레르는 스스로 차에서 내렸고,<br>
+예방 차원의 검사에서 <strong>이상 없다는 판정</strong>을 받았다.<br>
+3그리드에서 출발한 <strong>페라리의 홈 레이스</strong>가 두 바퀴 만에 끝났다.<br>
+<br>
+그리고 이 레이스는, <strong>최후미에서 출발한 이탈리아인</strong>의 우승으로 끝났다.<br>
+몬차에서 이탈리아 드라이버가 이긴 것은 <strong>1966년 이후 처음</strong>이다.</p>
+  </div>
+
+  <div class="byline">
+    <span>Motorsport · F1 2026 Round 16 · Monza</span>
+    <span>2026. 09. 06.</span>
+  </div>
+
+  <p class="lead">두 바퀴였다. 폴포지션의 피에르 가슬리를 뒤로하고 3그리드에서 출발한 샤를 르클레르의<br> 2026 이탈리아 그랑프리는 파라볼리카 바깥쪽 타이어 방호벽 앞에서 멈췄다.<br><br> 티포시로 가득 찬 몬차에서, 페라리의 붉은 차 한 대가 레이스 시작 5분 만에 사라졌다.<br> 그로부터 한 시간 뒤, 같은 관중석은 전혀 다른 이유로 일어섰다.</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="figure">LAP 2</div>
+      <div class="label">르클레르의 사고 랩. F1 공식 표기 기준<sup class="ref"><a href="#src02">[2]</a></sup></div>
+    </div>
+    <div class="stat">
+      <div class="figure long">P3 → RETIRED</div>
+      <div class="label">르클레르. 3그리드에서 출발해 완주하지 못했다<sup class="ref"><a href="#src03">[3]</a></sup><sup class="ref"><a href="#src01">[1]</a></sup></div>
+    </div>
+    <div class="stat">
+      <div class="figure">P19 → P1</div>
+      <div class="label">키미 안토넬리. 최후미에서 출발해 우승<sup class="ref"><a href="#src06">[6]</a></sup><sup class="ref"><a href="#src01">[1]</a></sup></div>
+    </div>
+    <div class="stat">
+      <div class="figure">P1 → P7</div>
+      <div class="label">피에르 가슬리. 생애 첫 폴에서 7위로 마무리<sup class="ref"><a href="#src01">[1]</a></sup></div>
+    </div>
+    <div class="stat">
+      <div class="figure">404,000</div>
+      <div class="label">주말 누적 관중. 몬차 역대 최다<sup class="ref"><a href="#src01">[1]</a></sup></div>
+    </div>
+  </div>
+
+  <article>
+
+  <section class="section feature">
+    <span class="section-num">01 — 사고</span>
+    <h2 class="section-title">고속 우코너에서 리어가 돌았다</h2>
+
+    <p>사고는 몬차의 마지막 코너 <strong>파라볼리카</strong>에서 일어났다.<br> F1 공식은 르클레르가 <strong>오스카 피아스트리</strong>(<span class="team-name"><span class="c-mclaren">McLaren</span></span>)와 자리를 다투던 중<br> “<strong>큰 스냅</strong>”이 발생해 파라볼리카 <strong>탈출부</strong>에서 크게 충돌했다고 기록했다.<sup class="ref"><a href="#src02">[2]</a></sup></p>
+
+    <p>중계 화면으로 본 과정은 이랬다.<br> 앞차의 <strong>더티에어</strong>가 차량에 작용해 다운포스가 낮아진 상태에서, 그립을 잡으려 트랙 끝까지 차를 몰았다.<br> 앞타이어는 트랙 끝 라인에 정확히 닿고 멈췄지만, <strong>좌측 리어 타이어</strong>가 초록색으로 도색된 트랙 바깥 구역의 <strong>배수구</strong>에 닿았다.<br> 리어 스냅이 발생하기 직전 찍힌 최고 속도는 <strong>시속 234km</strong>였다 — <strong>비공식 텔레메트리 계측치</strong>다.<br> 그 결과 차는 그대로 그래블 트랩을 가로질러 <strong>타이어 방호벽</strong>에 크게 부딪혔다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <figure class="article-figure">
+      <img src="https://cdn.racingnews365.com/production/2026/Screenshot-2026-09-06-150707.png"
+           alt="파라볼리카 바깥 그래블 트랩에서 타이어 연기를 뿜으며 미끄러지는 르클레르의 페라리. 트랙 위로 다른 차들이 지나가고 있다.">
+      <figcaption>
+        <b>2026년 9월 6일 15시 07분, 파라볼리카.</b> 리어를 잃은 페라리가 트랙 바깥 그래블 트랩에서 타이어 연기를 뿜으며 미끄러지고 있다. 트랙 가장자리의 흰 선과 그 바깥의 <b>초록색 도색 구역</b>, 커브, 그래블이 차례로 보인다.<sup class="ref"><a href="#src01">[1]</a></sup><br><br>
+        <b>영상 저작권 Formula One World Championship Ltd.</b> F1 중계 화면 갈무리본이며, <b>갈무리와 게재는 RacingNews365</b>가 했다.<sup class="ref"><a href="#src10">[10]</a></sup> 본 페이지는 이미지를 복제·저장하지 않고 해당 서버의 주소를 그대로 참조한다.
+      </figcaption>
+    </figure>
+
+    <div class="pullquote">
+      앞타이어는 트랙 끝 라인에 정확히 닿고 멈췄다. 넘어간 것은 좌측 리어 하나였다.
+      리어가 돌기 직전 찍힌 속도는 <strong>시속 234km</strong>(비공식 계측). 그 속도에서 차가 방향을 잃었고, 그대로 타이어 방호벽으로 날아갔다.
+      <cite>본지 확인 · 2026.09.06 몬차</cite>
+    </div>
+  </section>
+
+  <section class="section body-grid">
+    <header>
+      <span class="section-num">02 — 복선</span>
+      <h2 class="section-title">1랩부터 어긋났다</h2>
+    </header>
+    <div>
+      <p>사고 전 두 바퀴 동안 르클레르의 레이스는 이미 흔들리고 있었다.</p>
+
+      <p>출발 직후 첫 시케인 탈출부에서 르클레르와 팀메이트 <strong>루이스 해밀턴</strong>이 근접했다.<br> 르클레르가 해밀턴을 <strong>자갈밭으로 밀어냈고</strong>, 해밀턴은 <strong>10위까지</strong> 밀려났다.<sup class="ref"><a href="#src01">[1]</a></sup><br> 무전에서 해밀턴은 이렇게 말했다.</p>
+
+      <div class="pullquote">
+        “샤를이 나를 밀어냈어!”
+        <cite>Lewis Hamilton · 팀 무전<sup class="ref"><a href="#src01">[1]</a></sup></cite>
+      </div>
+
+      <p>FIA는 이 상황을 심의했다. 스튜어드가 게시한 결정문은 다음과 같다.</p>
+
+      <div class="fia-notice">
+        <div class="fia-head">FIA Stewards · Decision</div>
+        Turn 2 incident involving Cars 16 (LEC) and 44 (HAM) — <b>Reviewed, No Further Investigation</b>
+      </div>
+
+      <p>2번 코너에서 벌어진 16번(르클레르)과 44번(해밀턴)의 접촉 건을 검토했고,<br> <strong>추가 조사는 하지 않는다</strong>는 뜻이다. 두 대 모두 페널티는 없었다.<sup class="ref"><a href="#src05">[5]</a></sup></p>
+
+      <p>이후 르클레르는 <strong>막스 페르스타펜</strong>(<span class="team-name"><span class="c-redbull">Red Bull</span></span>)에게 자리를 내주고 4위로 내려앉았다.<sup class="ref"><a href="#src01">[1]</a></sup><br> 그리고 그 4위를 피아스트리로부터 지키던 중 파라볼리카에서 사고가 났다.<br> 팀메이트를 자갈밭으로 밀어낸 지 두 바퀴 만이었다.</p>
+    </div>
+  </section>
+
+  <section class="section body-grid">
+    <header>
+      <span class="section-num">03 — 레드플래그</span>
+      <h2 class="section-title">방호벽을 다시 쌓아야 했다</h2>
+    </header>
+    <div>
+      <p>충돌 직후 <strong>세이프티카</strong>가 투입됐고, 남은 차들이 3랩째를 도는 사이 <strong>레드플래그</strong>가 선언됐다.<br> 출발은 현지시간 15시 03분, 사고는 15시 07분, 레드플래그는 <strong>15시 08분</strong>이었다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+      <p>경기를 멈춘 이유는 잔해 수거만이 아니었다.<br> 충격으로 <strong>타이어 방호벽 자체가 무너져</strong> 다시 쌓아야 했다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+      <p class="spec-heading">레드플래그 시점 순위</p>
+      <table class="standings">
+        <thead>
+          <tr><th>POS</th><th>Driver</th><th>Team</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="pos">1</td><td class="drv">조지 러셀</td><td class="tm">Mercedes</td></tr>
+          <tr><td class="pos">2</td><td class="drv">피에르 가슬리</td><td class="tm">Alpine</td></tr>
+          <tr><td class="pos">3</td><td class="drv">막스 페르스타펜</td><td class="tm">Red Bull</td></tr>
+          <tr><td class="pos">4</td><td class="drv">프랑코 콜라핀토</td><td class="tm">Alpine</td></tr>
+          <tr><td class="pos">5</td><td class="drv">오스카 피아스트리</td><td class="tm">McLaren</td></tr>
+          <tr><td class="pos">6</td><td class="drv">랜도 노리스</td><td class="tm">McLaren</td></tr>
+          <tr><td class="pos">7</td><td class="drv">아비드 린드블라드</td><td class="tm">Racing Bulls</td></tr>
+          <tr><td class="pos">8</td><td class="drv">루이스 해밀턴</td><td class="tm">Ferrari</td></tr>
+          <tr><td class="pos">9</td><td class="drv">올리버 베어만</td><td class="tm">Haas</td></tr>
+          <tr><td class="pos">10</td><td class="drv">에스테반 오콘</td><td class="tm">Haas</td></tr>
+          <tr class="ret"><td class="pos">RET</td><td class="drv">샤를 르클레르</td><td class="tm">Ferrari</td></tr>
+        </tbody>
+      </table>
+      <p class="table-note">레드플래그 선언 시점 중계 화면 표기 기준.<sup class="ref"><a href="#src01">[1]</a></sup> 이때 키미 안토넬리는 <strong>12위</strong>였다.</p>
+    </div>
+  </section>
+
+  <section class="section body-grid">
+    <header>
+      <span class="section-num">04 — 드라이버</span>
+      <h2 class="section-title">걸어 나왔지만,<br>메디컬센터로</h2>
+    </header>
+    <div>
+      <p>F1 공식은 “르클레르가 레드플래그가 나오는 사이 <strong>스스로 차에서 내렸다</strong>”고 적었다.<sup class="ref"><a href="#src02">[2]</a></sup></p>
+
+      <p>그러나 그는 트랙 밖으로 걸어 나간 뒤, 안전한 곳에 앉아 숨을 골랐다. 현장에 도착한 의무진의 확인을 받고 <strong>메디컬카</strong>에 올라 <strong>FIA 메디컬센터</strong>로 이송됐다. <strong>예방 차원</strong>의 검사였다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+      <p>결과는 <strong>이상 없음</strong>이었다. 부상 없이 괜찮다는 판정을 받았다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+      <p>레이스는 <strong>15시 39분</strong> 재개됐다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+    </div>
+  </section>
+
+  <section class="section body-grid">
+    <header>
+      <span class="section-num">05 — 페라리</span>
+      <h2 class="section-title">홈에서 잃은 것</h2>
+    </header>
+    <div>
+      <p>몬차는 페라리의 홈 서킷이다. 르클레르는 예선에서 <strong>3그리드</strong>를 확보했고, 팀메이트 해밀턴이 바로 뒤 4그리드였다.<sup class="ref"><a href="#src03">[3]</a></sup> 페라리는 두 대를 앞줄 가까이에 세워둔 채 결승을 맞았다.</p>
+
+      <p>두 바퀴 뒤, 한 대는 방호벽에 박혔고 다른 한 대는 8위로 밀려 있었다.<sup class="ref"><a href="#src01">[1]</a></sup> 해밀턴은 이후 순위를 회복해 <strong>6위</strong>로 완주했다. 페라리가 홈 그랑프리에서 가져간 것은 그것이 전부였다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+    </div>
+  </section>
+
+  <section class="section feature">
+    <span class="section-num">06 — 결말</span>
+    <h2 class="section-title">60년 만에, 이탈리아인이<br>몬차에서 이겼다</h2>
+
+    <p>르클레르가 사라진 레이스는, 또 다른 이탈리아인의 것이 됐다.</p>
+
+    <p><strong>키미 안토넬리</strong>(<span class="team-name"><span class="c-merc">Mercedes</span></span>)는 파워유닛 교체 페널티로<sup class="ref"><a href="#src03">[3]</a></sup> <strong>19그리드</strong>에서 출발했다.<sup class="ref"><a href="#src06">[6]</a></sup><br> 르클레르의 사고로 레드플래그가 나왔을 때 그는 12위였다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p class="spec-heading">엇갈린 타이어 전략</p>
+
+    <p>승부는 레드플래그 직후 갈렸다. 두 메르세데스가 <strong>각각 다른 전략</strong>을 택한 것이다.<br> 첫 세 바퀴를 미디엄으로 달린 선두 <strong>조지 러셀</strong>이 <strong>하드</strong>로 갈아 끼웠고, 하드로 출발했던 안토넬리는 <strong>미디엄</strong>을 골랐다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p>변수는 <strong>랜스 스트롤</strong>이었다. 유압 계통 문제로 트랙사이드에 차를 세우면서 <strong>버추얼 세이프티카(VSC)</strong>가 발동됐다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p>VSC가 걸린 순간, 두 메르세데스의 간격은 <strong>0.483초</strong>였다. 사실상 붙어 있었다. 타이어 나이도 같았다.<br> 러셀의 하드도, 안토넬리의 미디엄도 <strong>24랩</strong>을 쓴 상태였다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p>여기서 문제가 하나 생긴다. 두 대를 한꺼번에 부르면 <strong>더블 스택</strong>이 된다.<br> 뒤차는 피트박스 앞에서 앞차의 작업이 끝날 때까지 멈춰 서 있어야 한다. 0.5초도 안 되는 간격이라면 그 대기 시간이 고스란히 손해다.</p>
+
+    <p>팀은 둘을 갈랐다.</p>
+
+    <div class="radio-log">
+      <div class="who">Mercedes → Kimi Antonelli</div>
+      <div class="msg">“Okay, Kimi, so we will be boxing. If it goes to VSC ending at pit entry, then we will stay out. Otherwise, you're in.”</div>
+      <div class="who">George Russell · 팀 무전</div>
+      <div class="msg">“Staying out, staying out.”</div>
+    </div>
+
+    <p><strong>러셀은 들어가지 않았다.</strong> 하드는 아직 수명이 남아 있었고 VSC도 곧 풀릴 참이었다.<br> 지금 피트로 들어가 위험을 떠안느니, <strong>하드 한 세트로 남은 거리를 전부 끌고 가는</strong> 쪽을 택했다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p><strong>안토넬리는 들어갔다.</strong> 그의 미디엄도 24랩을 썼다. 수명이 완전히 끝난 것은 아니었지만<br> <strong>저속 코너에서 언더스티어</strong>가 나기 시작한 상태였다.<br> 러셀이 하드로 해낸 것처럼 <strong>미디엄 한 세트로 50랩을 버티는 것은 무리</strong>였다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p>대신 팀은 무전에서 보듯 <strong>조건을 걸어</strong> 타이밍을 붙잡았다. VSC가 피트 진입로 부근에서 풀리면 그대로 나가고, 아니면 들어온다.<br> 정지 시간을 내주는 대신 <strong>마지막 구간의 페이스</strong>를 산 것이다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <table class="standings">
+      <thead>
+        <tr><th>Driver</th><th>1스틴트 (레드플래그 전)</th><th>2스틴트</th><th>3스틴트</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="drv">키미 안토넬리</td><td class="tm">하드 · 3랩</td><td class="tm">미디엄 · 25랩</td><td class="tm">미디엄 · 25랩</td></tr>
+        <tr><td class="drv">조지 러셀</td><td class="tm">미디엄 · 3랩</td><td class="tm">하드 · 50랩</td><td class="tm">—</td></tr>
+      </tbody>
+    </table>
+    <p class="table-note">중계 타이밍 화면의 타이어 이력 표기 기준.<sup class="ref"><a href="#src01">[1]</a></sup> 러셀은 레드플래그 이후 <strong>한 번도 피트에 들어가지 않았다</strong>.</p>
+
+    <p>팀 무전에서는 이미 <strong>경기 마지막 부근에서 접전</strong>이 예상되고 있었다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p class="spec-heading">그 선택은 얼마를 벌었나 — 본지 계산</p>
+
+    <p>안토넬리의 피트 작업은 <strong>29랩</strong>에 이뤄졌다.<br> 그 랩 그의 기록은 <strong>1분 49초 136</strong>, 러셀은 <strong>1분 38초 375</strong>였다. 한 바퀴에 <strong>10.761초</strong>를 잃었다.<br> 앞선 28랩에서 피트 진입으로 잃은 2.962초와 VSC 발동 시점의 간격 0.483초를 더하면, <strong>피트 직후 두 차의 격차는 약 14.2초</strong>가 된다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p>30랩부터 체커기까지 <strong>24바퀴</strong> 동안 안토넬리는 러셀에게서 <strong>18.160초</strong>를 되찾았다. 랩당 <strong>0.757초</strong>다.<br> 여기서 피트 직후 격차를 빼면 <strong>3.954초</strong> — 실제 최종 마진 3.857초와 <strong>0.097초</strong> 차이다. 계산이 결과와 맞물린다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p class="spec-heading">피트 손실 세 가지</p>
+
+    <table class="standings">
+      <thead>
+        <tr><th>구분</th><th>시간</th><th>내용</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="drv">피트레인 통과</td><td class="tm">24.963초</td><td class="tm">진입선에서 이탈선까지 절대 시간</td></tr>
+        <tr><td class="drv">그린플래그 실효 손실</td><td class="tm">23.410초</td><td class="tm">평상시 피트인의 순손실</td></tr>
+        <tr><td class="drv">VSC 실효 손실</td><td class="tm">14.206초</td><td class="tm">안토넬리가 실제로 치른 값</td></tr>
+      </tbody>
+    </table>
+    <p class="table-note">그린플래그 값은 같은 레이스에서 <strong>VSC 없이 피트인한 리암 로슨</strong>의 기록으로 환산했다. 진입 시 격차 15.6초, 이탈 후 45.180초로 순손실 29.580초. 여기서 프런트윙 교체로 길어진 정지 시간(8.67초)을 표준 2.5초로 맞추면 <strong>23.410초</strong>가 된다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p>즉 <strong>VSC가 아껴준 시간은 9.204초</strong>다. 그린플래그 손실의 <strong>39%</strong>에 해당한다.</p>
+
+    <div class="pullquote">
+      만약 VSC 없이 그린플래그에 들어갔다면 안토넬리는 <strong>23.9초</strong> 뒤에서 다시 출발했을 것이다.<br>
+      24바퀴 동안 되찾을 수 있는 18.160초로는 모자란다. <strong>5.7초 차이로 졌다.</strong>
+      <cite>본지 계산 · 랩타임 실측 기반</cite>
+    </div>
+
+    <p>아예 들어가지 않았다면 어땠을까. 두 차의 타이어 나이가 <strong>똑같이 24랩</strong>이니 페이스 우위가 생기지 않는다.<br> 게다가 안토넬리 쪽은 미디엄에 이미 언더스티어가 나던 상태였다. 러셀을 넘을 근거가 없다.</p>
+
+    <p><strong>이길 수 있는 경로는 하나뿐이었고, 그것이 VSC 피트인이었다.</strong></p>
+
+    <p class="spec-heading">마지막 몇 바퀴 — 자갈밭을 스치고</p>
+
+    <p>실제로 그렇게 됐다. 새 타이어의 안토넬리가 러셀을 따라잡았고, <strong>1번 코너</strong>에서 정면으로 붙었다.<br> 그는 <strong>레이싱 라인 바깥으로 나가</strong> 추월을 시도했다. 그 순간 프런트가 밀리는 <strong>언더스티어</strong>가 나며 차가 <strong>자갈밭으로 빠졌다</strong>.<br> 몇 시간 전 <strong>티포시의 희망</strong>이었던 르클레르가 사라진 그 서킷에서,<br> <strong>마지막 희망</strong>인 이탈리아인의 우승이 통째로 날아갈 뻔한 장면이었다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <figure class="article-figure">
+      <img src="img/monza_2026_antonelli_gravel.jpg"
+           alt="몬차 1번 코너. 왼쪽 메르세데스가 자갈밭으로 나가며 흙먼지를 뿜고 있고, 오른쪽 메르세데스는 트랙 위를 달리고 있다.">
+      <figcaption>
+        <b>1번 코너, 그 순간.</b> 왼쪽이 <b>안토넬리</b>다. 자갈밭으로 나가며 흙먼지를 뿜고 있다. 오른쪽 트랙 위를 그대로 지나가는 쪽이 <b>러셀</b>이다. 두 대 모두 메르세데스이지만 에어박스 위 <b>T캠 색</b>으로 구분된다 — 노란색이 안토넬리다.<br> 그는 여기서 빠져나온 뒤 러셀을 넘었다.<sup class="ref"><a href="#src01">[1]</a></sup><br><br>
+        <b>영상 저작권 Formula One World Championship Ltd.</b> F1 중계 화면을 본지가 갈무리한 것으로, 보도 목적의 인용 범위에서 사용했다.
+      </figcaption>
+    </figure>
+
+    <p>그가 나간 <strong>1번 코너 아웃라인</strong>에는 <strong>마블</strong>(marbles·타이어 찌꺼기)이 두껍게 깔려 있었다.<br> 레이스가 진행되는 동안 타이어에서 떨어져 나온 고무 알갱이가 레이싱 라인 바깥에 쌓인 것이다.<br> <strong>언더스티어가 나기 충분한 환경이었다.</strong><sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <figure class="article-figure">
+      <img src="img/monza_2026_t1_marbles.jpg"
+           alt="몬차 1번 코너 아웃라인. 레이싱 라인 바깥 노면에 타이어 찌꺼기(마블)가 두껍게 깔려 있고, 그 위로 메르세데스 한 대가 지나고 있다.">
+      <figcaption>
+        <b>같은 1번 코너, 노면.</b> 화면 앞쪽과 코너 바깥 노면에 검은 알갱이가 빽빽하다. 레이스 내내 쌓인 <b>마블</b>이다. 레이싱 라인 안쪽은 깨끗하고, 바깥으로 나갈수록 두꺼워지는 것이 보인다.<br> 사진 속 차량도 <b>안토넬리</b>다(에어박스 위 노란 T캠).<br> 자갈밭으로 나간 바로 그 프레임은 아니고, <b>같은 구간의 노면 상태를 보여주는 컷</b>이다.<sup class="ref"><a href="#src01">[1]</a></sup><br><br>
+        <b>영상 저작권 Formula One World Championship Ltd.</b> F1 중계 화면을 본지가 갈무리한 것으로, 보도 목적의 인용 범위에서 사용했다.
+      </figcaption>
+    </figure>
+
+    <p>그는 <strong>빠져나왔다</strong>. 그리고 러셀을 넘었다. 최종 격차는 <strong>3.857초</strong>였다. 안토넬리는 이날 <strong>레이스 패스티스트랩</strong>(1분 23초 504)도 함께 가져갔다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p class="spec-heading">마지막 일곱 바퀴의 격차</p>
+
+    <table class="standings">
+      <thead>
+        <tr><th>Lap</th><th>ANT</th><th>RUS</th><th>격차</th><th></th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="pos">47</td><td class="tm">1:24.128</td><td class="tm">1:24.861</td><td class="tm">0.871 뒤</td><td class="tm"></td></tr>
+        <tr><td class="pos">48</td><td class="tm">1:24.572</td><td class="tm">1:25.276</td><td class="tm">0.167 뒤</td><td class="drv">사거리 안으로</td></tr>
+        <tr><td class="pos">49</td><td class="tm">1:28.582</td><td class="tm">1:27.975</td><td class="tm">0.774 뒤</td><td class="drv">자갈밭 이탈</td></tr>
+        <tr><td class="pos">50</td><td class="tm">1:24.124</td><td class="tm">1:26.206</td><td class="tm">1.308 앞</td><td class="drv">추월</td></tr>
+        <tr><td class="pos">51</td><td class="tm">1:24.398</td><td class="tm">1:24.390</td><td class="tm">1.300 앞</td><td class="tm"></td></tr>
+        <tr><td class="pos">52</td><td class="tm">1:24.305</td><td class="tm">1:24.977</td><td class="tm">1.972 앞</td><td class="tm"></td></tr>
+        <tr><td class="pos">53</td><td class="tm">1:23.504</td><td class="tm">1:25.486</td><td class="tm">3.954 앞</td><td class="drv">체커기</td></tr>
+      </tbody>
+    </table>
+    <p class="table-note">랩타임은 중계 화면 실측,<sup class="ref"><a href="#src01">[1]</a></sup> 격차는 그 랩타임을 누적한 <strong>본지 계산</strong>이다. 49랩에 안토넬리가 평소보다 <strong>4.5초</strong> 느린 것이 자갈밭으로 나간 순간이며, 러셀도 같은 랩에 2.8초를 잃었다. 53랩의 계산값 3.954초는 실제 최종 마진 3.857초와 0.097초 차이다.</p>
+
+    <div class="pullquote">
+      P19에서 출발한 차가 가장 먼저 체커기를 받았다.
+      마지막 바퀴에 자갈밭을 한 번 스치고도.<br>
+      그것도 몬차에서, 이탈리아인이.
+      <cite>본지 확인 · 2026.09.06 몬차</cite>
+    </div>
+
+    <p class="spec-heading">알핀 — 더블 포디움이 보였다</p>
+
+    <p>레드플래그 재출발 이후 알핀은 두 대를 <strong>상위권</strong>에 올려놓고 있었다. 폴시터 가슬리가 앞에 있었고, <strong>프랑코 콜라핀토</strong>가 <strong>3위</strong>까지 올라왔다.<br> 알핀의 <strong>더블 포디움</strong>이 눈앞에 보이던 순간이었다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p>그 꿈은 <strong>레스모</strong>에서 무너졌다. 콜라핀토가 미끄러져 자갈밭으로 나갔고, 순위는 <strong>15위</strong>까지 떨어졌다. 그는 9위로 완주했다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p>가슬리도 지키지 못했다. 전날 생애 첫 폴포지션을 따낸 그는<sup class="ref"><a href="#src04">[4]</a></sup> <strong>여섯 계단 떨어진 7위</strong>로 레이스를 마쳤다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p class="spec-heading">60년</p>
+
+    <p>몬차는 이번 대회를 나흘 앞둔 <strong>9월 2일</strong>, 레이스 디렉터 관제실에 명판 하나를 걸었다.<br> <strong>로도비코 스카르피오티</strong>가 1966년 페라리로 홈 그랑프리에서 우승한 지 <strong>60년</strong>이 된 것을 기념하는 명판이었다.<br> 제막식에는 그의 아들과 손자가 함께 섰다.<sup class="ref"><a href="#src09">[9]</a></sup></p>
+
+    <p>그 명판이 기념한 1966년의 승리는, 몬차 서킷이 스스로 적었듯 <strong>“이탈리아 드라이버가 홈 그랑프리에서 거둔 마지막 승리”</strong>였다.<sup class="ref"><a href="#src09">[9]</a></sup><br> 스카르피오티에게는 그것이 F1 통산 <strong>유일한</strong> 우승이기도 했다.<sup class="ref"><a href="#src08">[8]</a></sup></p>
+
+    <p>명판을 건 지 나흘 뒤, 그 문장의 유효기간이 끝났다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p class="spec-heading">그리고 관중석</p>
+
+    <p>이날 몬차는 주말 누적 <strong>40만 4000명</strong>을 기록했다. 이 서킷 <strong>역대 최다</strong>다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p>직전 기록은 2025년의 <strong>36만 9041명</strong>이었다. 당시 몬차는 이를 두고 <strong>이탈리아에서 열린 어떤 스포츠 행사보다 많은 인원</strong>이라고 밝혔고, 2024년의 33만 5000명보다 10% 이상 늘어난 수치라고 했다.<sup class="ref"><a href="#src07">[7]</a></sup><br> 그 기록이 한 해 만에 다시 <strong>3만 5000명 가까이</strong> 늘었다.</p>
+
+    <p>그 관중석이 두 번 반응했다. 두 바퀴째 페라리가 사라졌을 때 한 번, 그리고 <strong>이탈리아인이 체커기를 받았을 때</strong> 한 번.</p>
+
+    <p class="spec-heading">최종 순위 — 전체</p>
+
+    <table class="standings">
+      <thead>
+        <tr><th>POS</th><th>Driver</th><th>Team</th><th>Grid</th><th>Gap</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="pos">1</td><td class="drv">키미 안토넬리</td><td class="tm">Mercedes</td><td class="tm">19</td><td class="tm">—</td></tr>
+        <tr><td class="pos">2</td><td class="drv">조지 러셀</td><td class="tm">Mercedes</td><td class="tm">2</td><td class="tm">+3.857</td></tr>
+        <tr><td class="pos">3</td><td class="drv">막스 페르스타펜</td><td class="tm">Red Bull</td><td class="tm">5</td><td class="tm">+14.718</td></tr>
+        <tr><td class="pos">4</td><td class="drv">랜도 노리스</td><td class="tm">McLaren</td><td class="tm">8</td><td class="tm">+19.056</td></tr>
+        <tr><td class="pos">5</td><td class="drv">오스카 피아스트리</td><td class="tm">McLaren</td><td class="tm">6</td><td class="tm">+19.253</td></tr>
+        <tr><td class="pos">6</td><td class="drv">루이스 해밀턴</td><td class="tm">Ferrari</td><td class="tm">4</td><td class="tm">+24.655</td></tr>
+        <tr><td class="pos">7</td><td class="drv">피에르 가슬리</td><td class="tm">Alpine</td><td class="tm">1</td><td class="tm">+27.351</td></tr>
+        <tr><td class="pos">8</td><td class="drv">아비드 린드블라드</td><td class="tm">Racing Bulls</td><td class="tm">9</td><td class="tm">+45.136</td></tr>
+        <tr><td class="pos">9</td><td class="drv">프랑코 콜라핀토</td><td class="tm">Alpine</td><td class="tm">7</td><td class="tm">+47.353</td></tr>
+        <tr><td class="pos">10</td><td class="drv">유키 츠노다</td><td class="tm">Racing Bulls</td><td class="tm">15</td><td class="tm">+58.187</td></tr>
+        <tr><td class="pos">11</td><td class="drv">가브리엘 보르톨레토</td><td class="tm">Audi</td><td class="tm">10</td><td class="tm">+65.187</td></tr>
+        <tr><td class="pos">12</td><td class="drv">니코 휠켄베르크</td><td class="tm">Audi</td><td class="tm">12</td><td class="tm">+66.187</td></tr>
+        <tr><td class="pos">13</td><td class="drv">카를로스 사인츠</td><td class="tm">Williams</td><td class="tm">13</td><td class="tm">+74.117</td></tr>
+        <tr><td class="pos">14</td><td class="drv">리암 로슨</td><td class="tm">Red Bull</td><td class="tm">PL</td><td class="tm">+75.609</td></tr>
+        <tr><td class="pos">15</td><td class="drv">올리버 베어만</td><td class="tm">Haas</td><td class="tm">11</td><td class="tm">+78.958</td></tr>
+        <tr><td class="pos">16</td><td class="drv">에스테반 오콘</td><td class="tm">Haas</td><td class="tm">14</td><td class="tm">1랩 뒤</td></tr>
+        <tr><td class="pos">17</td><td class="drv">알렉산더 알본</td><td class="tm">Williams</td><td class="tm">20</td><td class="tm">1랩 뒤</td></tr>
+        <tr><td class="pos">18</td><td class="drv">세르히오 페레스</td><td class="tm">Cadillac</td><td class="tm">17</td><td class="tm">1랩 뒤</td></tr>
+        <tr><td class="pos">19</td><td class="drv">발테리 보타스</td><td class="tm">Cadillac</td><td class="tm">16</td><td class="tm">2랩 뒤</td></tr>
+        <tr class="ret"><td class="pos">20</td><td class="drv">랜스 스트롤</td><td class="tm">Aston Martin</td><td class="tm">18</td><td class="tm">리타이어</td></tr>
+        <tr class="ret"><td class="pos">21</td><td class="drv">페르난도 알론소</td><td class="tm">Aston Martin</td><td class="tm">PL</td><td class="tm">리타이어</td></tr>
+        <tr class="ret"><td class="pos">22</td><td class="drv">샤를 르클레르</td><td class="tm">Ferrari</td><td class="tm">3</td><td class="tm">리타이어 · 1랩 주행</td></tr>
+      </tbody>
+    </table>
+    <p class="table-note">순위는 중계 화면 표기 기준이며,<sup class="ref"><a href="#src01">[1]</a></sup> 그리드는 F1 공식 출발 그리드 기준이다.<sup class="ref"><a href="#src06">[6]</a></sup> <strong>PL</strong> 은 피트레인 출발. 완주하지 못한 3명도 중계 화면이 표기한 순번 그대로 실었다.</p>
+
+    <p class="spec-heading">마지막 장면</p>
+
+    <p>체커기가 내려간 뒤, 관중석에서 노래가 번졌다. <strong>리키 에 포베리</strong>(Ricchi e Poveri)의 <strong>「Sarà perché ti amo」</strong>였다.<br> 40만 4000명이 채운 몬차가 한 곡으로 묶였다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <p>제목을 옮기면 <strong>“아마 내가 너를 사랑하기 때문일 거야”</strong>다.</p>
+
+    <p>붉은 차 한 대가 두 바퀴 만에 사라진 서킷이었다. 그래도 관중은 끝까지 남아, 그 노래를 불렀다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+    <figure class="article-figure">
+      <img src="img/monza_2026_crowd_f1tv.jpg"
+           alt="체커기 이후 몬차의 메인 스트레이트를 가득 메운 관중. 이탈리아 국기와 페라리 깃발, 붉은 연막이 보인다.">
+      <figcaption>
+        <b>2026년 9월 6일, 몬차.</b> 레이스가 끝난 뒤 관중이 트랙으로 쏟아져 나왔다. 이탈리아 국기와 페라리 깃발, 붉은 연막이 메인 스트레이트를 덮었다. 오른쪽 스크린에는 우승자의 통산 승수가 떠 있다.<br> 관중석에서는 리키 에 포베리의 「Sarà perché ti amo」가 흘렀다.<sup class="ref"><a href="#src01">[1]</a></sup><br><br>
+        <b>영상 저작권 Formula One World Championship Ltd.</b> F1 TV 중계 화면을 본지가 갈무리한 것으로, 보도 목적의 인용 범위에서 사용했다. 화면의 F1·F1 TV 로고는 지우지 않고 원본 그대로 두었다.
+      </figcaption>
+    </figure>
+  </section>
+
+  </article>
+
+  <div class="reporter">조국영 기자</div>
+  <div class="divider">▴ ▴ ▴</div>
+
+  <section class="sources">
+    <h3>Sources · 참고 출처</h3>
+    <ol>
+      <li id="src01"><strong>본지 확인</strong> — 2026년 9월 6일 이탈리아 그랑프리 결승, F1 공식 중계 <strong>실시간 시청</strong>. 이 기사의 <strong>주 출처</strong>다. 사고 진행 과정, 1랩 해밀턴 접촉과 팀 무전, 페르스타펜의 추월, 세이프티카·레드플래그와 그 시각, 레드플래그 시점 순위, 르클레르의 하차와 FIA 메디컬센터 이송·검사 결과, 재출발, <strong>VSC 시점의 두 메르세데스 간격(0.483초)과 타이어 사용 랩 수, 양 드라이버의 피트 관련 팀 무전</strong>, 안토넬리의 추월과 우승, 콜라핀토의 레스모 이탈, 주말 누적 관중, 최종 순위 — 이상 중계 화면과 무전으로 직접 확인한 사실.</li>
+      <li id="src02"><strong>F1 공식</strong>, "2026 Italian Grand Prix: Race red-flagged after Leclerc crashes out on Lap 2" (2026.09.06 13:29 UTC) — 사고 랩(2랩)·파라볼리카 탈출부·“big snap”·자력 하차의 근거 — <a href="https://www.formula1.com/en/video/2026-Italian-Grand-Prix-Race-red-flagged-after-Leclerc-crashes-out-on-Lap-2.1875589142520524961">formula1.com</a></li>
+      <li id="src03"><strong>F1 공식</strong>, "OFFICIAL 2026 ITALIAN GRAND PRIX GRID: Who starts where in Italy as Kimi Antonelli, Oscar Piastri, Liam Lawson, Alex Albon and Fernando Alonso take penalties" (2026.09.06) — 공식 출발 그리드와 페널티 내역 — <a href="https://www.formula1.com/en/latest/article/official-grid-who-starts-where-for-the-italian-grand-prix-2026.18oNflCZ6vMKCASJEMERzi">formula1.com</a></li>
+      <li id="src04"><strong>F1 공식</strong>, "2026 Italian Grand Prix Qualifying report and highlights: Pierre Gasly charges to sensational maiden F1 pole at Monza over George Russell and Oscar Piastri" (2026.09.05) — 가슬리의 생애 첫 폴포지션 — <a href="https://www.formula1.com/en/latest/article/gasly-charges-to-sensational-maiden-f1-pole-at-monza-over-russell-and-piastri.4CKkkbvgmqL04ijMNBfuXF">formula1.com</a></li>
+      <li id="src05"><strong>FIA 스튜어드 결정문</strong> — “Turn 2 incident involving Cars 16 (LEC) and 44 (HAM) — Reviewed, No Further Investigation”. 2026 이탈리아 그랑프리 결승 중 게시, 중계 화면 표기로 확인. FIA 결정 문서 목록 — <a href="https://www.fia.com/documents/championships/fia-formula-one-world-championship-14/season/season-2026-2072">fia.com</a></li>
+      <li id="src06"><strong>F1 공식 결과</strong>, "FORMULA 1 PIRELLI GRAN PREMIO D'ITALIA 2026 — STARTING GRID" — 1~20그리드 전체와 피트레인 출발자. 안토넬리 19그리드의 근거 — <a href="https://www.formula1.com/en/results/2026/races/1293/italy/starting-grid">formula1.com</a></li>
+      <li id="src07"><strong>몬차 서킷 공식</strong>(Autodromo Nazionale Monza), "The GP of Italy in history: never so many people at a sporting event in Italy" (2025.09.07) — <strong>2025년</strong> 주말 누적 <strong>369,041명</strong>, 2024년 <strong>335,000명</strong>, 그리고 이탈리아에서 열린 스포츠 행사 사상 최다라는 서술의 근거 — <a href="https://www.monzanet.it/en/the-gp-of-italy-in-history-never-so-many-people-at-a-sporting-event-in-italy/">monzanet.it</a></li>
+      <li id="src08"><strong>F1 공식</strong>, "From one-off victors to World Champions — The 15 Italian F1 race winners Kimi Antonelli now joins" (2026.03.21) — 스카르피오티(F1 공식 표기 Ludovico)의 1966년 홈 그랑프리 우승이 통산 유일한 승리였다는 근거 — <a href="https://www.formula1.com/en/latest/article/from-one-off-victors-to-world-champions-the-15-italian-f1-race-winners.7Itail3xoxO69cftQ7VbTf">formula1.com</a></li>
+      <li id="src09"><strong>몬차 서킷 공식</strong>(Autodromo Nazionale Monza), "A plaque in the race control room to commemorate 60 years since Scarfiotti's victory" (2026.09.02) — 60주년 기념 명판, 제막식 참석자, 그리고 1966년 우승이 <strong>“이탈리아 드라이버가 홈 그랑프리에서 거둔 마지막 승리”</strong>라는 서술의 근거 — <a href="https://www.monzanet.it/en/una-targa-in-direzione-gara-per-ricordare-i-60-anni-della-vittoria-di-scarfiotti/">monzanet.it</a></li>
+      <li id="src10">RacingNews365, "Huge Charles Leclerc crash brings out Italian GP red flag" (2026.09.06) — <strong>본문 첫 사진의 게재처</strong>. F1 중계 화면 갈무리본이며, 본지는 이미지를 복제하지 않고 이 매체의 서버 주소를 참조한다. <strong>기사의 사실 서술에는 일절 사용하지 않았고</strong>, 사진의 출처 표기 용도로만 인용한다 — <a href="https://racingnews365.com/huge-charles-leclerc-crash-brings-out-italian-gp-red-flag">racingnews365.com</a></li>
+    </ol>
+
+
+    <div class="editorial-note">
+      <strong>출처 원칙 — F1·FIA 공식과 본지 확인만.</strong><br>
+      이 기사는 <strong>두 갈래 출처만</strong> 쓴다. ① <strong>본지가 F1 공식 중계를 실시간으로 시청하며 직접 확인한 사실</strong><sup class="ref"><a href="#src01">[1]</a></sup>과 ② <strong>공식 발표</strong> — F1·FIA<sup class="ref"><a href="#src02">[2]</a></sup><sup class="ref"><a href="#src03">[3]</a></sup><sup class="ref"><a href="#src04">[4]</a></sup><sup class="ref"><a href="#src05">[5]</a></sup><sup class="ref"><a href="#src06">[6]</a></sup><sup class="ref"><a href="#src08">[8]</a></sup>와 대회장인 몬차 서킷<sup class="ref"><a href="#src07">[7]</a></sup><sup class="ref"><a href="#src09">[9]</a></sup>이다. 예외는 둘이다. ⓐ 리어 스냅 직전 속도(시속 234km)는 <strong>비공식 텔레메트리 계측치</strong>여서, 본문과 아래 노트에 <strong>비공식임을 명시</strong>하고 실었다. ⓑ 본문 첫 사진은 <strong>RacingNews365가 갈무리·게재한 F1 중계 화면</strong>이며,<sup class="ref"><a href="#src10">[10]</a></sup> 이 매체는 <strong>사진의 출처 표기 용도로만</strong> 인용했고 사실 서술에는 쓰지 않았다. 그 밖의 일반 매체 보도는 인용·참고 모두 사용하지 않았으며, 나무위키·위키백과 등 위키류 문서도 쓰지 않았다. 경기 결과·순위 같은 사실 정보 자체는 저작권 보호 대상이 아니며, 인용문은 출처를 밝힌 짧은 인용 범위로 사용했다.
+    </div>
+
+
+    <div class="editorial-note">
+      <strong>안토넬리의 언더스티어 — 어디까지가 사실인가.</strong><br>
+      본문이 <strong>사실로 적은 것</strong>은 셋이다. ⓐ 레이싱 라인 바깥으로 나가 추월을 시도했고, ⓑ 프런트가 밀리며 자갈밭으로 빠졌으며, ⓒ 그가 나간 구역에 <strong>마블이 두껍게 깔려 있었다</strong>. 셋 다 중계 화면으로 확인했고, ⓒ는 본문에 사진으로 함께 실었다.<sup class="ref"><a href="#src01">[1]</a></sup><br>
+      다만 <strong>“마블을 밟은 것이 언더스티어의 직접 원인”</strong>이라고까지는 단정하지 않았다. 본문의 “언더스티어가 나기 충분한 환경이었다”는 <strong>노면 상태에 대한 평가</strong>이지 원인 규명이 아니다. 팀이나 본인의 설명, 온보드 텔레메트리 분석이 공개되면 그때 확정한다.
+    </div>
+
+
+    <div class="editorial-note">
+      <strong>본문에서 제외한 것 — 확인 실패 또는 출처 기준 미달.</strong><br>
+      ① <strong>속도 수치 — 성격을 구분해 둔다.</strong> 본문의 <strong>시속 234km</strong>는 <strong>비공식 텔레메트리 계측치</strong>이며, F1·FIA가 발표한 공식 수치가 아니다. 이 기사의 출처 원칙(공식 발표 + 본지 확인) <strong>바깥에 있는 유일한 수치</strong>여서 본문에도 “비공식”임을 함께 적었다. 또한 이 값은 <strong>리어 스냅 직전의 속도</strong>이지 <strong>방호벽에 닿는 순간의 속도가 아니다</strong>. 둘은 다른 값이므로 섞어 쓰지 않았다. 충돌 순간의 속도는 공식 계측치가 없고, 여러 매체가 시속 200km에서 257km 사이로 서로 다르게 추정했으나 공식 출처가 아니어서 싣지 않았다.<br>
+      ② <strong>페라리의 공식 입장</strong>: 르클레르가 FIA 메디컬센터에서 <strong>이상 없다는 판정</strong>을 받은 것까지는 확인했으나,<sup class="ref"><a href="#src01">[1]</a></sup> 팀이 사고 경위나 차량 손상에 대해 낸 공식 발표는 F1·FIA 공식 채널에서 확인되지 않았다.<br>
+      ③ <strong>사고 경위에 대한 르클레르 본인의 발언</strong>: 기사 작성 시점까지 공식 채널에 게재되지 않았다.<br>
+      ④ <strong>파라볼리카 사고 자체에 대한 스튜어드 심의</strong>: 출발 시 2번 코너 접촉 건은 결정문이 게시됐으나,<sup class="ref"><a href="#src05">[5]</a></sup> 르클레르의 단독 사고에 대한 별도 심의가 열렸는지는 확인되지 않았다.
+    </div>
+
+
+    <div class="editorial-note">
+      <strong>사진 4장 — 모두 F1 중계 화면.</strong><br>
+      ① <strong>파라볼리카에서 미끄러지는 르클레르의 페라리</strong> — <strong>RacingNews365</strong>가 갈무리해 자사 기사에 게재한 것으로, 본지는 이미지를 복제하지 않고 그 서버 주소를 참조한다.<sup class="ref"><a href="#src10">[10]</a></sup><br>
+      ②③④는 <strong>본지가 직접 갈무리</strong>했다.<sup class="ref"><a href="#src01">[1]</a></sup> ② 안토넬리가 1번 코너에서 자갈밭으로 나가는 순간, ③ 같은 코너 아웃라인의 마블(역시 안토넬리의 주행 장면이며, 자갈밭으로 나간 프레임 자체가 아니라 <strong>노면 상태를 보여주기 위한 컷</strong>이다), ④ 레이스 종료 후 트랙으로 쏟아진 관중. 기사 작성 시점에 F1 공식의 결승 갤러리와 몬차 서킷의 결승 사진이 <strong>모두 게재 전</strong>이어서, 공식 배포 이미지를 쓸 수 없었다.<br><br>
+      영상 저작권은 <strong>Formula One World Championship Ltd.</strong>에 있다. 본지는 이를 <strong>보도 목적의 인용</strong>으로 사용했다. 구체적으로 ⓐ 본문 서술에 직접 대응하는 <strong>정지화면 3장</strong>으로 한정했고, ⓑ 중계 영상을 정지시켜 갈무리한 뒤 <strong>피사체 중심으로 크롭</strong>했으며 — ③은 크롭 후에도 <strong>F1·F1 TV 로고가 그대로 남아 있고</strong>, ①②는 크롭 범위에서 로고 영역이 빠졌다 — <strong>워터마크를 지우거나 덮는 편집은 하지 않았다</strong>. ⓒ 원본보다 큰 해상도로 키우지 않았고, ⓓ 각 사진에 저작권자를 표기했다. 동영상·GIF 형태로는 쓰지 않는다.<br><br>
+      이 기사 외의 별도 배포·재활용은 하지 않으며, <strong>권리자의 요청이 있으면 즉시 내린다</strong>. F1 또는 몬차 서킷이 같은 장면의 <strong>공식 이미지나 임베드</strong>를 게재하면 그쪽으로 교체한다.
+    </div>
+
+    <div class="end-byline">
+      Newspaper · Motorsport Desk · 2026.09.06
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
