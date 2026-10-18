@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>바르셀로나에서 바르셀로나로 — 제네시스 첫 WEC 폴포지션</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     MAGMA NIGHT — 다크 웜 톤 팔레트
+     몬차 나이트(f1/2026_italian_gp_gasly_pole.html)와 구조 클래스를
+     공유하고, 베이스를 푸른 회색 → 따뜻한 갈색 계열로,
+     액센트를 GMR-001 리버리의 마그마 오렌지/레드로 교체했다.
+     ───────────────────────────────────────────────────────────── */
+  :root {
+    --bg:        #1f1b17;
+    --bg-lift:   #292420;
+    --bg-lift-2: #322b25;
+    --ink:       #f0ece6;
+    --ink-mid:   #b5aa9c;
+    --ink-dim:   #80766a;
+    --rule:      #3e362e;
+    --accent:    #ff7b2e;   /* 마그마 오렌지 — 리버리 베이스 */
+    --accent-2:  #e8452f;   /* 리버리 패턴 레드 */
+    --accent-dim:#ffac73;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard Variable', 'Noto Serif KR', serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+  }
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: .5;
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(255,123,46,.09), transparent 52%),
+      radial-gradient(circle at 84% 74%, rgba(232,69,47,.07), transparent 52%);
+  }
+  .masthead {
+    border-bottom: 2px solid var(--rule);
+    padding: 20px 32px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    flex-wrap: wrap; gap: 10px;
+    background: linear-gradient(180deg, #282218 0%, var(--bg) 100%);
+  }
+  .masthead .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 15px; letter-spacing: .22em; text-transform: uppercase;
+  }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .14em; color: var(--ink-dim); text-transform: uppercase;
+  }
+  .container { max-width: 1080px; margin: 0 auto; padding: 60px 32px 100px; }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--accent-2); margin-bottom: 22px;
+  }
+  .headline {
+    /* 국기가 차지하는 가로 진행량 = 국기 너비(.99em) + 오른쪽 여백(.22em).
+       이만큼 전체를 들여쓰고 국기만 도로 끌어내, 1~3행이 모두 같은 x에서 시작한다. */
+    --flag-adv: 1.21em;
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900; font-size: clamp(36px, 6.2vw, 72px); line-height: 1.14;
+    letter-spacing: -.02em; margin-bottom: 30px;
+    padding-left: var(--flag-adv);
+  }
+  .headline em { font-style: normal; color: var(--accent-dim); }
+  /* 지역표시자 이모지(🇰🇷)는 Windows 크롬에서 국기로 렌더링되지 않고 "KR"로 표시된다.
+     대한민국 국기 공식 작도법 SVG(태극 지름 = 세로 1/2, 괘 회전각 ±33.69°)를 인라인으로 쓴다. */
+  .flag-kr {
+    width: .99em; height: .66em;              /* viewBox 3:2 비율 고정 */
+    margin-left: calc(-1 * var(--flag-adv));  /* 들여쓰기 밖(원래 좌측 마진)으로 걸어둔다 */
+    margin-right: .22em;
+    position: relative; top: .015em;
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 2px;
+  }
+  .deck {
+    border-left: 3px solid var(--accent-2);
+    padding-left: 22px; margin-bottom: 34px;
+    font-family: 'Noto Serif KR', serif; font-style: italic;
+    font-size: 18.5px; line-height: 1.8; color: var(--ink-mid);
+  }
+  .deck p + p { margin-top: 14px; }
+  .deck strong { color: var(--ink); font-style: normal; font-weight: 700; }
+  /* 팀 정식 명칭 — 브랜드 색.
+     다크 배경에서 중간 명도 색은 얇은 이탤릭으로 읽기 어려워, 정체(normal)+볼드로 세운다. */
+  .team-name { font-style: normal; font-weight: 700; }
+  .c-magma  { color: #FF7B2E; }  /* Genesis Magma 오렌지 */
+  .c-toyota { color: #EB0A1E; }  /* Toyota 레드 */
+  .byline {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    padding: 13px 0; margin-bottom: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim);
+  }
+
+  figure.article-figure { margin: 0 0 44px; }
+  figure.article-figure img {
+    width: 100%; height: auto; display: block;
+    border: 1px solid var(--rule);
+  }
+  figure.article-figure figcaption {
+    margin-top: 11px; font-size: 12.5px; line-height: 1.6; color: var(--ink-dim);
+    font-family: 'Pretendard Variable', sans-serif;
+    border-left: 2px solid var(--accent); padding-left: 12px;
+  }
+  figure.article-figure figcaption b { color: var(--ink-mid); font-weight: 600; }
+  /* 섹션 사이에 들어가는 풀폭 사진 */
+  .photo-wide { margin: 0 0 62px; }
+
+  .lead { font-family: 'Noto Serif KR', serif; font-size: 19px; line-height: 1.85; margin-bottom: 44px; }
+  .lead::first-letter {
+    float: left; font-size: 78px; line-height: .82; font-weight: 900;
+    padding: 6px 14px 0 0; color: var(--accent);
+  }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule); margin-bottom: 60px;
+  }
+  .stat { background: var(--bg-lift); padding: 24px 20px; }
+  .stat .figure {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 33px; line-height: 1.1; color: var(--accent-dim); letter-spacing: -.02em;
+  }
+  .stat .label {
+    margin-top: 10px; font-size: 12.5px; line-height: 1.55; color: var(--ink-mid);
+    font-family: 'Pretendard Variable', sans-serif;
+  }
+
+  .section { border-top: 1px solid var(--rule); padding-top: 34px; margin-bottom: 62px; }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .2em; color: var(--accent-2); display: block; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Noto Serif KR', serif; font-weight: 700; line-height: 1.25;
+    letter-spacing: -.015em; color: var(--ink);
+  }
+  .section.feature .section-title { font-size: clamp(29px, 4.4vw, 50px); margin-bottom: 28px; }
+  .section.body-grid { display: grid; grid-template-columns: 260px 1fr; gap: 44px; }
+  .section.body-grid > header { position: sticky; top: 26px; align-self: start; }
+  .section.body-grid .section-title { font-size: 25px; }
+  .section.body-grid > div { padding-top: 4px; min-width: 0; }
+  .section p { font-family: 'Noto Serif KR', serif; font-size: 16.5px; line-height: 1.9; }
+  .section p + p { margin-top: 17px; }
+  .section strong { color: var(--accent-dim); font-weight: 700; }
+
+  .spec-heading {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ink-dim); margin: 30px 0 10px;
+  }
+
+  /* 순위표 — 아스키 .spec-block 금지(한글 폭 문제 + 게시판 공백 삭제).
+     처음부터 진짜 table 로 만든다. table 은 게시판 필터를 통과한다. */
+  table.standings {
+    width: 100%; border-collapse: collapse;
+    font-family: 'Pretendard Variable', sans-serif;
+    font-size: 13px; line-height: 1.5; color: var(--ink-mid);
+    background: var(--bg-lift); border: 1px solid var(--rule);
+  }
+  table.standings th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim);
+    text-align: left; padding: 10px 10px; border-bottom: 1px solid var(--rule);
+    background: var(--bg-lift-2);
+  }
+  table.standings td {
+    padding: 9px 10px; border-bottom: 1px solid var(--rule); vertical-align: top;
+  }
+  table.standings tr:last-child td { border-bottom: 0; }
+  table.standings td.num, table.standings th.num { text-align: right; font-family: 'JetBrains Mono', monospace; }
+  table.standings td.mono { font-family: 'JetBrains Mono', monospace; }
+  table.standings tr.hero td { color: var(--ink); background: #3a2b1d; font-weight: 600; }
+  table.standings tr.hero td.mono, table.standings tr.hero td.num { color: var(--accent-dim); }
+  table.standings .sub { display: block; font-size: 11.5px; color: var(--ink-dim); }
+  .table-note {
+    margin-top: 10px; font-size: 12px; line-height: 1.6; color: var(--ink-dim);
+    font-family: 'Pretendard Variable', sans-serif;
+  }
+
+  .pullquote {
+    margin: 34px 0; padding: 26px 28px;
+    background: var(--bg-lift-2);
+    border-top: 2px solid var(--accent-2); border-bottom: 1px solid var(--rule);
+    font-family: 'Noto Serif KR', serif; font-size: 19.5px; line-height: 1.75;
+  }
+  .pullquote cite {
+    display: block; margin-top: 14px; font-style: normal;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    letter-spacing: .12em; color: var(--ink-dim); text-transform: uppercase;
+  }
+
+  sup.ref { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+  /* 본문 링크 기본값 — 지정이 없으면 브라우저 기본 파란색이 다크 배경에서 안 읽힌다. */
+  main.container a { color: var(--accent); text-decoration: none; }
+  main.container a:hover { text-decoration: underline; }
+
+  sup.ref a { color: var(--accent); text-decoration: none; padding: 0 1px; }
+  sup.ref a:hover { text-decoration: underline; }
+
+  .reporter {
+    text-align: center; margin: 66px 0 0;
+    font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 700;
+    letter-spacing: .06em; color: var(--ink-mid);
+  }
+  .divider { text-align: center; color: var(--accent-2); letter-spacing: 1em; margin: 18px 0 66px; font-size: 13px; }
+
+  .sources { border-top: 2px solid var(--rule); padding-top: 30px; }
+  .sources h3 {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--ink-dim); margin-bottom: 20px;
+  }
+  .sources ol {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px 34px; padding-left: 26px;
+  }
+  .sources li { font-size: 13px; line-height: 1.65; color: var(--ink-mid); }
+  .sources li a { color: var(--accent); text-decoration: none; word-break: break-all; }
+  .sources li a:hover { text-decoration: underline; }
+  .sources li:target { background: var(--bg-lift-2); outline: 6px solid var(--bg-lift-2); }
+
+  .editorial-note {
+    margin-top: 34px; padding: 20px 22px;
+    background: var(--bg-lift); border: 1px dashed var(--rule);
+    font-size: 13px; line-height: 1.8; color: var(--ink-mid);
+  }
+  .editorial-note + .editorial-note { margin-top: 14px; }
+  .editorial-note strong { color: var(--ink); }
+
+  .end-byline {
+    margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim);
+  }
+
+  @media (max-width: 900px) {
+    .section.body-grid { grid-template-columns: 1fr; gap: 18px; }
+    .section.body-grid > header { position: static; }
+    .container { padding: 44px 20px 80px; }
+  }
+</style>
+<script>
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+  window.addEventListener('DOMContentLoaded', function () {
+    var nav = performance.getEntriesByType('navigation');
+    if (nav.length > 0 && nav[0].type === 'reload' && location.hash) {
+      history.replaceState(null, '', location.pathname);
+      window.scrollTo(0, 0);
+    }
+  });
+</script>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="masthead">
+  <div class="brand">NEWSPAPER</div>
+  <div class="meta">Motorsport · FIA WEC · 2026.10</div>
+</header>
+
+<main class="container">
+
+  <div class="kicker">FIA WEC · 6 HOURS OF BARCELONA · HYPERCAR</div>
+
+  <h1 class="headline"><svg class="flag-kr" viewBox="-72 -48 144 96" role="img" aria-label="대한민국"><path fill="#fff" d="M-72-48v96H72v-96z"/><g stroke="#000" stroke-width="4"><path transform="rotate(33.69006752598)" d="M-50-12v24m6 0v-24m6 0v24m76 0V1m0-2v-11m6 0v11m0 2v11m6 0V1m0-2v-11"/><path transform="rotate(-33.69006752598)" d="M-50-12v24m6 0V1m0-2v-11m6 0v24m76 0V1m0-2v-11m6 0v24m6 0V1m0-2v-11"/></g><g transform="rotate(33.69006752598)"><path fill="#cd2e3a" d="M12 0a18 18 0 11-36 0 24 24 0 1148 0"/><path fill="#0047a0" d="M-24 0a24 24 0 1048 0A12 12 0 100 0a12 12 0 11-24 0"/></g></svg>바르셀로나에서 시작해<br>바르셀로나에서 맨 앞으로<br><em>559일</em></h1>
+
+  <div class="deck">
+    <p><span class="team-name c-magma">Genesis Magma Racing</span> 소속 드라이버 마티스 조베르(21)가 10월 17일(현지시간)<br>
+<strong>Circuit de Barcelona-Catalunya</strong>에서 열린 2026 FIA 월드 인듀어런스 챔피언십(WEC)<br>
+6시간 바르셀로나 하이퍼폴에서 <strong>1분 30초 166</strong>을 기록,<br>
+제네시스 브랜드 사상 첫 폴포지션을 따냈다.<br>
+<br>
+559일 전, 이 팀이 생애 첫 레이스를 치른 바로 그 서킷이다.<br>
+2그리드 <span class="team-name c-toyota">Toyota Racing</span> #8과의 격차는 <strong>0.170초</strong>.<br>
+조베르는 이날 <strong>WEC 역대 최연소 종합 폴시터</strong>가 됐다.<br></p>
+  </div>
+
+  <div class="byline">
+    <span>Motorsport · WEC 2026 Round Report</span>
+    <span>2026. 10. 18.</span>
+  </div>
+
+  <figure class="article-figure photo-wide">
+    <img src="https://www.fiawec.com/media/cache/resolve/hero_desktop/umbrella_media/dppiproduction-00005177-0012-6ad395b53e44b935666933.jpg"
+         alt="하이퍼폴 보드 옆, 오렌지색 #17 GMR-001 위에 올라서 주먹을 들어 올린 마티스 조베르. 차체에 태극기가 붙어 있다."
+         loading="lazy">
+    <figcaption>
+      하이퍼폴 직후 파르크 페르메. HYPERPOLE 보드 옆에서 조베르가 자신의 #17 GMR-001 위에 올라섰다.
+      콕핏 옆에 태극기가 보인다.<br>
+      <b>사진: DPPI</b> — <a href="https://www.fiawec.com/en/news/genesis-grabs-first-pole-position-in-barcelona/13884" target="_blank" rel="noopener">FIA WEC 공식 기사</a><sup class="ref"><a href="#src02">[2]</a></sup> 게재 이미지. fiawec.com 서버 주소를 직접 참조한다.
+    </figcaption>
+  </figure>
+
+  <div class="lead">
+    하이퍼폴 10분이 끝났을 때, 계시판 맨 위에 적힌 이름은 토요타도 페라리도 아니었다. <br>
+데뷔 시즌을 달리고 있는 제네시스의 #17, 그리고 스물한 살의 마티스 조베르였다. <br>
+"믿을 수 없는 기분이다(It's an incredible feeling!)."<sup class="ref"><a href="#src02">[2]</a></sup> <br>
+<br>
+2025년 4월 6일, 제네시스 마그마 레이싱이라는 팀이 세상에서 처음 치른 레이스가 <br>
+바로 이 서킷, 바르셀로나-카탈루냐에서 열렸다. <br>
+그로부터 559일 뒤의 토요일 오후, 같은 아스팔트의 그리드 맨 앞자리에 <br>
+마그마 오렌지색 하이퍼카가 세워졌다.<br>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="figure">1:30.166</div>
+      <div class="label">조베르의 폴 랩타임<br>평균 185.9km/h (공식 계시)</div>
+    </div>
+    <div class="stat">
+      <div class="figure">+0.170<span style="font-size:20px;">s</span></div>
+      <div class="label">2위 #8 토요타와의 격차</div>
+    </div>
+    <div class="stat">
+      <div class="figure">21</div>
+      <div class="label">조베르의 나이 —<br>WEC 역대 최연소 종합 폴시터</div>
+    </div>
+    <div class="stat">
+      <div class="figure">559<span style="font-size:20px;">일</span></div>
+      <div class="label">팀의 첫 레이스(2025.4.6 바르셀로나)에서<br>첫 폴(2026.10.17)까지</div>
+    </div>
+  </div>
+
+  <article class="section feature">
+    <header>
+      <span class="section-num">/ 01</span>
+      <h2 class="section-title">2025년 4월,<br>같은 아스팔트에서</h2>
+    </header>
+    <div>
+      <p>제네시스 마그마 레이싱의 역사는 통째로 이 서킷에서 시작됐다. <br>
+2025년 4월 6일, 유러피언 르망 시리즈(ELMS) 개막전 4시간 바르셀로나. <br>
+IDEC Sport가 운영한 #18 오레카 07이 이 브랜드가 트랙에 올린 첫 레이스카였다.<sup class="ref"><a href="#src05">[5]</a></sup><br>
+<br>
+그 차의 예선 5그리드를 따낸 드라이버가 당시 스무 살의 조베르였다. <br>
+결승에서는 제이미 채드윅과 다니엘 훈카데야가 차례로 스틴트를 소화했고, <br>
+마지막 1시간 17분을 넘겨받은 조베르가 선두까지 올라섰다가 <br>
+결승선 반 바퀴를 남기고 훨씬 신선한 타이어의 차에 추월당했다. <br>
+종합 2위 — 그러나 LMP2 클래스 우승. 팀의 데뷔전이었다.<sup class="ref"><a href="#src05">[5]</a></sup><br>
+<br>
+그리고 559일 뒤, 조베르는 같은 서킷에 하이퍼카를 타고 돌아와 <br>
+이번에는 클래스가 아니라 <strong>전체 그리드의 맨 앞</strong>을 가져갔다. <br>
+그날 #18에 함께 탔던 훈카데야는 이번 주말 자매차 #19의 시트에 앉아 있다.<sup class="ref"><a href="#src01">[1]</a></sup><br></p>
+    </div>
+  </article>
+
+  <figure class="article-figure photo-wide">
+    <img src="https://www.fiawec.com/media/cache/resolve/hero_desktop/umbrella_media/dppiproduction-00005177-0072-6ad3a724612cf817547505.jpg"
+         alt="HYPERPOLE 전광판 앞에서 셀피를 찍는 #17의 세 드라이버 — 로터러, 데라니, 메달을 들어 보이는 조베르"
+         loading="lazy">
+    <figcaption>
+      하이퍼폴 세리머니. 셀피를 찍는 안드레 로터러, 그 아래 피포 데라니, 메달을 들어 보이는 조베르.<br>
+      <b>사진: DPPI</b> — FIA WEC 공식 기사<sup class="ref"><a href="#src02">[2]</a></sup> 게재 이미지.
+    </figcaption>
+  </figure>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 02</span>
+      <h2 class="section-title">0.170초,<br>그리고 2열까지</h2>
+    </header>
+    <div>
+      <p>마지막 코너 트랙 보수로 15분 늦게 시작된 예선의 첫 세그먼트(12분)부터 제네시스는 빨랐다.<sup class="ref"><a href="#src06">[6]</a></sup> <br>
+이 세그먼트 1위는 자미네의 #19가 적어낸 1분 30초 479였다.<sup class="ref"><a href="#src01">[1]</a></sup> <br>
+그러나 #19는 이날 두 번 멈춰 섰다 — 첫 예선 시작 직후 피트 출구에서 출력이 빠지며 한 번, <br>
+하이퍼폴 막판 턴5에서 또 한 번. 둘 다 전원 리셋으로 살아났지만, <br>
+자미네는 이미 적어 둔 기록으로 3그리드에 만족해야 했다.<sup class="ref"><a href="#src07">[7]</a></sup><br>
+<br>
+공식 계시 기준 조베르의 폴 랩은 <strong>1분 30초 166</strong>, 평균 시속 185.9km다.<sup class="ref"><a href="#src01">[1]</a></sup> <br>
+0.170초 뒤의 2그리드는 디펜딩 챔피언 조의 #8 토요타(부에미·하틀리·히라카와)다. <br>
+히라카와는 마지막 어택에서 섹터1을 개선하던 중 턴5의 더블 옐로 — 자미네의 정차 — 를 만나 <br>
+랩을 접었다. "그게 아니었다면 더 빨랐을 것"이라는 게 그의 말이다.<sup class="ref"><a href="#src09">[9]</a></sup> <br>
+제네시스 두 대는 모두 2열 안에서 결승을 출발한다.<sup class="ref"><a href="#src03">[3]</a></sup><br>
+<br>
+반면 챔피언십을 다투는 경쟁자들에게 예선은 재앙에 가까웠다. <br>
+BMW 두 대는 하이퍼폴 진출에 실패해 13·16그리드에 머물렀고, <br>
+르망 우승차 #51 페라리는 하이퍼폴 탈락에 심의위원회의 1그리드 강등 처분까지 겹쳐 <br>
+14그리드에서 출발한다.<sup class="ref"><a href="#src03">[3]</a></sup><br></p>
+
+      <div class="spec-heading">Hyperpole — Hypercar 공식 최종 분류</div>
+      <table class="standings">
+        <thead>
+          <tr><th class="num">P</th><th class="num">No</th><th>팀 · 차량</th><th>드라이버</th><th class="num">기록</th><th class="num">격차</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hero"><td class="num">1</td><td class="num">17</td><td>Genesis Magma Racing<span class="sub">Genesis GMR-001</span></td><td>로터러 · 데라니 · <b>조베르</b></td><td class="num mono">1:30.166</td><td class="num mono">—</td></tr>
+          <tr><td class="num">2</td><td class="num">8</td><td>Toyota Racing<span class="sub">Toyota TR010 Hybrid</span></td><td>부에미 · 하틀리 · 히라카와</td><td class="num mono">1:30.336</td><td class="num mono">+0.170</td></tr>
+          <tr><td class="num">3</td><td class="num">19</td><td>Genesis Magma Racing<span class="sub">Genesis GMR-001</span></td><td>자미네 · 샤탕 · 훈카데야</td><td class="num mono">1:30.490</td><td class="num mono">+0.324</td></tr>
+          <tr><td class="num">4</td><td class="num">35</td><td>Alpine Endurance Team<span class="sub">Alpine A424</span></td><td>밀레시 · 합스부르크</td><td class="num mono">1:30.722</td><td class="num mono">+0.556</td></tr>
+          <tr><td class="num">5</td><td class="num">12</td><td>Cadillac Hertz Team Jota<span class="sub">Cadillac V-Series.R</span></td><td>스티븐스 · 나토 · 린</td><td class="num mono">1:30.784</td><td class="num mono">+0.618</td></tr>
+          <tr><td class="num">6</td><td class="num">83</td><td>AF Corse<span class="sub">Ferrari 499P</span></td><td>예 · 쿠비차 · 핸슨</td><td class="num mono">1:30.804</td><td class="num mono">+0.638</td></tr>
+          <tr><td class="num">7</td><td class="num">36</td><td>Alpine Endurance Team<span class="sub">Alpine A424</span></td><td>구농 · 마르탱</td><td class="num mono">1:30.814</td><td class="num mono">+0.648</td></tr>
+          <tr><td class="num">8</td><td class="num">50</td><td>Ferrari AF Corse<span class="sub">Ferrari 499P</span></td><td>푸오코 · 몰리나 · 닐센</td><td class="num mono">1:30.836</td><td class="num mono">+0.670</td></tr>
+          <tr><td class="num">9</td><td class="num">7</td><td>Toyota Racing<span class="sub">Toyota TR010 Hybrid</span></td><td>콘웨이 · 고바야시 · 더프리스</td><td class="num mono">1:30.953</td><td class="num mono">+0.787</td></tr>
+          <tr><td class="num">10</td><td class="num">38</td><td>Cadillac Hertz Team Jota<span class="sub">Cadillac V-Series.R</span></td><td>뱀버 · 부르데 · 에이킨</td><td class="num mono">1:31.065</td><td class="num mono">+0.899</td></tr>
+        </tbody>
+      </table>
+      <div class="table-note">출처: FIA WEC 공식 계시(Alkamel) 하이퍼폴 최종 분류.<sup class="ref"><a href="#src01">[1]</a></sup>
+      공식 스타팅 그리드 문서 기준 #17의 결승 스타트 담당은 로터러다.<sup class="ref"><a href="#src03">[3]</a></sup></div>
+    </div>
+  </article>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 03</span>
+      <h2 class="section-title">스물한 살의<br>하이퍼폴</h2>
+    </header>
+    <div>
+      <p>조베르는 2005년 3월 3일 프랑스 살롱드프로방스에서 태어났다.<sup class="ref"><a href="#src15">[15]</a></sup> <br>
+폴을 딴 토요일 기준 스물한 살 7개월. FIA WEC는 그를 <strong>시리즈 역사상 최연소 종합 폴시터</strong>로 공식 확인했다.<sup class="ref"><a href="#src02">[2]</a></sup> <br>
+Sportscar365에 따르면 종전 기록은 불과 다섯 달 전 스파에서 푸조의 첫 폴을 따낸
+당시 22세의 말테 야콥센이었다.<sup class="ref"><a href="#src08">[8]</a></sup><br>
+<br>
+이 폴에는 각주가 하나 더 붙는다. 조베르는 프로 등급이 아닌 <strong>FIA 실버 등급</strong> 드라이버다.<sup class="ref"><a href="#src06">[6]</a></sup> <br>
+패독이 '베이비 드라이버'라는 애칭으로 부르는<sup class="ref"><a href="#src02">[2]</a></sup> 이 실버 드라이버는 <br>
+하이퍼폴 첫 플라잉 랩부터 폴에 충분한 1분 30초 329를 적어냈고, <br>
+두 번째 어택에서 0.163초를 더 깎아 쐐기를 박았다.<sup class="ref"><a href="#src06">[6]</a></sup><br>
+<br>
+경로는 제네시스가 설계했고, 속도는 본인이 증명했다. <br>
+포르쉐 원메이크 무대에서 달리던 그를(2024 카레라컵 프랑스 종합 2위)<sup class="ref"><a href="#src15">[15]</a></sup> <br>
+브랜드 육성 프로그램 '트라젝토리'가 데려왔다 — 시릴 아비테불 팀 프린시펄의 표현으로는
+"첫날부터 함께한" 멤버다.<sup class="ref"><a href="#src07">[7]</a></sup> <br>
+2025년에는 IDEC Sport가 운영한 #18 LMP2로 채드윅·훈카데야와 함께
+ELMS 3승(바르셀로나·르카스텔레·실버스톤)을 합작했고, 르망 24시에서는 #18의 레이스 최속랩을 찍었다.<sup class="ref"><a href="#src15">[15]</a></sup> <br>
+가브리엘레 타르퀴니 스포팅 디렉터는 아주 어린 나이에도 "내가 직접 밀어붙여" 그를
+라인업에 넣었다고 말해 왔다.<sup class="ref"><a href="#src20">[20]</a></sup><br>
+<br>
+#17에서 그의 옆에 앉는 두 사람 — 르망 3승의 안드레 로터러와 IMSA 2회 챔피언 피포 데라니 — 는
+모두 플래티넘 등급이다.<sup class="ref"><a href="#src19">[19]</a></sup> <br>
+9월 론스타 르망에서 팀은 스프린트 페이스가 좋은 조베르를 로터러 대신 투입해
+시즌 최고 성적 7위를 만들었고,<sup class="ref"><a href="#src18">[18]</a></sup> <br>
+한 달 뒤 조베르는 그 신뢰에 폴포지션으로 답했다.<br></p>
+
+      <div class="pullquote">
+        "정말 겸허해진다. 큰 의미가 있다<br>
+(I am very humbled. It means a lot)."<br>
+<br>
+"이 폴은 무엇보다 내일을 위한 것이다. 이 트랙은 아마 올 시즌 중 트랙 포지션이 가장 중요한 곳이다."
+        <cite>Mathys Jaubert · #17 GMR-001 · Sportscar365 인터뷰 [7]</cite>
+      </div>
+    </div>
+  </article>
+
+  <figure class="article-figure photo-wide">
+    <img src="https://www.fiawec.com/media/cache/resolve/hero_desktop/umbrella_media/dppiproduction-00005172-0098-6ad3a78ef37a6878577688.jpg"
+         alt="미쉐린 광고판을 배경으로 바르셀로나-카탈루냐 서킷을 달리는 GMR-001의 뒷모습"
+         loading="lazy">
+    <figcaption>
+      바르셀로나-카탈루냐 서킷(1랩 4.657km)을 달리는 GMR-001.<br>
+      <b>사진: DPPI</b> — FIA WEC 공식 기사<sup class="ref"><a href="#src02">[2]</a></sup> 게재 이미지.
+    </figcaption>
+  </figure>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 04</span>
+      <h2 class="section-title">데뷔 시즌,<br>그리고 GMR-001</h2>
+    </header>
+    <div>
+      <p>제네시스 마그마 레이싱은 2024년 12월 두바이에서 출범을 알렸고, <br>
+참가 발표부터 첫 공식 주행까지 <strong>499일</strong> 만에 그리드에 섰다.<sup class="ref"><a href="#src12">[12]</a></sup> <br>
+외부 팀과의 파트너십 형태가 아니라 차량 개발과 운영 전 과정을 직접 맡는 워크스 팀이고, <br>
+16개 국적 75명이 프랑스 르카스텔레의 '레이스 베이스'에서 일한다.<sup class="ref"><a href="#src12">[12]</a></sup><sup class="ref"><a href="#src13">[13]</a></sup> <br>
+수장은 르노 F1 매니징 디렉터 출신의 시릴 아비테불 — 현대 모터스포츠 사장을 겸한다.<sup class="ref"><a href="#src13">[13]</a></sup><br>
+<br>
+GMR-001은 LMDh 규정의 하이퍼카다. 섀시는 오레카, 기어박스는 Xtrac, <br>
+모터와 배터리는 보쉬·윌리엄스 어드밴스드 엔지니어링, 그리고 심장은 자체 개발한
+<strong>G8MR 3.2L 트윈터보 V8</strong>. <br>
+WRC를 제패한 현대 모터스포츠의 1.6L 직렬 4기통을 모체로 부품 약 60%를 공유한다.<sup class="ref"><a href="#src13">[13]</a></sup> <br>
+지난해 12월 바르셀로나 테스트에서는 엔진 한 기로 8,000km를 소화했고,<sup class="ref"><a href="#src24">[24]</a></sup> <br>
+차체에는 태극기 문양과 한글 '마그마' 로고가 들어간다.<sup class="ref"><a href="#src12">[12]</a></sup><br>
+<br>
+제네시스는 WEC에 참가한 <strong>최초의 한국 완성차 브랜드</strong>다.<sup class="ref"><a href="#src14">[14]</a></sup> <br>
+그러므로 이번 폴은 브랜드의 첫 폴인 동시에, 한국 브랜드가 WEC에서 따낸 첫 종합 폴포지션이다. <br>
+팀의 일곱 번째 대회 출전 만의 일이다.<sup class="ref"><a href="#src07">[7]</a></sup><br></p>
+
+      <div class="spec-heading">Genesis Magma Racing — 2026 데뷔 시즌 발자취</div>
+      <table class="standings">
+        <thead>
+          <tr><th>라운드</th><th class="num">#17</th><th class="num">#19</th><th>비고</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1 이몰라 6시간<span class="sub">4.19</span></td><td class="num">15위</td><td class="num">17위</td><td>데뷔전 — 두 대 모두 완주<sup class="ref"><a href="#src22">[22]</a></sup></td></tr>
+          <tr><td>2 스파 6시간<span class="sub">5.9</span></td><td class="num">8위</td><td class="num">13위</td><td>팀 첫 챔피언십 포인트<sup class="ref"><a href="#src21">[21]</a></sup></td></tr>
+          <tr><td>3 르망 24시<span class="sub">6.13~14</span></td><td class="num">리타이어</td><td class="num">13위</td><td>#17, 16시간째 서스펜션 고장<sup class="ref"><a href="#src17">[17]</a></sup></td></tr>
+          <tr><td>4 상파울루 6시간<span class="sub">7.12</span></td><td class="num">15위</td><td class="num">13위</td><td>#19, FP2 전체 1위<sup class="ref"><a href="#src25">[25]</a></sup></td></tr>
+          <tr><td>5 론스타 르망<span class="sub">9.6</span></td><td class="num">7위</td><td class="num">15위</td><td>시즌 최고 성적<sup class="ref"><a href="#src18">[18]</a></sup></td></tr>
+          <tr><td>6 후지 6시간<span class="sub">9.27</span></td><td class="num">15위</td><td class="num">11위</td><td>악천후로 예선 취소<sup class="ref"><a href="#src23">[23]</a></sup></td></tr>
+          <tr class="hero"><td>7 바르셀로나 6시간<span class="sub">10.18</span></td><td class="num">폴포지션</td><td class="num">3그리드</td><td>브랜드 첫 폴<sup class="ref"><a href="#src01">[1]</a></sup></td></tr>
+        </tbody>
+      </table>
+      <div class="table-note">포디움은 아직 없다. 그리고 폴 전날인 토요일 아침 FP3에서 #17은 17대 중
+      <b>꼴찌</b>(1:33.714)였다 — 몇 시간 뒤 같은 차가 폴을 땄다.<sup class="ref"><a href="#src26">[26]</a></sup></div>
+
+      <div class="pullquote">
+        "해 온 작업의 질을 보여주는 데 좋은 결과만 한 방법은 없다.<br>
+차가 좋다는 것, 드라이버들이 해낼 수 있다는 것, 팀이 하나로 맞춰져 가고 있다는 것을
+우리는 느끼고 있었다. 하지만 말로 하는 것과 증명하는 것은 다른 일이다."
+        <cite>Cyril Abiteboul · 팀 프린시펄 · Sportscar365 인터뷰 [7]</cite>
+      </div>
+    </div>
+  </article>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 05</span>
+      <h2 class="section-title">오늘 저녁 7시,<br>6시간</h2>
+    </header>
+    <div>
+      <p>결승은 한국시간 오늘(18일) <strong>저녁 7시</strong>에 출발한다 — 현지 정오(12:00 CEST) 스타트,
+6시간. 일정대로면 체커는 내일 새벽 1시에 나온다(시각 환산은 본지).<sup class="ref"><a href="#src02">[2]</a></sup><sup class="ref"><a href="#src04">[4]</a></sup> <br>
+바르셀로나-카탈루냐에서 WEC 레이스가 열리는 것도, 스페인 개최 자체도 시리즈 사상 처음이다.<sup class="ref"><a href="#src04">[4]</a></sup> <br>
+중동 정세로 카타르·바레인 라운드가 취소되면서 바르셀로나와 최종전 몬차(11월 8일)가
+그 자리에 들어왔다.<sup class="ref"><a href="#src27">[27]</a></sup><br>
+<br>
+폴은 보너스 1점이다. 조베르 본인도 "인듀어런스에서 폴은 큰 의미가 없다. 1점짜리다 —
+기꺼이 받겠다"고 선을 그었다.<sup class="ref"><a href="#src28">[28]</a></sup> <br>
+진짜 계산은 토요타의 것이다. 제조사 순위는 토요타 169점, BMW 146점, 페라리 115점 — <br>
+이번 주말 토요타가 BMW보다 22점 이상 더 가져가면 <strong>제조사 타이틀이 바르셀로나에서 확정</strong>된다.<sup class="ref"><a href="#src04">[4]</a></sup> <br>
+드라이버 순위도 #8 토요타 조(부에미·하틀리·히라카와)가 89점으로 #7(79점)에 10점 앞서 있어
+이번 레이스에서 끝날 수 있다.<sup class="ref"><a href="#src11">[11]</a></sup> <br>
+BMW 두 대가 13·16그리드에서 출발하는 예선 결과는 그 셈법을 토요타 쪽으로 기울였다.<sup class="ref"><a href="#src03">[3]</a></sup><br>
+<br>
+변수는 하늘이다. 일요일 비 예보가 있고, 5그리드의 윌 스티븐스(캐딜락)는 "특히 레이스 초반은
+웻일 가능성이 크다"고 봤다.<sup class="ref"><a href="#src10">[10]</a></sup> <br>
+히라카와도 "비가 온다면 앞에서 출발하는 것이 더욱 중요해진다"고 말했다.<sup class="ref"><a href="#src09">[9]</a></sup> <br>
+조베르는 "후지에서 웻 주행을 경험했지만, 새 웻 타이어는 아직 써 보지 못했다.
+두고 봐야 한다"고 했다.<sup class="ref"><a href="#src07">[7]</a></sup><br>
+<br>
+제네시스 쪽에는 폴 말고도 수확이 하나 더 있었다. 폴 확정 직후인 토요일 저녁, 팀은 바르셀로나 시내에서
+열린 Genesis Motor Europe 행사에서 스페인 출신 다니엘 훈카데야의 <strong>2027 시즌 잔류</strong>를
+발표했다 — 홈 레이스를 하루 앞둔 밤이었다.<sup class="ref"><a href="#src16">[16]</a></sup><br></p>
+
+      <div class="pullquote">
+        "놀랍지 않다. 그들의 퍼포먼스는 점점 강해지고 있고, 거기엔 이유가 있다.<br>
+첫 시즌치고 잘하고 있다. 르망에서도 솔직히 꽤 잘했다. 강한 팀이 많아지는 것은 좋은 일이다."
+        <cite>David Floury · Toyota Racing 테크니컬 디렉터 · Sportscar365 인터뷰 [9]</cite>
+      </div>
+    </div>
+  </article>
+
+  <div class="reporter">조국영 기자</div>
+  <div class="divider">▴ ▴ ▴</div>
+
+  <section class="sources">
+    <h3>Sources · 참고 출처</h3>
+    <ol>
+      <li id="src01">FIA WEC 공식 계시(Alkamel Systems), "6 Hours of Barcelona — Hyperpole HYPERCAR, Classification Final" (2026.10.17) — <a href="https://fiawec.alkamelsystems.com/Results/15_2026/07_BARCELONA-CATALUNYA/688_FIA%20WEC/202610171615_Hyperpole%20HYPERCAR/03_Classification_Hyperpole%20HYPERCAR_Final.PDF">fiawec.alkamelsystems.com</a></li>
+      <li id="src02">FIA WEC 공식, "Genesis grabs first pole position in Barcelona" (2026.10.17) — <a href="https://www.fiawec.com/en/news/genesis-grabs-first-pole-position-in-barcelona/13884">fiawec.com</a></li>
+      <li id="src03">FIA WEC 공식 계시(Alkamel Systems), "6 Hours of Barcelona — Race, Provisional Starting Grid" (2026.10.17) — <a href="https://fiawec.alkamelsystems.com/Results/15_2026/07_BARCELONA-CATALUNYA/688_FIA%20WEC/202610181200_Race/01_Grid_Race.PDF">fiawec.alkamelsystems.com</a></li>
+      <li id="src04">FIA WEC 공식, "How to watch the 6 Hours of Barcelona 2026: Preview and Guide" — <a href="https://www.fiawec.com/en/news/how-to-watch-the-6-hours-of-barcelona-2026-preview-and-guide/13867">fiawec.com</a></li>
+      <li id="src05">Genesis 공식 뉴스룸, "Genesis Magma Racing Drivers Score LMP2 Win at European Le Mans Series Debut in Barcelona" (2025.04) — <a href="https://newsroom.genesis.com/genesis-magma-racing-drivers-score-lmp2-win-at-european-le-mans-series-debut-in-barcelona/">newsroom.genesis.com</a></li>
+      <li id="src06">Sportscar365 (Stephen Lickorish), "Jaubert Scores Maiden Pole for Genesis at Barcelona" (2026.10.17) — <a href="https://sportscar365.com/lemans/wec/jaubert-scores-maiden-pole-for-genesis-at-barcelona/">sportscar365.com</a></li>
+      <li id="src07">Sportscar365 (Jamie Klein), "Jaubert: Scoring First Genesis Pole 'Means A Lot'" (2026.10.17) — 조베르·아비테불·자미네 인터뷰, '일곱 번째 대회' — <a href="https://sportscar365.com/lemans/wec/jaubert-scoring-first-genesis-pole-means-a-lot">sportscar365.com</a></li>
+      <li id="src08">Sportscar365, "Barcelona Saturday Notebook" (2026.10.17) — 최연소 기록 상세(야콥센 경신) — <a href="https://sportscar365.com/lemans/wec/barcelona-saturday-notebook-6/">sportscar365.com</a></li>
+      <li id="src09">Sportscar365 (Jamie Klein), "Toyota Focused on 'Big Picture' as Title Chance Looms" (2026.10.17) — 플로리·히라카와 인터뷰 — <a href="https://sportscar365.com/lemans/wec/toyota-focused-on-big-picture-as-title-chance-looms/">sportscar365.com</a></li>
+      <li id="src10">Speedweek (Oliver Müller), "Genesis on pole position for the 2026 FIA WEC 6 Hours of Barcelona" (2026.10.17) — 스티븐스 웻 전망 — <a href="https://www.speedweek.com/en/a/fia-wec/genesis-pole-position-6h-barcelona-fia-wec-2026">speedweek.com</a></li>
+      <li id="src11">FIA 공식, "WEC: Title protagonists Barcelona-bound for crucial championship showdown" (2026.10.13) — <a href="https://www.fia.com/news/wec-title-protagonists-barcelona-bound-crucial-championship-showdown">fia.com</a></li>
+      <li id="src12">현대자동차그룹 뉴스룸, "제네시스 마그마 레이싱, 2026 WEC 공식 참가" (2026.04.01) — 워크스 체제·75명 16개 국적·태극기 리버리·499일 — <a href="https://www.hyundaimotorgroup.com/ko/news/genesis-magma-racing-2026-wec-entry">hyundaimotorgroup.com</a></li>
+      <li id="src13">Genesis 공식 뉴스룸(HMG Journal), "Genesis Powers into Endurance Racing" (2025.08.27) — 오레카 섀시·Xtrac·보쉬·WAE·WRC 모체 60%·르카스텔레 — <a href="https://newsroom.genesis.com/genesis-powers-into-endurance-racing/">newsroom.genesis.com</a></li>
+      <li id="src14">FIA WEC 공식, "Genesis reveals GMR-001 Hypercar underpinned by 'Athletic Elegance'" (2026.03.31) — "the first Korean carmaker ever to compete in the series" — <a href="https://www.fiawec.com/en/news/genesis-reveals-gmr-001-hypercar-underpinned-by-athletic-elegance/13156">fiawec.com</a></li>
+      <li id="src15">Genesis 공식 뉴스룸, "Mathys Jaubert, Daniel Juncadella Join Genesis Magma Racing WEC Driver Lineup" (2025.09.18) — 생년월일·출생지·포르쉐 경력·2025 ELMS 3승·르망 최속랩 — <a href="https://newsroom.genesis.com/mathys-jaubert-daniel-juncadella-join-genesis-magma-racing-wec-driver-lineup/">newsroom.genesis.com</a></li>
+      <li id="src16">Genesis 공식 뉴스룸, "Genesis Magma Racing Confirms Dani Juncadella for 2027 FIA WEC Season" (2026.10.17, 바르셀로나 데이트라인) — <a href="https://newsroom.genesis.com/genesis-magma-racing-confirms-dani-juncadella-for-2027-fia-wec-season/">newsroom.genesis.com</a></li>
+      <li id="src17">현대자동차그룹 스토리, "2026 르망 24시와 제네시스 마그마 레이싱 (2편)" (2026.06.16) — <a href="https://www.hyundaimotorgroup.com/ko/story/2026-wec-le-mans-24-genesis-magma-racing-motorsport-second-episode">hyundaimotorgroup.com</a></li>
+      <li id="src18">현대자동차그룹 스토리, "제네시스 마그마 레이싱, 론스타 르망 7위" (2026.09.08) — 조베르 투입 경위 포함 — <a href="https://www.hyundaimotorgroup.com/ko/story/genesis-magma-racing-lone-star-le-mans-7th-place">hyundaimotorgroup.com</a></li>
+      <li id="src19">Hyundai Motorsport 공식 드라이버 프로필 — <a href="https://motorsport.hyundai.com/manufacturer-programmes/wec/mathys-jaubert">Jaubert</a> · <a href="https://motorsport.hyundai.com/manufacturer-programmes/wec/andre-lotterer">Lotterer</a> · <a href="https://motorsport.hyundai.com/manufacturer-programmes/wec/luis-felipe-derani">Derani</a></li>
+      <li id="src20">Sportscar365 (Stephen Lickorish), "Tarquini Pushed for Jaubert Genesis Hypercar Seat" — <a href="https://sportscar365.com/lemans/wec/tarquini-pushed-for-jaubert-genesis-hypercar-seat/">sportscar365.com</a></li>
+      <li id="src21">Hyundai Motorsport 공식, "Genesis Magma Racing scores first FIA WEC points on second start" (2026.05) — <a href="https://motorsport.hyundai.com/media-center/news/2026/wec/genesis-magma-racing-scores-first-fia-wec-points-on-second-start">motorsport.hyundai.com</a></li>
+      <li id="src22">현대자동차그룹 뉴스룸, "제네시스 마그마 레이싱, 성공적으로 데뷔" (2026.04.20) — 이몰라 15·17위 — <a href="https://www.hyundaimotorgroup.com/ko/news/genesis-magma-racing-successful-debut">hyundaimotorgroup.com</a></li>
+      <li id="src23">Genesis 공식, "Genesis Magma Racing — Fuji round report" — 후지 11·15위, 예선 취소 — <a href="https://www.genesis.com/ch/en/magma/genesis-magma-racing/genesis-motorsports-wec/fuji.html">genesis.com</a></li>
+      <li id="src24">SPOTV NEWS (박대현), 제네시스 마그마 레이싱 바르셀로나 프리뷰 (2026.10.14) — 단일 엔진 8,000km 테스트 — <a href="https://www.spotvnews.co.kr/news/articleView.html?idxno=1013020">spotvnews.co.kr</a></li>
+      <li id="src25">Hyundai Motorsport 공식, "Genesis Magma Racing sees positives among lessons to learn in Brazil" (2026.07) — <a href="https://motorsport.hyundai.com/media-center/news/2026/wec/genesis-magma-racing-sees-positives-among-lessons-to-learn-in-brazil">motorsport.hyundai.com</a></li>
+      <li id="src26">FIA WEC 공식 계시(Alkamel Systems), "6 Hours of Barcelona — Free Practice 3 HYPERCAR, Classification" (2026.10.17) — <a href="https://fiawec.alkamelsystems.com/Results/15_2026/07_BARCELONA-CATALUNYA/688_FIA%20WEC/202610171240_Free%20Practice%203%20-%20HYPERCAR/03_Classification_Free%20Practice%203%20-%20HYPERCAR_Final.PDF">fiawec.alkamelsystems.com</a></li>
+      <li id="src27">FIA WEC 공식, "FIA WEC and FIA confirm venues for final two rounds of 2026" (2026.07.28) — 카타르·바레인 취소, 바르셀로나·몬차 대체 — <a href="https://www.fiawec.com/en/news/fia-wec-and-fia-confirm-venues-for-final-two-rounds-of-2026/13698">fiawec.com</a></li>
+      <li id="src28">GT-Report, "WEC Barcelona Saturday Notebook" (2026.10.18) — 조베르 '폴은 1점' 발언 — <a href="https://www.gt-report.com/2026/10/18/wec-barcelona-saturday-notebook/">gt-report.com</a></li>
+    </ol>
+
+    <div class="editorial-note">
+      <strong>편집자 노트 — 출처 원칙.</strong> <br>
+이 기사의 모든 수치·인용·기록은 위 목록의 원문을 직접 확인한 뒤 작성함. <br>
+나무위키·위키백과 등 위키류 문서는 인용·참고 모두 사용하지 않음. <br>
+랩타임·격차·평균속도·그리드·드라이버 구성은 FIA WEC 공식 계시(Alkamel) 결과지 원본(PDF·CSV)을,
+예선 경위와 인용문은 FIA WEC 공식 기사와 각 매체 원문을, 2025년 데뷔전 전말은 제네시스 공식 뉴스룸 보도자료를 근거로 삼았음.
+    </div>
+
+    <div class="editorial-note">
+      <strong>사진 — DPPI / FIA WEC.</strong> 본문 사진 3장은 FIA WEC 공식 홈페이지 기사에 게재된
+      <strong>DPPI</strong> 촬영본으로, fiawec.com 이미지 서버 주소를 직접 참조한다
+      (리퍼러 무관 HTTP 200·서명 파라미터 없음 확인, 2026.10.18). 본 페이지는 이미지 파일을 복제·저장·전송하지 않는다.
+      원 서버 정책이 바뀌면 표시되지 않을 수 있으며, 저작권은 DPPI 및 촬영자에게 있다.<br><br>
+      <strong>텍스트.</strong> 경기 결과·랩타임·순위 같은 사실 정보 자체는 저작권 보호 대상이 아니며,
+      인용문은 출처를 밝힌 짧은 인용 범위로 사용했다. 원문 기사의 문장 구조나 표현을 그대로 옮기지는 않았다.
+    </div>
+
+    <div class="end-byline">
+      Newspaper · Motorsport Desk · 2026.10.18
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
