@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>데이터센터 물 사용에 숨겨진 거짓 - '질문 한 번에 500ml'의 정체</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     NEWSPAPER ARTICLE TEMPLATE
+     - Paper-grain background, drop-cap lead, sticky section titles
+     - Sections: .section.feature (full-width opener) + .section.body-grid (2-column)
+     - Element library: stats, spec-block, pullquote, image-placeholder, sources
+     ───────────────────────────────────────────────────────────── */
+  :root {
+    --paper: #f6f3ee;
+    --ink: #15110d;
+    --ink-mid: #4a4239;
+    --rule: #d8d2c5;
+    --accent: #b8410d;
+    --accent-deep: #7a2a08;
+    --quote-bg: #ebe5d6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard Variable', 'Noto Serif KR', serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ─── masthead (brand + issue meta) ─── */
+  .masthead {
+    border-bottom: 3px double var(--ink);
+    padding: 20px 40px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    position: relative; z-index: 2;
+  }
+  .masthead .brand {
+    font-family: 'Instrument Sans', serif;
+    font-size: 18px; font-weight: 900; letter-spacing: -0.02em; text-transform: none;
+  }
+  .masthead .meta { color: var(--ink-mid); }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 60px 40px 100px; position: relative; z-index: 2; }
+
+  /* ─── headline block ─── */
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 24px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--accent); display: inline-block;
+  }
+  .headline {
+    font-family: 'Noto Serif KR', 'Instrument Sans', serif;
+    font-weight: 900; font-size: clamp(38px, 6vw, 72px);
+    line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 32px; max-width: 25ch;
+  }
+  .headline em {
+    font-style: italic; font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    color: var(--accent-deep); font-weight: 500;
+  }
+  .deck {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(18px, 2vw, 22px); font-weight: 400; line-height: 1.5;
+    color: var(--ink-mid); max-width: 80ch; margin-bottom: 48px;
+    padding-left: 24px; border-left: 3px solid var(--accent);
+  }
+  .byline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-mid); padding-top: 24px; border-top: 1px solid var(--rule);
+    margin-bottom: 60px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  /* ─── lead (drop-cap) ─── */
+  .lead {
+    font-family: 'Noto Serif KR', serif; font-size: 21px; line-height: 1.65;
+    margin-bottom: 60px; max-width: 80ch; font-weight: 400;
+  }
+  .lead::first-letter {
+    font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    font-size: 90px; font-weight: 900; float: left; line-height: 0.85;
+    margin: 8px 14px 0 0; color: var(--accent);
+  }
+
+  /* ─── stats grid ─── */
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px; background: var(--rule); margin: 40px 0 60px;
+    border: 1px solid var(--rule);
+  }
+  .stat { background: var(--paper); padding: 24px; }
+  .stat .figure {
+    font-family: 'Instrument Sans', serif;
+    font-size: 42px; font-weight: 900; color: var(--accent-deep);
+    letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px;
+  }
+  .stat .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-mid); line-height: 1.4;
+  }
+
+  /* ─── section layouts ─── */
+  .section + .section { margin-top: 90px; }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+  }
+  .section-title {
+    font-family: 'Instrument Sans', 'Noto Serif KR', serif;
+    font-weight: 700; font-size: clamp(28px, 3vw, 38px);
+    line-height: 1.15; letter-spacing: -0.01em;
+    margin-top: 8px; margin-bottom: 0; position: sticky; top: 40px;
+  }
+  /* body-grid: 2-column (left = sticky title, right = body); used for most sections */
+  .body-grid {
+    display: grid; grid-template-columns: 1fr 2.5fr; gap: 60px; align-items: start;
+  }
+  @media (max-width: 900px) { .body-grid { grid-template-columns: 1fr; gap: 30px; } }
+  .body-grid > div { padding-top: 30px; }
+  /* feature: full-width opener (used for /01 only); title above body, both left-aligned */
+  .section.feature { display: block; }
+  .section.feature header { margin-bottom: 50px; }
+  .section.feature .section-num { display: block; margin-bottom: 20px; }
+  .section.feature .section-title {
+    position: static; font-size: clamp(40px, 5.5vw, 68px);
+    line-height: 1.05; max-width: 100%; margin-top: 0;
+  }
+  .section.feature > div { max-width: 87ch; }
+  .section.feature p { max-width: 87ch; }
+  /* paragraph body */
+  .section p { margin-bottom: 14px; max-width: 62ch; font-size: 17px; }
+  .section p strong {
+    font-weight: 700; color: var(--ink);
+    background: linear-gradient(transparent 60%, rgba(184, 65, 13, 0.18) 60%);
+    padding: 0 2px;
+  }
+
+  /* ─── inline elements ─── */
+  code, .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em; background: var(--quote-bg);
+    padding: 2px 6px; border-radius: 2px; letter-spacing: -0.01em;
+  }
+  sup.ref {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--accent);
+    padding: 0 2px; font-weight: 700;
+  }
+  sup.ref a { color: inherit; text-decoration: none; }
+  sup.ref a:hover { text-decoration: underline; }
+
+  /* ─── spec-block (monospace box for tables / ASCII charts) ─── */
+  .spec-block {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; line-height: 1.9;
+    margin: 16px 0; padding: 16px 22px;
+    background: rgba(184, 65, 13, 0.04);
+    border-left: 2px solid var(--accent);
+    overflow-x: auto;
+    white-space: pre;  /* preserve spaces and newlines for ASCII alignment */
+  }
+  .spec-heading {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); margin: 32px 0 10px 0; font-weight: 500;
+  }
+
+  /* ─── spec-table (structured comparison table) ─── */
+  table.spec-table {
+    width: 100%; border-collapse: collapse;
+    margin: 16px 0; font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  table.spec-table th, table.spec-table td {
+    text-align: left; padding: 10px 14px;
+    border-bottom: 1px solid var(--rule); vertical-align: top;
+  }
+  table.spec-table th {
+    background: rgba(184, 65, 13, 0.06);
+    color: var(--accent-deep); font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase; font-size: 11px;
+  }
+  table.spec-table td strong { color: var(--ink); font-weight: 600; }
+
+  /* ─── pullquote ─── */
+  .pullquote {
+    margin: 50px 0; padding: 40px;
+    background: var(--quote-bg);
+    border-left: 4px solid var(--accent);
+    font-family: 'Noto Serif KR', serif;
+    font-style: italic; font-size: 24px;
+    line-height: 1.4; color: var(--ink);
+    position: relative;
+  }
+  .pullquote::before {
+    content: '"'; position: absolute; top: -10px; left: 20px;
+    font-family: 'Instrument Sans', serif;
+    font-size: 90px; color: var(--accent); line-height: 1; opacity: 0.4;
+  }
+  .pullquote cite {
+    display: block; margin-top: 16px; font-style: normal;
+    font-size: 13px; font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-mid);
+  }
+
+  /* ─── image placeholder (for drafts before real images land) ─── */
+  .image-placeholder { margin: 28px 0; }
+  .image-placeholder .placeholder-box {
+    text-align: center; padding: 72px 20px;
+    background: rgba(184, 65, 13, 0.04);
+    border: 1.5px dashed var(--accent);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.05em;
+  }
+  .image-placeholder figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: rgba(46, 38, 31, 0.65);
+    margin-top: 10px; letter-spacing: 0.02em;
+  }
+  /* real image (when ready) */
+  figure.article-figure { margin: 28px 0; }
+  figure.article-figure img { width: 100%; height: auto; display: block; }
+  figure.article-figure figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: rgba(46, 38, 31, 0.65);
+    margin-top: 10px; letter-spacing: 0.02em;
+  }
+
+  /* ─── divider ─── */
+  .divider {
+    margin: 80px 0 60px; text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.3em; color: var(--ink-mid);
+  }
+
+  /* ─── sources / 참고문헌 ─── */
+  .sources {
+    margin-top: 100px; padding-top: 40px;
+    border-top: 3px double var(--ink);
+  }
+  .sources h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.25em; text-transform: uppercase;
+    margin-bottom: 32px; color: var(--ink);
+  }
+  .sources ol {
+    list-style: none; counter-reset: src;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 14px;
+  }
+  .sources li {
+    counter-increment: src;
+    font-size: 13px; line-height: 1.55;
+    padding: 14px 18px 14px 50px;
+    background: var(--paper); border: 1px solid var(--rule);
+    position: relative; color: var(--ink-mid);
+  }
+  .sources li::before {
+    content: counter(src, decimal-leading-zero);
+    position: absolute; left: 18px; top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700; color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .sources li strong { color: var(--ink); font-weight: 600; }
+  .editorial-note {
+    margin-top: 40px; padding: 24px;
+    background: var(--quote-bg);
+    border-left: 3px solid var(--ink-mid);
+    font-size: 13px; line-height: 1.6;
+    color: var(--ink-mid); font-style: italic;
+  }
+
+  /* ─── responsive ─── */
+  @media (max-width: 600px) {
+    .masthead { padding: 16px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .container { padding: 40px 20px 80px; }
+    .lead::first-letter { font-size: 70px; }
+    .pullquote { font-size: 19px; padding: 28px; }
+    .pullquote::before { font-size: 60px; }
+  }
+
+
+  /* ─── 이 기사 전용: 비교표·막대표 ─── */
+  table.cmp-table { width: 100%; border-collapse: collapse; margin: 18px 0 10px; font-size: 14px; }
+  table.cmp-table th, table.cmp-table td {
+    text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.55;
+  }
+  table.cmp-table th {
+    background: rgba(184, 65, 13, 0.06); color: var(--accent-deep); font-weight: 700;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  table.cmp-table td.c-key { color: var(--ink); font-weight: 700; width: 30%; }
+  table.cmp-table td.c-num {
+    font-family: 'JetBrains Mono', monospace; color: var(--accent-deep); font-weight: 700; white-space: nowrap; width: 16%;
+  }
+  table.cmp-table td { color: var(--ink-mid); }
+  table.cmp-table sup.ref { font-size: 9px; }
+  .tbl-cap {
+    font-family: 'Pretendard Variable', 'Noto Serif KR', sans-serif;
+    font-size: 12.5px; color: rgba(46, 38, 31, 0.65); line-height: 1.6; margin: 6px 0 22px;
+  }
+  .tbl-head {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); margin: 30px 0 4px; font-weight: 700;
+  }
+  /* 막대표: 게시판이 display 를 지우므로 td 폭·배경으로 막대를 그린다 */
+  table.bar-table { width: 100%; border-collapse: collapse; margin: 14px 0 6px; font-size: 13px; }
+  table.bar-table td { padding: 0; height: 34px; vertical-align: middle; }
+  table.bar-table td.b-on { background: var(--accent-deep); color: #ffffff; font-weight: 700; padding: 0 8px; white-space: nowrap; }
+  table.bar-table td.b-off { background: #e3c9b6; color: var(--ink); font-weight: 700; padding: 0 12px; }
+  table.bar-legend { width: 100%; border-collapse: collapse; margin: 0 0 4px; font-size: 13px; }
+  table.bar-legend td { padding: 6px 0; color: var(--ink-mid); vertical-align: top; line-height: 1.5; }
+  table.bar-legend td.lg-sw { width: 18px; }
+  table.bar-legend span.sw { display: inline-block; width: 12px; height: 12px; }
+
+  main.container a { color: var(--accent-deep); }
+  .sources li a { color: var(--accent-deep); }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="masthead">
+  <div class="brand">NEWSPAPER</div>
+  <div class="meta">Tech · Fact Check · 2026.11</div>
+</header>
+
+<main class="container">
+
+  <div class="kicker">DATA CENTER · WATER · FACT CHECK · 2023–2026</div>
+
+  <h1 class="headline">데이터센터 물 사용에<br>숨겨진 <em>거짓</em></h1>
+
+  <div class="deck">
+    <p>‘AI가 생수 한 병(500㎖)을 마신다’는 수치는<br>
+2023년 미국 UC 리버사이드·UT 알링턴 연구진의 논문에서 나왔다.<br>
+원문의 기준은 질문 한 번이 아니라 질문·답 20~50개(초판),<br>
+개정판부터는 GPT-3 응답 10~50개였다.<br>
+논문 최종판의 미국 평균으로 보면 그 500㎖ 가운데<br>
+데이터센터 냉각수는 65㎖, 나머지는 발전소에서 쓴 물이다.</p>
+    <p>한국 언론을 거치며 이 조건들은 빠졌다.<br>
+그사이 MS 등 일부 기업은 새 AI 데이터센터를<br>
+냉각수를 증발시키지 않는 폐쇄 루프로 설계하기 시작했다.</p>
+  </div>
+
+  <div class="byline">
+    <span>Tech · Fact Check</span>
+    <span>2026. 11. 12.</span>
+  </div>
+
+  <div class="lead">
+    <p>경향신문은 2023년 11월 30일<br>
+‘챗GPT와 대화 한번 나누는 데 냉각수 500㎖ 소요’라는 제목의 기사를 냈다.<sup class="ref"><a href="#src01">[1]</a></sup><br>
+이듬해 3월 지디넷코리아는<br>
+대화 한 건에 “생수 500ml 한 병이 사라지는 것과 맞먹는다”고 썼다.<sup class="ref"><a href="#src02">[2]</a></sup><br>
+2025년 4월 경향신문은 챗GPT로 이메일 한 통을 쓸 때마다<br>
+물 519㎖가 쓰인다며 이렇게 덧붙였다.<br>
+“e메일 한 통에 질문 몇 개면 일일 섭취 권장량(2ℓ)만큼의 물이 순식간에 증발하는 셈이다.”<sup class="ref"><a href="#src03">[3]</a></sup><br>
+<br>
+세 문장은 모두 출처가 된 연구에서 조건을 떼어 냈다.<br>
+연구가 센 것은 질문 한 번이 아니라 질문·답 수십 개,<br>
+개정판부터는 GPT-3 응답 10~50개였다.<br>
+어느 판에서도 500㎖ 전부가 냉각수는 아니었고,<br>
+최종판 미국 평균으로 냉각수는 13%다.<sup class="ref"><a href="#src04">[4]</a></sup><br>
+519㎖는 그 값을 계산한 교수 스스로<br>
+“오늘날 최적화된 시스템을 설명하는 데 쓰면 안 된다”고 했다.<sup class="ref"><a href="#src05">[5]</a></sup></p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="figure">65<span style="font-size:22px;"> ㎖</span></div>
+      <div class="label">생수 한 병(500㎖) 중 냉각수<br>나머지 435㎖는 발전소 물<br>논문 최종판 미국 평균 · 본지 계산</div>
+    </div>
+    <div class="stat">
+      <div class="figure">10~50<span style="font-size:22px;"> 개</span></div>
+      <div class="label">500㎖의 기준(개정판 이후)<br>GPT-3 ‘응답’ 개수<br>초판은 질문·답 20~50개</div>
+    </div>
+    <div class="stat">
+      <div class="figure">9<span style="font-size:22px;"> %</span></div>
+      <div class="label">2027년 ‘AI 물 42억~66억㎥’ 중<br>실제로 사라지는(소비) 물<br>나머지는 끌어 썼다 돌려보낸 물</div>
+    </div>
+    <div class="stat">
+      <div class="figure">0<span style="font-size:22px;"> ℓ</span></div>
+      <div class="label">MS 2024.8 이후 신규 설계의<br>냉각수 증발량<br>칩 단위 폐쇄 루프</div>
+    </div>
+  </div>
+
+  <article class="section feature">
+    <header>
+      <span class="section-num">/ 01</span>
+      <h2 class="section-title">500㎖는<br>어디서 왔나</h2>
+    </header>
+    <div>
+      <p>출처는 UC 리버사이드와 UT 알링턴 연구진이<br>
+2023년 4월 논문 공개 사이트 arXiv에 올린 「Making AI Less “Thirsty”」다.<sup class="ref"><a href="#src06">[6]</a></sup><br>
+논문은 이후 여러 차례 고쳐졌고,<br>
+2025년 7월 미국컴퓨터학회지(Communications of the ACM)에 실렸다.<sup class="ref"><a href="#src04">[4]</a></sup><br>
+‘500㎖’ 문장도 판을 거치며 두 차례 바뀌었다.</p>
+
+      <div class="tbl-head">판본별 ‘500㎖’ 문장</div>
+      <table class="cmp-table">
+        <tbody>
+          <tr><th>판본</th><th>원문</th><th>기준</th></tr>
+          <tr><td class="c-key">초판 v1<br>2023.04.06</td><td>“ChatGPT needs to ‘drink’ a 500ml bottle of water for a simple conversation of roughly 20-50 questions and answers”<sup class="ref"><a href="#src06">[6]</a></sup></td><td>ChatGPT,<br>질문·답 20~50개 대화</td></tr>
+          <tr><td class="c-key">개정판 v2<br>2023.10.25</td><td>“GPT-3 needs to ‘drink’ (i.e., consume) a 500ml bottle of water for roughly 10-50 responses”<sup class="ref"><a href="#src07">[7]</a></sup></td><td>GPT-3,<br>응답 10~50개</td></tr>
+          <tr><td class="c-key">학술지 게재본<br>2025.07</td><td>“… for roughly 10–50 medium-length responses”<sup class="ref"><a href="#src04">[4]</a></sup></td><td>GPT-3, 중간 길이 응답 10~50개<br>(입력 약 800단어·출력 150~300단어)</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-cap">모든 판에 ‘배치 시점과 장소에 따라 다르다(depending on when and where)’는 조건이 붙어 있다.</div>
+
+      <p>어느 판에도 ‘질문 한 번’은 없다.<br>
+한국 기사들이 쓴 ‘질문과 답변 25~50개’는 논문에 없는 표현으로,<br>
+2023년 4월 11일 미국 IT 매체 기즈모도 기사에 나온다.<sup class="ref"><a href="#src08">[8]</a></sup><br>
+다음 날 AI타임스는 ‘챗GPT 대화 한번에 물 500ml 필요’라고 보도하면서<br>
+연구진 소속을 콜로라도대와 텍사스대로 적었다.<sup class="ref"><a href="#src09">[9]</a></sup><br>
+경향신문의 2023년 11월 기사도 ‘콜로라도대와 텍사스대 연구진’이라고 썼다.<sup class="ref"><a href="#src01">[1]</a></sup><br>
+콜로라도대는 틀렸다.<br>
+실제 소속은 UC 리버사이드와 UT 알링턴(텍사스대 알링턴)이다.</p>
+
+      <p>조건을 살려 옮긴 기사도 있다.<br>
+SBS 마부뉴스(2024.1)는 현장 물과 발전소 물을 나눠 설명하고<br>
+‘질문 29.6번당 물 500ml’라고 적었다.<sup class="ref"><a href="#src10">[10]</a></sup></p>
+    </div>
+  </article>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 02</span>
+      <h2 class="section-title">500㎖ 가운데<br>냉각수는<br>65㎖</h2>
+    </header>
+    <div>
+      <p>논문 최종판의 표 1은<br>
+GPT-3 응답 하나에 드는 물을 둘로 나눠 적었다.<sup class="ref"><a href="#src04">[4]</a></sup><br>
+하나는 데이터센터가 서버를 식히며 쓰는 현장 냉각수(scope-1),<br>
+다른 하나는 데이터센터가 쓰는 전기를 만드는<br>
+발전소에서 사라지는 물(scope-2)이다.</p>
+
+      <div class="tbl-head">GPT-3 응답 1개에 드는 물 · 미국 평균 16.9㎖</div>
+      <table class="bar-table">
+        <tbody>
+          <tr><td class="b-on" style="width:13%;">2.2㎖</td><td class="b-off" style="width:87%;">발전소 14.7㎖ · 87%</td></tr>
+        </tbody>
+      </table>
+      <table class="bar-legend">
+        <tbody>
+          <tr><td class="lg-sw"><span class="sw" style="background:#7a2a08;"></span></td><td>데이터센터 현장 냉각수 (scope-1) · 13%</td></tr>
+          <tr><td class="lg-sw"><span class="sw" style="background:#e3c9b6;"></span></td><td>발전소에서 사라지는 물 (scope-2) · 87%</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-cap">Li 외, Communications of the ACM(2025) 표 1의 미국 평균 값. 비율은 본지 계산.<br>지역별 합계는 아일랜드 7.1㎖부터 미국 워싱턴주 47.5㎖까지 차이가 난다.</div>
+
+      <p>미국 평균으로 응답 하나에 16.9㎖,<br>
+500㎖ 한 병이면 응답 29.6개다.<br>
+그 가운데 현장 냉각수는 2.2㎖로 13%에 그친다.<br>
+생수 한 병으로 치면 냉각수는 65㎖,<br>
+나머지 435㎖는 발전소 몫이다(계산값).</p>
+
+      <p>발전소 물을 함께 세는 것 자체가 잘못은 아니다.<br>
+논문은 두 값을 나눠 적었고,<br>
+저자들은 이 추정이 보수적이라 실제는 몇 배 클 수 있다고도 썼다.<sup class="ref"><a href="#src04">[4]</a></sup><br>
+문제는 옮기는 과정이다.<br>
+발전소 물까지 합친 값이 한국 기사에서는 ‘냉각수 500㎖’가 됐다.<sup class="ref"><a href="#src01">[1]</a></sup></p>
+
+      <p>발전소 물을 데이터센터 몫으로 넣을지는 전문가 사이에서도 갈린다.<br>
+논문 저자인 샤올레이 렌 UC 리버사이드 교수는<br>
+간접수를 뺀 기업 발표를 비판한다.<sup class="ref"><a href="#src11">[11]</a></sup><br>
+미국 로런스버클리국립연구소(LBNL) 데이터센터 보고서 공저자 조너선 쿠미는<br>
+다른 산업을 말할 때는 에너지에 든 물을 세지 않으므로<br>
+데이터센터 물발자국에도 넣지 말아야 한다는 쪽이라고 와이어드에 말했다.<sup class="ref"><a href="#src12">[12]</a></sup><br>
+어느 쪽이든 두 물은 따로 적어야 비교가 된다.<br>
+메타는 2024년 회사 전체 직접 물 소비를 3,123ML(1ML=100만 L, 데이터센터 2,974ML),<br>
+회사 전체가 산 전기에 들어간 물을 72,207ML로 공시했다.<br>
+약 23배다(계산값).<sup class="ref"><a href="#src13">[13]</a></sup></p>
+
+      <p>‘이메일 한 통에 519㎖’는 2024년 9월 워싱턴포스트 기사에서 나왔다.<br>
+렌 교수가 GPT-4로 100단어 이메일을 쓴다고 가정하고<br>
+미국 평균 데이터센터 기준으로 계산한 값이다.<br>
+같은 기사의 지역별 그래픽은 텍사스 235㎖, 워싱턴주 1,468㎖로<br>
+데이터센터 위치에 따라 여섯 배 넘게 벌어졌다.<br>
+기사는 물 사용을 냉각탑으로만 설명했고,<br>
+현장 냉각수와 발전소 물이 각각 얼마인지는 밝히지 않았다.<sup class="ref"><a href="#src14">[14]</a></sup></p>
+
+      <div class="pullquote">
+        “2024년의 GPT-4 추정치는 특정 시점에, 가정에 기반해 낸 값입니다.<br>
+AI나 ChatGPT 전반,<br>
+오늘날 최적화된 시스템을 설명하는 데 쓰여서는 안 됩니다.”<br>
+<br>
+(The 2024 estimate for GPT-4 was time-specific, assumption-based, and should not be used to describe general AI/ChatGPT or today’s optimized systems.)
+        <cite>샤올레이 렌 UC 리버사이드 교수 · 2026.08 Sentient Media 이메일 답변<sup class="ref"><a href="#src05">[5]</a></sup></cite>
+      </div>
+    </div>
+  </article>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 03</span>
+      <h2 class="section-title">취수를 소비로,<br>리터를 ㎥로</h2>
+    </header>
+    <div>
+      <p>논문에는 더 큰 숫자도 있다.<br>
+2027년 전 세계 AI가 물 42억~66억㎥를 쓸 수 있다는 전망으로,<br>
+arXiv판은 초록에도 실었다.<br>
+그런데 이 값은 소비(consumption)가 아니라 취수(withdrawal)다.<sup class="ref"><a href="#src04">[4]</a></sup></p>
+
+      <p>미국 지질조사국(USGS) 정의로 취수는<br>
+강이나 지하수에서 끌어 쓴 물 전체이고,<br>
+소비는 그 가운데 증발 등으로 물 환경에서 빠져나간 부분이다.<br>
+나머지는 원래 수원이나 다른 수역으로 돌아간다.<sup class="ref"><a href="#src15">[15]</a></sup><br>
+두 값의 차이가 가장 큰 곳이 발전소다.<br>
+미국 화력·원자력 발전 냉각은<br>
+끌어 쓴 담수의 4%만 소비한다(2010~20년 평균).<sup class="ref"><a href="#src16">[16]</a></sup></p>
+
+      <p>논문 본문은 바로 다음 문장에<br>
+2027년 소비량을 3.8억~6억㎥로 적었다.<br>
+취수 전망의 약 9%다.<br>
+부록을 보면 취수 42억~66억㎥ 가운데<br>
+97~98%가 발전소 취수다(계산값).<sup class="ref"><a href="#src17">[17]</a></sup></p>
+
+      <p>두 숫자를 바꿔 쓴 사례가<br>
+캐런 하오의 책 『Empire of AI』다.<br>
+책은 2027년 AI가 담수 1.1조~1.7조 갤런을 ‘소비’할 수 있다고 썼는데,<br>
+이는 논문의 취수 전망을 갤런으로 바꾼 값이었다.<br>
+블로거 앤디 마슬리가 2025년 11월 이를 지적했다.<sup class="ref"><a href="#src18">[18]</a></sup></p>
+
+      <p>같은 책은 칠레 세리요스에 들어설 구글 데이터센터가<br>
+주민 약 8만8천 명이 1년 동안 쓰는 물의<br>
+‘천 배 이상’을 쓸 수 있다고 썼다.<sup class="ref"><a href="#src18">[18]</a></sup><br>
+하오는 2025년 12월 17일 자기 웹사이트에 정정문을 올렸다.<br>
+칠레 정부 문서가 ‘리터’라고 적은 수치가 실제로는 ㎥였고,<br>
+그래서 비교가 1,000배 틀렸다는 내용이다.<br>
+정정한 비교는 ‘세리요스 주민 전체보다 많은 물’, 1.045배다.<br>
+‘소비’를 ‘사용·취수’로 고친 문장도 출판사에 넘겼다고 했다.<br>
+하오는 수치를 상식선에서 점검했어야 했다는 지적을 받아들이며<br>
+‘전적인 책임’을 진다고 밝혔다.<sup class="ref"><a href="#src19">[19]</a></sup></p>
+    </div>
+  </article>
+
+  <article class="section body-grid" id="part2">
+    <header>
+      <span class="section-num">/ 04</span>
+      <h2 class="section-title">같은 질문,<br>다른 숫자</h2>
+    </header>
+    <div>
+      <p>2025년부터는 AI 기업들이 직접 숫자를 내놓았다.<br>
+구글과 오픈AI가 낸 값은 1㎖가 안 되고, 미스트랄이 낸 값은 45㎖다.<br>
+모델과 응답 길이, 셈에 넣은 범위가 서로 다르다.<br>
+오픈AI는 범위를 공개하지도 않았다.<br>
+같은 ‘응답 한 건의 물’이라도 무엇을 넣었는지 봐야 한다.</p>
+
+      <div class="tbl-head">응답 한 건의 물, 누가 무엇을 셌나</div>
+      <table class="cmp-table">
+        <tbody>
+          <tr><th>발표</th><th>1건당 물</th><th>무엇을 셌나</th></tr>
+          <tr><td class="c-key">구글 Gemini 앱<br>2025.08 기술보고서</td><td class="c-num">0.26㎖</td><td>텍스트 프롬프트 중앙값. 데이터센터 현장 냉각수만 셌고 발전소 물·모델 학습·사용자 기기는 뺐다.<sup class="ref"><a href="#src20">[20]</a></sup></td></tr>
+          <tr><td class="c-key">샘 올트먼 오픈AI CEO<br>2025.06 블로그</td><td class="c-num">약 0.32㎖</td><td>ChatGPT 평균 질의. 0.000085갤런을 본지가 환산. 측정 범위와 방법은 공개하지 않았다.<sup class="ref"><a href="#src21">[21]</a></sup></td></tr>
+          <tr><td class="c-key">미스트랄 AI<br>2025.07 전과정평가</td><td class="c-num">45㎖</td><td>400토큰 응답 한 건. 서버 제조 같은 상류 영향까지 넣은 전과정평가(LCA)다.<sup class="ref"><a href="#src22">[22]</a></sup></td></tr>
+          <tr><td class="c-key">Li 외 논문<br>2025.07 GPT-3 가정</td><td class="c-num">16.9㎖</td><td>미국 평균. 현장 냉각수와 발전소 물을 합쳤다.<sup class="ref"><a href="#src04">[4]</a></sup></td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-cap">모델·응답 길이·셈 범위가 모두 달라 크기를 서로 비교할 수 없다.</div>
+
+      <p>기업 숫자에도 반론이 있다.<br>
+렌 교수는 구글이 발전에 드는 간접수를 빠뜨렸다며<br>
+“핵심 정보를 숨기고 있다(They’re just hiding the critical information)”고 비판했다.<br>
+더버지는 구글 보고서가 동료평가를 거치지 않았다고 전했다.<sup class="ref"><a href="#src11">[11]</a></sup><br>
+올트먼은 2026년 9월 팟캐스트에서<br>
+‘ChatGPT 질의 3만8천 건이 캘리포니아 아몬드 한 알에 드는 물과 같다’고 했지만,<br>
+기억에 의존한 수치라 틀릴 수 있다고 스스로 덧붙였다.<sup class="ref"><a href="#src23">[23]</a></sup></p>
+    </div>
+  </article>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 05</span>
+      <h2 class="section-title">물을<br>증발시키지 않는<br>냉각</h2>
+    </header>
+    <div>
+      <p>데이터센터 현장에서 소비되는 물은<br>
+대부분 냉각 과정에서 증발하는 물이다.<sup class="ref"><a href="#src24">[24]</a></sup><br>
+냉각탑이 대표적이다. 미국 에너지부는 냉각탑에 채워 넣는 물을<br>
+증발, 농축수 배출(블로다운), 비산으로 나누고,<br>
+이 가운데 증발을 냉각탑이 열을 버리는 주된 방식으로 꼽는다.<sup class="ref"><a href="#src25">[25]</a></sup></p>
+
+      <p>이 증발을 없애는 설계가 나오고 있다.<br>
+마이크로소프트(MS)는 2024년 12월,<br>
+그해 8월부터 모든 신규 데이터센터 설계에<br>
+냉각에 물을 쓰지 않는 칩 단위 폐쇄 루프 냉각을 적용했다고 발표했다.<br>
+건설 때 한 번 채운 물이 서버와 칠러 사이를 계속 돈다.<br>
+MS는 이 설계로 데이터센터 한 곳당<br>
+연 1억2500만 L 넘는 물이 필요 없어진다고 추산했다.<sup class="ref"><a href="#src26">[26]</a></sup></p>
+
+      <p>대가는 전기다.<br>
+증발 대신 기계식 냉각을 쓰면 전력이 더 들지만,<br>
+MS는 연간 에너지 사용 증가가 ‘소폭(nominal)’이라고 밝혔다.<br>
+화장실·주방 같은 관리용 물은 계속 쓴다.<br>
+MS는 애리조나 피닉스와 위스콘신 마운트플레전트에서<br>
+2026년 이 설계를 시범 적용하고,<br>
+2027년 말부터 가동을 시작할 계획이라고 밝혔다.<sup class="ref"><a href="#src26">[26]</a></sup></p>
+
+      <p>2025년 9월 공개한 위스콘신 AI 데이터센터 ‘페어워터(Fairwater)’는<br>
+용량의 90% 이상이 이 방식이다.<br>
+MS는 “건설 때 한 번만 물을 넣고 증발 손실 없이 계속 재사용한다”고 설명했다.<sup class="ref"><a href="#src27">[27]</a></sup><br>
+MS에 따르면 애틀랜타 페어워터에 처음 채운 물은 20가구가 1년 동안 쓰는 양이다.<sup class="ref"><a href="#src28">[28]</a></sup></p>
+
+      <p>MS의 평균 WUE(IT 전력 1kWh당 물 사용량)는<br>
+초기 세대 2.3L에서 2025년 0.27L로 낮아졌다(취수 기준).<sup class="ref"><a href="#src29">[29]</a></sup><br>
+아마존웹서비스(AWS)는 2025년 0.12L(역시 취수 기준)라고 밝혔고,<br>
+물이 필요한 기간은 연중 10% 미만이라고 했다.<sup class="ref"><a href="#src30">[30]</a></sup><br>
+바깥 기온이 화씨 85도(섭씨 약 29도)를 넘을 때만<br>
+증발식 냉각을 쓴다는 설명이다.<sup class="ref"><a href="#src31">[31]</a></sup><br>
+구글의 공랭 시설인 애리조나 피닉스 데이터센터는<br>
+2025년 물 소비가 10만 갤런(약 38만 L)이었다.<sup class="ref"><a href="#src32">[32]</a></sup></p>
+
+      <p>엔비디아는 2026년 10월 차세대 베라 루빈(Vera Rubin) 인프라가<br>
+최고 45°C 냉각수로 액체냉각을 할 수 있어<br>
+드라이쿨러(공랭식 열교환기) 설계라면<br>
+시설 냉각수 소비를 ‘거의 0’으로 줄일 수 있다고 밝혔다.<br>
+가장 더운 시기에 보조 냉각이 필요한지는<br>
+현지 기후가 결정한다는 단서도 달았다.<sup class="ref"><a href="#src33">[33]</a></sup></p>
+
+      <p>칩을 액체로 식힌다고 물이 저절로 안 드는 것은 아니다.<br>
+LBNL은 액체냉각이라도 마지막 열을 냉각탑으로 버리면<br>
+다른 증발식 냉각처럼 물을 상당히 소비한다고 적었다.<sup class="ref"><a href="#src24">[24]</a></sup><br>
+물을 아끼는 쪽은 열을 공기로 버리는 설계다.</p>
+    </div>
+  </article>
+
+  <article class="section body-grid">
+    <header>
+      <span class="section-num">/ 06</span>
+      <h2 class="section-title">같은 잣대로<br>재면</h2>
+    </header>
+    <div>
+      <p>LBNL 보고서에 따르면 2023년 미국 데이터센터가<br>
+현장에서 소비한 물은 660억 L다.<sup class="ref"><a href="#src24">[24]</a></sup><br>
+하루로 나누면 약 1.8억 L다.<br>
+USGS의 같은 기준(소비량) 통계와 나란히 놓으면 이렇다.</p>
+
+      <div class="tbl-head">미국의 하루 물 소비량</div>
+      <table class="cmp-table">
+        <tbody>
+          <tr><th>용도</th><th>하루 소비량</th><th>데이터센터 현장 소비는</th></tr>
+          <tr><td class="c-key">작물 관개</td><td class="c-num">약 2,865억 L</td><td>그 0.06%</td></tr>
+          <tr><td class="c-key">상수도</td><td class="c-num">약 160억 L</td><td>그 1.1%</td></tr>
+          <tr><td class="c-key">화력·원자력 발전 냉각</td><td class="c-num">약 110억 L</td><td>그 1.6%</td></tr>
+          <tr><td class="c-key">데이터센터 현장 (2023)</td><td class="c-num">약 1.8억 L</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-cap">USGS 미국 본토 2010~20 물년도 평균 소비량<sup class="ref"><a href="#src16">[16]</a></sup>과 LBNL 2023년 추정<sup class="ref"><a href="#src24">[24]</a></sup>을 본지가 리터로 환산해 비교했다. 연도가 달라 대략의 비교다.</div>
+
+      <p>미국골프장관리자협회(GCSAA) 조사로<br>
+2020년 미국 골프장에 뿌린 물은 168만 에이커피트,<br>
+약 2조800억 L다(계산값).<sup class="ref"><a href="#src34">[34]</a></sup><br>
+골프장 수치는 ‘뿌린 양’이고 연도도 달라 배수로 비교할 수는 없지만,<br>
+규모로는 데이터센터 현장 소비(2023년 660억 L)보다 훨씬 크다.</p>
+
+      <p>발전소 물까지 넣으면 그림이 달라진다.<br>
+LBNL은 2023년 미국 데이터센터가 쓴 전기에 들어간 간접 물을<br>
+약 8,000억 L로 추산했다.<br>
+수력발전 저수지 증발을 포함하고 개별 전력구매계약은 반영하지 않은 값으로,<br>
+직접 소비의 약 12배다(계산값).<sup class="ref"><a href="#src24">[24]</a></sup><br>
+‘데이터센터 물’에 무엇을 넣느냐에 따라<br>
+숫자가 열 배 넘게 바뀐다.</p>
+
+      <p>국내에서는 네이버가 기후정보공개보고서에서<br>
+데이터센터 ‘각 세종’의 물을 따로 공개한다.<br>
+2025년 취수량은 10만9,622㎥다.<sup class="ref"><a href="#src35">[35]</a></sup><br>
+상수도 통계상 1인 하루 물 사용량 305.9L로 나누면<br>
+약 980명이 1년 동안 쓰는 양이다(계산값).<sup class="ref"><a href="#src36">[36]</a></sup></p>
+
+      <p>데이터센터가 물을 쓰지 않는다는 말이 아니다.<br>
+다만 ‘AI가 생수 한 병을 마신다’는 문장에는 발전소 물과 옛 모델(GPT-3·GPT-4)의 가정이,<br>
+‘AI가 물 수십억㎥를 쓴다’는 전망에는 끌어 썼다 돌려보낸 물이 함께 들어 있었다.<br>
+그 조건을 지우면 숫자는 거짓이 된다.</p>
+    </div>
+  </article>
+
+  <div class="divider">▴ ▴ ▴</div>
+
+  <section class="sources">
+    <h2>Sources / 참고 문헌</h2>
+    <ol>
+      <li id="src01">경향신문 (김은성), 「챗GPT와 대화 한번 나누는 데 냉각수 500㎖ 소요…진짜 ‘기후 빌런’ AI 산업」 (2023.11.30) — <a href="https://www.khan.co.kr/article/202311302244005">khan.co.kr</a></li>
+      <li id="src02">지디넷코리아 (장유미), 「"지구가 메말라 간다"…‘물 먹는 하마’ 챗GPT, 대화 한 건당 물 사용량 얼마길래」 (2024.03.13) — <a href="https://zdnet.co.kr/view/?no=20240313092538">zdnet.co.kr</a></li>
+      <li id="src03">경향신문 (최민지), 「‘물 먹는 하마’ 챗GPT…하루만 지구에 양보하세요」 (2025.04.22) — <a href="https://www.khan.co.kr/article/202504220600071">khan.co.kr</a></li>
+      <li id="src04">Li·Yang·Islam·Ren, "Making AI Less ‘Thirsty’", Communications of the ACM 68권 7호 (2025.07) — 저자 소속기관 게재본 — <a href="https://crystal.uta.edu/~mislam/pdfs/2025_CACM.pdf">crystal.uta.edu</a></li>
+      <li id="src05">Sentient Media (Seth Millstein, Perspective), "AI’s Water Use Is in the Spotlight. Meat Deserves a Look, Too." — 렌 교수 이메일 답변 수록 (2026.08.10) — <a href="https://sentientmedia.org/chatgpts-water-use-what-uses-more/">sentientmedia.org</a></li>
+      <li id="src06">Pengfei Li·Jianyi Yang·Mohammad A. Islam·Shaolei Ren, "Making AI Less ‘Thirsty’", arXiv 초판 v1 (2023.04.06) — <a href="https://arxiv.org/pdf/2304.03271v1">arxiv.org</a></li>
+      <li id="src07">같은 논문 arXiv 개정판 v2 (2023.10.25) — <a href="https://arxiv.org/pdf/2304.03271v2">arxiv.org</a></li>
+      <li id="src08">Gizmodo (Mack DeGeurin), "‘Thirsty’ AI: Training ChatGPT Required Enough Water to Fill a Nuclear Reactor’s Cooling Tower, Study Finds" (2023.04.11) — <a href="https://gizmodo.com/chatgpt-ai-water-185000-gallons-training-nuclear-1850324249">gizmodo.com</a></li>
+      <li id="src09">AI타임스 (정병일), 「AI는 ‘물먹는 하마’…챗GPT 대화 한번에 물 500ml 필요」 (2023.04.12) — <a href="https://www.aitimes.com/news/articleView.html?idxno=150488">aitimes.com</a></li>
+      <li id="src10">SBS 뉴스 (안혜민), 「[스프] 챗지피티(ChatGPT)랑 대화하면 생수 1병이 소비된다고?」 (2024.01.25) — <a href="https://news.sbs.co.kr/news/endPage.do?news_id=N1007510750">news.sbs.co.kr</a></li>
+      <li id="src11">The Verge (Justine Calma), "Google says a typical AI text prompt only uses 5 drops of water — experts say that’s misleading" (2025.08.21) — <a href="https://www.theverge.com/report/763080/google-ai-gemini-water-energy-emissions-study">theverge.com</a></li>
+      <li id="src12">WIRED (Molly Taft), "You’re Thinking About AI and Water All Wrong" (2025.12.11) — <a href="https://www.wired.com/story/karen-hao-empire-of-ai-water-use-statistics/">wired.com</a></li>
+      <li id="src13">Meta, 2025 Environmental Data Index (2024년 기준) — <a href="https://sustainability.atmeta.com/wp-content/uploads/2025/10/Meta_2025-Environmental-Data-Index.pdf">sustainability.atmeta.com</a></li>
+      <li id="src14">The Washington Post (Pranshu Verma·Shelly Tan), "A bottle of water per email: the hidden environmental costs of using AI chatbots" (2024.09.18) — 웹 아카이브 사본 열람 — <a href="https://www.washingtonpost.com/technology/2024/09/18/energy-ai-use-electricity-water-data-centers/">washingtonpost.com</a></li>
+      <li id="src15">미국 지질조사국(USGS), Water Use Terminology (2026.11.12 열람) — <a href="https://www.usgs.gov/mission-areas/water-resources/science/water-use-terminology">usgs.gov</a></li>
+      <li id="src16">USGS (Laura Medalie 외), Professional Paper 1894-D "Water Use Across the Conterminous United States, Water Years 2010–20" (2025.01.15) — <a href="https://pubs.usgs.gov/publication/pp1894D/full">pubs.usgs.gov</a></li>
+      <li id="src17">같은 논문 arXiv v5 부록 (2025.03.26) — <a href="https://arxiv.org/pdf/2304.03271v5">arxiv.org</a></li>
+      <li id="src18">Andy Masley 블로그, "Empire of AI is wildly misleading about AI water use" (2025.11.16) — <a href="https://blog.andymasley.com/p/empire-of-ai-is-wildly-misleading">blog.andymasley.com</a></li>
+      <li id="src19">Karen Hao 공식 웹사이트, "Empire of AI - Water Footprint Changes" (2025.12.17) — <a href="https://karendhao.com/20251217/empire-water-changes">karendhao.com</a></li>
+      <li id="src20">Google (Cooper Elsworth 외), "Measuring the environmental impact of delivering AI at Google Scale", arXiv 2508.15734 (2025.08.21) — <a href="https://arxiv.org/abs/2508.15734">arxiv.org</a></li>
+      <li id="src21">Sam Altman 블로그, "The Gentle Singularity" (2025.06.10) — <a href="https://blog.samaltman.com/the-gentle-singularity">blog.samaltman.com</a></li>
+      <li id="src22">Mistral AI, "Our contribution to a global environmental standard for AI" (2025.07.22) — <a href="https://mistral.ai/news/our-contribution-to-a-global-environmental-standard-for-ai">mistral.ai</a></li>
+      <li id="src23">Tom’s Hardware (Jowi Morales), 올트먼 팟캐스트 ‘아몬드 한 알’ 발언 보도 (2026.09.03) — <a href="https://www.tomshardware.com/tech-industry/data-centers/openai-ceo-sam-altman-says-38-000-chatgpt-queries-use-as-much-water-as-the-production-of-one-almond-says-data-centers-use-no-more-water-than-an-office-building">tomshardware.com</a></li>
+      <li id="src24">미국 로런스버클리국립연구소 (Arman Shehabi 외), 2024 United States Data Center Energy Usage Report (2024.12) — <a href="https://eta-publications.lbl.gov/sites/default/files/2024-12/us_data_center_energy_usage_report_lbnl-2001637.pdf">eta-publications.lbl.gov</a></li>
+      <li id="src25">미국 에너지부 연방에너지관리프로그램(FEMP), Best Management Practice #10: Cooling Tower Management (2026.11.12 열람) — <a href="https://www.energy.gov/femp/best-management-practice-10-cooling-tower-management">energy.gov</a></li>
+      <li id="src26">Microsoft (Steve Solomon), "Sustainable by design: Next-generation datacenters consume zero water for cooling" (2024.12.09) — <a href="https://www.microsoft.com/en-us/microsoft-cloud/blog/2024/12/09/sustainable-by-design-next-generation-datacenters-consume-zero-water-for-cooling/">microsoft.com</a></li>
+      <li id="src27">Microsoft (Scott Guthrie), "Inside the world’s most powerful AI datacenter" (2025.09.18) — <a href="https://blogs.microsoft.com/blog/2025/09/18/inside-the-worlds-most-powerful-ai-datacenter/">blogs.microsoft.com</a></li>
+      <li id="src28">Microsoft Source (Catherine Bolgar), "From Wisconsin to Atlanta: Microsoft connects datacenters to build its first AI superfactory" (2025.11.12) — <a href="https://news.microsoft.com/source/features/ai/from-wisconsin-to-atlanta-microsoft-connects-datacenters-to-build-its-first-ai-superfactory/">news.microsoft.com</a></li>
+      <li id="src29">Microsoft (Judy Priest·Steve Solomon), "Inside Microsoft’s two-decade push to cut water intensity while scaling for growth" (2026.06.24) — <a href="https://blogs.microsoft.com/blog/2026/06/24/inside-microsofts-two-decade-push-to-cut-water-intensity-while-scaling-for-growth/">blogs.microsoft.com</a></li>
+      <li id="src30">Amazon, 2025 AWS Summary (2026.07) — <a href="https://sustainability.aboutamazon.com/2025-aws-summary.pdf">sustainability.aboutamazon.com</a></li>
+      <li id="src31">About Amazon (Alex Davies), "How much water do Amazon data centers use? 7x less than the industry average" (2026.06.11) — <a href="https://www.aboutamazon.com/news/sustainability/amazon-data-center-water-usage">aboutamazon.com</a></li>
+      <li id="src32">Google, 2026 Environmental Report (2026.06) — <a href="https://sustainability.google/files/google-2026-environmental-report.pdf">sustainability.google</a></li>
+      <li id="src33">NVIDIA 보도자료, "European Ecosystem Builds World’s Most Efficient AI Factories With NVIDIA DSX" (2026.10.21) — <a href="https://investor.nvidia.com/news/press-release-details/2026/European-Ecosystem-Builds-Worlds-Most-Efficient-AI-Factories-With-NVIDIA-DSX/default.aspx">investor.nvidia.com</a></li>
+      <li id="src34">미국골프장관리자협회(GCSAA), Golf Course Environmental Profile Phase III Vol. I — Water Use and Management Practices (2022) — <a href="https://www.gcsaa.org/docs/default-source/environment/phase-3-water-survey-full-report.pdf">gcsaa.org</a></li>
+      <li id="src35">NAVER, 2025 기후정보공개보고서 (2026) — <a href="https://static-homepage.pstatic.net/cdn-static/naver/download/NAVER_Climate_Information_Disclosure_Report_2025_KOR.pdf">static-homepage.pstatic.net</a></li>
+      <li id="src36">뉴시스 (여동준), 기후에너지환경부 2024년 상수도 통계 보도 (2026.01.21) — <a href="https://www.newsis.com/view/NISX20260121_0003484450">newsis.com</a></li>
+      <li id="src37">Uptime Institute, 2024 Cooling Systems Survey: Direct Liquid Cooling Results (2024.05) — <a href="https://datacenter.uptimeinstitute.com/rs/711-RIA-145/images/2024.Cooling.Survey.Report.pdf">datacenter.uptimeinstitute.com</a></li>
+      <li id="src38">The Oregonian (Mike Rogoway), "Google’s water use is soaring in The Dalles, records show…" — WaterWatch of Oregon 재게재 (2022.12.17) — <a href="https://waterwatch.org/googles-water-use-is-soaring-in-the-dalles-records-show-with-two-more-data-centers-to-come/">waterwatch.org</a></li>
+      <li id="src39">La Tercera, 세리요스 데이터센터 환경승인 일부 무효 판결 보도 (2024.02.27, 스페인어) — <a href="https://www.latercera.com/pulso/noticia/segundo-tribunal-ambiental-anula-parcialmente-aprobacion-de-proyecto-cerrillos-data-center-y-ordena-incorporar-efectos-del-cambio-climatico-en-la-evaluacion-ambiental/KWPRU6PQ2NDSPHXBXO3S6D4UAU/">latercera.com</a></li>
+      <li id="src40">CNN Chile (Hector Basoalto), 구글 세리요스 원설계 포기·재설계 보도 (2024.09, 스페인어) — <a href="https://www.cnnchile.com/negocios/google-se-rinde-con-proyecto-original-de-data-center-en-cerrillos-y-anuncia-futuro-rediseno-de-la-iniciativa/">cnnchile.com</a></li>
+      <li id="src41">The Atlanta Journal-Constitution (Dylan Jackson·Zachary Hansen), "Georgia families sue Meta, accuse its data center of tainting their water" (2026.09.01) — <a href="https://www.ajc.com/news/2026/09/georgia-families-sue-meta-accuse-its-data-center-of-tainting-their-water/">ajc.com</a></li>
+    </ol>
+
+    <div class="editorial-note">
+      <strong>편집자 노트.</strong>
+수치·인용·날짜는 원문을 직접 열어 확인했고, 위키류 문서는 쓰지 않았다.
+논문은 판마다 문장이 달라 판본을 함께 적었다. ‘계산값’으로 표시한 비율·환산은 원문 수치로 본지가 계산했다.
+워싱턴포스트 기사는 웹 아카이브 사본(2026.04)으로 열람했다. 같은 그래픽의 워싱턴주 값을 1,408㎖로 옮긴 보도도 있다.<br><br>
+<strong>본문에서 다루지 않은 사실.</strong>
+미국 데이터센터의 현장 물 소비는 2014년 212억 L에서 2023년 660억 L로 늘었다.
+LBNL은 증발식 냉각이 여전히 ‘필수적인 역할’을 한다고 썼다.<sup class="ref"><a href="#src24">[24]</a></sup>
+2024년 업계 조사에서 직접 액체냉각을 조금이라도 쓰는 운영자는 응답자 453명 중 22%였다.<sup class="ref"><a href="#src37">[37]</a></sup>
+구글 데이터센터의 2025년 물 소비는 105억2300만 갤런이었다(사무실 포함 전체는 전년보다 34% 증가).<sup class="ref"><a href="#src32">[32]</a></sup><br>
+물이 귀한 지역의 갈등도 있다.
+오리건주 더댈러스에서 구글은 2021년 시 전체 물의 29%를 썼다(시가 오리거니언과의 소송을 합의하며 공개).<sup class="ref"><a href="#src38">[38]</a></sup>
+칠레 세리요스 구글 데이터센터는 2024년 2월 환경법원이 허가를 일부 무효화했고,<sup class="ref"><a href="#src39">[39]</a></sup>
+구글은 같은 해 9월 원설계를 접고 공랭식으로 다시 설계하겠다고 밝혔다.<sup class="ref"><a href="#src40">[40]</a></sup>
+미국 조지아주에서는 메타 데이터센터 인근 4가구가 공사가 대수층을 교란해 우물에 퇴적물이 들어왔다며 2026년 8월 소송을 냈고,
+메타는 근거 없는 소송이라는 입장이다. 냉각수 소비가 아니라 공사 영향을 다투는 사건이다.<sup class="ref"><a href="#src41">[41]</a></sup>
+    </div>
+
+    <p class="byline" style="margin-top:32px;">
+      <span>Newspaper · Tech Desk</span>
+      <span>2026 ─ 11 ─ 12</span>
+    </p>
+  </section>
+
+</main>
+
+</body>
+</html>
